@@ -8,42 +8,44 @@
         </el-header>
         <el-container>
             <el-aside :width="isCollapse ? '64px' : '200px'">
-                <el-menu background-color="#333744" text-color="#FFF" active-text-color="#409EFF">
-                    <el-menu-item index="1">
+                <el-menu background-color="#333744" text-color="#FFF" active-text-color="#409EFF" :router="true">
+                    <el-menu-item index="realtimeMap">
                         <i class="el-icon-map-location"></i>
                         <span slot="title">实时地图</span>
                     </el-menu-item>
-                    <el-menu-item index="2">
+                    <el-menu-item index="sites">
                         <i class="el-icon-menu"></i>
                         <span slot="title">站点列表</span>
                     </el-menu-item>
-                    <el-menu-item index="3">
+                    <el-menu-item index="siteInfo">
                         <i class="el-icon-document"></i>
                         <span slot="title">站点详情</span>
                     </el-menu-item>
-                    <el-menu-item index="4">
+                    <el-menu-item index="siteManagement">
                         <i class="el-icon-setting"></i>
                         <span slot="title">站点管理</span>
                     </el-menu-item>
-                    <el-menu-item index="5">
+                    <el-menu-item index="history">
                         <i class="el-icon-reading"></i>
                         <span slot="title">历史记录</span>
                     </el-menu-item>
-                    <el-menu-item index="6">
+                    <el-menu-item index="logs">
                         <i class="el-icon-bell"></i>
                         <span slot="title">报警日志</span>
                     </el-menu-item>
-                    <el-menu-item index="7">
+                    <el-menu-item index="help">
                         <i class="el-icon-document"></i>
                         <span slot="title">Help</span>
                     </el-menu-item>
-                    <el-menu-item index="8">
+                    <el-menu-item index="userManagement">
                         <i class="el-icon-user"></i>
                         <span slot="title">用户管理</span>
                     </el-menu-item>
                 </el-menu>
             </el-aside>
-            <el-main>Main</el-main>
+            <el-main>
+                <router-view></router-view>
+            </el-main>
         </el-container>
         <el-footer>Footer</el-footer>
     </el-container>
