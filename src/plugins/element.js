@@ -14,6 +14,7 @@ import {
     Input,
     Main,
     Message,
+    MessageBox,
     Menu,
     MenuItem,
     Option,
@@ -44,3 +45,4 @@ Vue.use(Tooltip)
 Vue.use(Option)
 Vue.use(Select)
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm

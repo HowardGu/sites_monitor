@@ -17,12 +17,12 @@
                 <el-table-column prop="password" label="密码"></el-table-column>
                 <el-table-column prop="userGroup" label="用户组"></el-table-column>
                 <el-table-column label="操作">
-                    <template slot-scope="{}">
+                    <template slot-scope="scope">
                         <el-tooltip class="item" effect="dark" content="编辑" placement="top" :enterable="false">
                             <el-button type="primary" icon="el-icon-edit" circle></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="删除" placement="top" :enterable="false">
-                            <el-button type="danger" icon="el-icon-delete" circle></el-button>
+                            <el-button type="danger" icon="el-icon-delete" circle @click="removeUser(scope.row.id)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -62,11 +62,13 @@ export default {
         return {
             userList: [
                 {
+                    id: 1,
                     userName: 'admin',
                     password: 'admin',
                     userGroup: 'admin'
                 },
                 {
+                    id: 2,
                     userName: 'manager',
                     password: 'manager',
                     userGroup: 'manager'
@@ -103,7 +105,15 @@ export default {
 
                 console.log(valid);
                 this.addUserDialogVisible = false;
-                //after add user, need to get user list again
+                // after add user, need to get user list again
+            });
+        },
+        removeUser(id) {
+            console.log(id);
+            this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
             });
         }
     }
