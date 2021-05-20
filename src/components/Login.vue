@@ -27,10 +27,10 @@ export default {
             },
             loginFormRules: {
                 telephone: [
-                    { required: true, message: 'Please enter the telephone', trigger: 'blur' }
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
                 ],
                 password: [
-                    { required: true, message: 'Please enter the password', trigger: 'blur' }
+                    { required: true, message: '请输入密码', trigger: 'blur' }
                 ]
             }
         };
@@ -66,7 +66,7 @@ export default {
                         this.$router.push('/home');
                     }
                 }
-            })
+            });
         }
     }
 }

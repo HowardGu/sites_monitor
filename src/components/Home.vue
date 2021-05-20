@@ -7,7 +7,7 @@
             <el-button type="info" @click="logout">Exit</el-button>
         </el-header>
         <el-container>
-            <el-aside :width="isCollapse ? '64px' : '200px'">
+            <el-aside width="200px">
                 <el-menu background-color="#333744" text-color="#FFF" active-text-color="#409EFF" :router="true">
                     <el-menu-item index="realtimeMap">
                         <i class="el-icon-map-location"></i>
