@@ -50,11 +50,7 @@ export default {
                     window.sessionStorage.setItem('token', 'thisistesttokenstr');
                     this.$router.push('/home');
                 } else {
-                    const formData = new FormData();
-                    formData.set('telephone', this.loginForm.telephone)
-                    formData.set('password', this.loginForm.password)
-
-                    const result = await this.$http.post('login', formData);
+                    const result = await this.$http.post('login', this.loginForm).catch((err) => { return err; });
                     console.log(result);
 
                     if (result.status !== 200) {

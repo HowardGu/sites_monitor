@@ -6,9 +6,9 @@
         </el-breadcrumb>
 
         <el-card class="box-card">
-            <div slot="header" class="clearfix">
+            <div slot="header" class="userManagement-header">
                 <span>用户管理</span>
-                <el-button class="addUser-button" type="text" @click="addUserDialogVisible = true">新增用户</el-button>
+                <el-button type="primary" @click="addUserDialogVisible = true">新增用户</el-button>
             </div>
 
             <el-table :data="userList" :border="true" style="width: 100%">
@@ -108,21 +108,29 @@ export default {
                 // after add user, need to get user list again
             });
         },
-        removeUser(id) {
-            console.log(id);
-            this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        async removeUser(id) {
+            const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
+            }).catch((err) => {
+                return err;
             });
+
+            if (confirmResult !== 'confirm') {
+                this.$message.info('已取消删除')
+            } else {
+                this.$message.success('删除成功');
+            }
         }
     }
 }
 </script>
 
 <style lang="less" scoped>
-.addUser-button {
-    float: right;
-    padding: 3px 0;
+.userManagement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 </style>
