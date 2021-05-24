@@ -21,6 +21,7 @@ import {
     Menu,
     MenuItem,
     Option,
+    Pagination,
     Row,
     Select,
     Table,
@@ -52,5 +53,6 @@ Vue.use(Row)
 Vue.use(Col)
 Vue.use(InputNumber)
 Vue.use(DatePicker)
+Vue.use(Pagination)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

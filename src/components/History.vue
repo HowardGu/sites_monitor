@@ -14,11 +14,11 @@
                 </div>
             </div>
 
-            <div class="history-refresh-bar">
+            <div class="history-search-bar">
                 <el-input-number v-model="siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
-                <el-date-picker v-model="dateTimeRange" type="datetimerange"  class="history-refresh-bar-datepicker"
+                <el-date-picker v-model="dateTimeRange" type="datetimerange"  class="history-search-bar-datepicker"
                     start-placeholder="开始时间" end-placeholder="结束时间" :default-time="['12:00:00']"></el-date-picker>
-                <el-button class="history-refresh-bar-button" icon="el-icon-search">刷新曲线</el-button>
+                <el-button class="history-search-bar-button" icon="el-icon-search">刷新曲线</el-button>
             </div>
 
             <div id="incidentPowerChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
@@ -121,16 +121,16 @@ export default {
     align-items: center;
 }
 
-.history-refresh-bar {
+.history-search-bar {
     display: flex;
     align-items: center;
 }
 
-.history-refresh-bar-button {
+.history-search-bar-button {
     margin-left: 10px;
 }
 
-.history-refresh-bar-datepicker {
+.history-search-bar-datepicker {
     margin-left: 10px;
 }
 </style>
