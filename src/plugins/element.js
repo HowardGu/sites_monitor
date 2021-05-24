@@ -5,19 +5,23 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     Card,
+    Col,
     Container,
+    DatePicker,
     Dialog,
     Header,
     Form,
     FormItem,
     Footer,
     Input,
+    InputNumber,
     Main,
     Message,
     MessageBox,
     Menu,
     MenuItem,
     Option,
+    Row,
     Select,
     Table,
     TableColumn,
@@ -44,5 +48,9 @@ Vue.use(TableColumn)
 Vue.use(Tooltip)
 Vue.use(Option)
 Vue.use(Select)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(InputNumber)
+Vue.use(DatePicker)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

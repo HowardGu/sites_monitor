@@ -29,7 +29,7 @@
             </el-table>
         </el-card>
 
-        <el-dialog title="新增用户" :visible.sync="addUserDialogVisible" width="50%" @close="addUserDialogClosed">
+        <el-dialog title="新增用户" :visible.sync="addUserDialogVisible" width="50%" @close="closeAddUserDialog">
             <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef" label-width="70px">
                 <el-form-item label="用户名" prop="userName">
                     <el-input v-model="addUserForm.userName"></el-input>
@@ -94,7 +94,7 @@ export default {
         };
     },
     methods: {
-        addUserDialogClosed() {
+        closeAddUserDialog() {
             this.$refs.addUserFormRef.resetFields();
         },
         submitAddUserForm() {
