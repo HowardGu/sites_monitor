@@ -34,11 +34,9 @@
                 <el-form-item label="用户名" prop="userName">
                     <el-input v-model="addUserForm.userName"></el-input>
                 </el-form-item>
-
                 <el-form-item label="密码" prop="password">
                     <el-input v-model="addUserForm.password"></el-input>
                 </el-form-item>
-
                 <el-form-item label="用户组" prop="userGroup">
                     <el-select v-model="addUserForm.userGroup" placeholder="请选择用户组">
                         <el-option label="admin" value="admin"></el-option>

@@ -37,7 +37,7 @@
                 :current-page="queryInfo.pageNum"
                 :page-size="queryInfo.pageSize"
                 layout="total, prev, pager, next, jumper"
-                :total="totalLogs"
+                :total="totalCount"
                 class="logs-pagination">
             </el-pagination>
         </el-card>
@@ -69,7 +69,7 @@ export default {
                     onlineState: 'offline'
                 }
             ],
-            totalLogs: 50
+            totalCount: 50
         };
     },
     methods: {
