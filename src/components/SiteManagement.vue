@@ -113,6 +113,7 @@ export default {
         closeAddSiteDialog() {
             this.$refs.addSiteFormRef.resetFields();
         },
+
         submitAddSiteForm() {
             this.$refs.addSiteFormRef.validate((valid) => {
                 if (!valid) {
@@ -124,6 +125,7 @@ export default {
                 // after add site, need to get site list again
             });
         },
+
         async removeSite(id) {
             const confirmResult = await this.$confirm('此操作将永久删除该站点, 是否继续?', '提示', {
                 confirmButtonText: '确定',

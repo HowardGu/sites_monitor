@@ -27,6 +27,15 @@
                     </template>
                 </el-table-column>
             </el-table>
+
+            <el-pagination
+                @current-change="handleCurrentPageChange"
+                :current-page="queryInfo.pageNum"
+                :page-size="queryInfo.pageSize"
+                layout="total, prev, pager, next, jumper"
+                :total="totalCount"
+                class="userManagement-pagination">
+            </el-pagination>
         </el-card>
 
         <el-dialog title="新增用户" :visible.sync="addUserDialogVisible" width="50%" @close="closeAddUserDialog">
@@ -88,13 +97,19 @@ export default {
                 userGroup: [
                     { required: true, message: '请选择用户组', trigger: 'blur' }
                 ]
-            }
+            },
+            queryInfo: {
+                pageNum: 1,
+                pageSize: 20
+            },
+            totalCount: 10
         };
     },
     methods: {
         closeAddUserDialog() {
             this.$refs.addUserFormRef.resetFields();
         },
+
         submitAddUserForm() {
             this.$refs.addUserFormRef.validate((valid) => {
                 if (!valid) {
@@ -106,6 +121,7 @@ export default {
                 // after add user, need to get user list again
             });
         },
+
         async removeUser(id) {
             const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -120,6 +136,11 @@ export default {
             } else {
                 this.$message.success('删除成功');
             }
+        },
+
+        handleCurrentPageChange(newPage) {
+            console.log(newPage);
+            this.queryInfo.pageNum = newPage;
         }
     }
 }
@@ -130,5 +151,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.userManagement-pagination {
+    margin-top: 15px;
 }
 </style>

@@ -39,6 +39,7 @@ export default {
         resetLoginForm() {
             this.$refs.loginFormRef.resetFields();
         },
+
         submitLoginForm() {
             this.$refs.loginFormRef.validate(async (valid) => {
                 if (!valid) {
