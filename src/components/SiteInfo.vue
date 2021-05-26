@@ -6,7 +6,7 @@
         </el-breadcrumb>
 
         <el-card>
-            <div slot="header" class="siteInfo-header">
+            <div slot="header" class="siteInfo-card-header">
                 <span>站点详情</span>
             </div>
 
@@ -28,7 +28,7 @@
             </el-row>
 
             <el-card class="siteInfo-inner-card">
-                <div slot="header" class="siteInfo-header">
+                <div slot="header" class="siteInfo-inner-card-header">
                     <span>设备管理</span>
                 </div>
 
@@ -40,7 +40,7 @@
             </el-card>
 
             <el-card class="siteInfo-inner-card">
-                <div slot="header" class="siteInfo-header">
+                <div slot="header" class="siteInfo-inner-card-header">
                     <span>数字量</span>
                 </div>
 
@@ -52,7 +52,7 @@
             </el-card>
 
             <el-card class="siteInfo-inner-card">
-                <div slot="header" class="siteInfo-header">
+                <div slot="header" class="siteInfo-inner-card-header">
                     <span>模拟量</span>
                 </div>
 
@@ -66,7 +66,7 @@
             </el-card>
 
             <el-card class="siteInfo-inner-card">
-                <div slot="header" class="siteInfo-header">
+                <div slot="header" class="siteInfo-inner-card-header">
                     <span>控制状态</span>
                 </div>
             </el-card>
@@ -74,7 +74,7 @@
 
         <el-dialog title="站点控制" :visible.sync="siteControllingDialogVisible" width="50%">
             <el-card class="siteInfo-inner-card">
-                <div slot="header" class="siteInfo-header">
+                <div slot="header" class="siteInfo-inner-card-header">
                     <span>设备信息</span>
                     <el-button type="primary">重启设备</el-button>
                 </div>
@@ -110,7 +110,7 @@
             </el-card>
 
             <el-card class="siteInfo-inner-card">
-                <div slot="header" class="siteInfo-header">
+                <div slot="header" class="siteInfo-inner-card-header">
                     <span>设备控制</span>
                 </div>
 
@@ -175,7 +175,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.siteInfo-header {
+.siteInfo-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -189,5 +189,12 @@ export default {
 
 .siteInfo-inner-card {
     margin-top: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+}
+
+.siteInfo-inner-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 </style>

@@ -6,7 +6,7 @@
         </el-breadcrumb>
 
         <el-card>
-            <div slot="header" class="userManagement-header">
+            <div slot="header" class="userManagement-card-header">
                 <span>用户管理</span>
                 <el-button type="primary" @click="addUserDialogVisible = true">新增用户</el-button>
             </div>
@@ -216,7 +216,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.userManagement-header {
+.userManagement-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;

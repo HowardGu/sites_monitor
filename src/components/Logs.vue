@@ -6,7 +6,7 @@
         </el-breadcrumb>
 
         <el-card>
-            <div slot="header" class="logs-header">
+            <div slot="header" class="logs-card-header">
                 <span>报警日志</span>
             </div>
 
@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.logs-header {
+.logs-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;

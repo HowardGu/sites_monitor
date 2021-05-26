@@ -6,7 +6,7 @@
         </el-breadcrumb>
 
         <el-card>
-            <div slot="header" class="history-header">
+            <div slot="header" class="history-card-header">
                 <span>历史记录</span>
                 <div>
                     <el-button type="primary" icon="el-icon-share" @click="exportToCSV">导出曲线</el-button>
@@ -117,7 +117,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.history-header {
+.history-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;

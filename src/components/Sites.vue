@@ -6,7 +6,7 @@
         </el-breadcrumb>
 
         <el-card>
-            <div slot="header" class="sites-header">
+            <div slot="header" class="sites-card-header">
                 <span>站点列表</span>
                 <el-button type="primary" @click="test">刷新</el-button>
             </div>
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.sites-header {
+.sites-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;

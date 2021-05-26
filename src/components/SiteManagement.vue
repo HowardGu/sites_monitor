@@ -6,7 +6,7 @@
         </el-breadcrumb>
 
         <el-card>
-            <div slot="header" class="siteManagement-header">
+            <div slot="header" class="siteManagement-card-header">
                 <span>站点管理</span>
                 <el-button type="primary" @click="addSiteDialogVisible = true">新增站点</el-button>
             </div>
@@ -221,7 +221,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.siteManagement-header {
+.siteManagement-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
