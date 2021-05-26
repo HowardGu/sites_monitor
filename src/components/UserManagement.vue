@@ -19,10 +19,10 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="dark" content="编辑" placement="top" :enterable="false">
-                            <el-button type="primary" icon="el-icon-edit" circle></el-button>
+                            <el-button type="primary" icon="el-icon-edit" circle @click="editUser(scope.row.userId)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="删除" placement="top" :enterable="false">
-                            <el-button type="danger" icon="el-icon-delete" circle @click="removeUser(scope.row.id)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" circle @click="removeUser(scope.row.userId)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -38,7 +38,7 @@
             </el-pagination>
         </el-card>
 
-        <el-dialog title="新增用户" :visible.sync="addUserDialogVisible" width="50%" @close="closeAddUserDialog">
+        <el-dialog title="新增用户" :visible.sync="addUserDialogVisible" width="50%" @close="resetAddUserDialog">
             <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef" label-width="70px">
                 <el-form-item label="用户名" prop="userName">
                     <el-input v-model="addUserForm.userName"></el-input>
@@ -60,6 +60,29 @@
                 <el-button @click="addUserDialogVisible = false">取消</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog title="编辑用户" :visible.sync="editUserDialogVisible" width="50%" @close="resetEditUserDialog">
+            <el-form :model="editUserForm" :rules="editUserFormRules" ref="editUserFormRef" label-width="70px">
+                <el-form-item label="用户名" prop="userName">
+                    <el-input v-model="editUserForm.userName"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="editUserForm.password"></el-input>
+                </el-form-item>
+                <el-form-item label="用户组" prop="userGroup">
+                    <el-select v-model="editUserForm.userGroup" placeholder="请选择用户组">
+                        <el-option label="admin" value="admin"></el-option>
+                        <el-option label="manager" value="manager"></el-option>
+                        <el-option label="user" value="user"></el-option>
+                        <el-option label="guest" value="guest"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitEditUserForm">确定</el-button>
+                <el-button @click="editUserDialogVisible = false">取消</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -69,24 +92,27 @@ export default {
         return {
             userList: [
                 {
-                    id: 1,
+                    userId: 1,
                     userName: 'admin',
                     password: 'admin',
                     userGroup: 'admin'
                 },
                 {
-                    id: 2,
+                    userId: 2,
                     userName: 'manager',
                     password: 'manager',
                     userGroup: 'manager'
                 }
             ],
+
             addUserDialogVisible: false,
+
             addUserForm: {
                 userName: '',
                 password: '',
                 userGroup: ''
             },
+
             addUserFormRules: {
                 userName: [
                     { required: true, message: '请输入用户名', trigger: 'blur' }
@@ -98,15 +124,37 @@ export default {
                     { required: true, message: '请选择用户组', trigger: 'blur' }
                 ]
             },
+
+            editUserDialogVisible: false,
+
+            editUserForm: {
+                userName: '',
+                password: '',
+                userGroup: ''
+            },
+
+            editUserFormRules: {
+                userName: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' }
+                ],
+                userGroup: [
+                    { required: true, message: '请选择用户组', trigger: 'blur' }
+                ]
+            },
+
             queryInfo: {
                 pageNum: 1,
                 pageSize: 20
             },
+
             totalCount: 10
         };
     },
     methods: {
-        closeAddUserDialog() {
+        resetAddUserDialog() {
             this.$refs.addUserFormRef.resetFields();
         },
 
@@ -122,7 +170,28 @@ export default {
             });
         },
 
-        async removeUser(id) {
+        resetEditUserDialog() {
+            this.$refs.editUserFormRef.resetFields();
+        },
+
+        submitEditUserForm() {
+            this.$refs.editUserFormRef.validate((valid) => {
+                if (!valid) {
+                    return;
+                }
+
+                console.log(valid);
+                this.editUserDialogVisible = false;
+                // after edit user, need to get user list again
+            });
+        },
+
+        editUser(userId) {
+            this.editUserDialogVisible = true;
+            this.editUserForm = (this.userList.filter((user) => { return user.userId === userId; }))[0];
+        },
+
+        async removeUser(userId) {
             const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',

@@ -23,17 +23,17 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="dark" content="编辑" placement="top" :enterable="false">
-                            <el-button type="primary" icon="el-icon-edit" circle></el-button>
+                            <el-button type="primary" icon="el-icon-edit" circle @click="editSite(scope.row.siteId)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="删除" placement="top" :enterable="false">
-                            <el-button type="danger" icon="el-icon-delete" circle @click="removeSite(scope.row.id)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" circle @click="removeSite(scope.row.siteId)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
             </el-table>
         </el-card>
 
-        <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" @close="closeAddSiteDialog">
+        <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" @close="resetAddSiteDialog">
             <el-form :model="addSiteForm" :rules="addSiteFormRules" ref="addSiteFormRef" label-width="70px">
                 <el-form-item label="站点号">
                     <el-input-number v-model="addSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
@@ -60,6 +60,36 @@
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="submitAddSiteForm">确定</el-button>
                 <el-button @click="addSiteDialogVisible = false">取消</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="编辑站点" :visible.sync="editSiteDialogVisible" width="50%" @close="resetEditSiteDialog">
+            <el-form :model="editSiteForm" :rules="editSiteFormRules" ref="editSiteFormRef" label-width="70px">
+                <el-form-item label="站点号">
+                    <el-input-number v-model="editSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
+                </el-form-item>
+                <el-form-item label="经度" prop="longitude">
+                    <el-input v-model="editSiteForm.longitude"></el-input>
+                </el-form-item>
+                <el-form-item label="纬度" prop="latitude">
+                    <el-input v-model="editSiteForm.latitude"></el-input>
+                </el-form-item>
+                <el-form-item label="隧道">
+                    <el-input v-model="editSiteForm.tunnel"></el-input>
+                </el-form-item>
+                <el-form-item label="地段">
+                    <el-input v-model="editSiteForm.location"></el-input>
+                </el-form-item>
+                <el-form-item label="站点">
+                    <el-input v-model="editSiteForm.siteName"></el-input>
+                </el-form-item>
+                <el-form-item label="描述">
+                    <el-input v-model="editSiteForm.description"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitEditSiteForm">确定</el-button>
+                <el-button @click="editSiteDialogVisible = false">取消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -89,7 +119,9 @@ export default {
                     description: ''
                 }
             ],
+
             addSiteDialogVisible: false,
+
             addSiteForm: {
                 siteId: 0,
                 longitude: '',
@@ -99,7 +131,29 @@ export default {
                 siteName: '',
                 description: ''
             },
+
             addSiteFormRules: {
+                longitude: [
+                    { required: true, message: '请输入经度', trigger: 'blur' }
+                ],
+                latitude: [
+                    { required: true, message: '请输入纬度', trigger: 'blur' }
+                ]
+            },
+
+            editSiteDialogVisible: false,
+
+            editSiteForm: {
+                siteId: 0,
+                longitude: '',
+                latitude: '',
+                tunnel: '',
+                location: '',
+                siteName: '',
+                description: ''
+            },
+
+            editSiteFormRules: {
                 longitude: [
                     { required: true, message: '请输入经度', trigger: 'blur' }
                 ],
@@ -110,7 +164,7 @@ export default {
         };
     },
     methods: {
-        closeAddSiteDialog() {
+        resetAddSiteDialog() {
             this.$refs.addSiteFormRef.resetFields();
         },
 
@@ -126,7 +180,28 @@ export default {
             });
         },
 
-        async removeSite(id) {
+        resetEditSiteDialog() {
+            this.$refs.editSiteFormRef.resetFields();
+        },
+
+        submitEditSiteForm() {
+            this.$refs.editSiteFormRef.validate((valid) => {
+                if (!valid) {
+                    return;
+                }
+
+                console.log(valid);
+                this.editSiteDialogVisible = false;
+                // after edit site, need to get site list again
+            });
+        },
+
+        editSite(siteId) {
+            this.editSiteDialogVisible = true;
+            this.editSiteForm = (this.siteList.filter((site) => { return site.siteId === siteId; }))[0];
+        },
+
+        async removeSite(siteId) {
             const confirmResult = await this.$confirm('此操作将永久删除该站点, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
