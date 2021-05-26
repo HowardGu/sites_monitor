@@ -35,7 +35,9 @@ export default {
     data() {
         return {
             siteId: 1,
+
             dateTimeRange: '',
+
             powerList: [
                 { dateTime: '2000-06-05 13:05:13', incidentPower: 116, reflectedPower: 55 },
                 { dateTime: '2000-06-06 14:05:13', incidentPower: 45, reflectedPower: 111 },

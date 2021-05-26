@@ -25,6 +25,7 @@ export default {
                 telephone: '12345678905',
                 password: '12345678901'
             },
+
             loginFormRules: {
                 telephone: [
                     { required: true, message: '请输入用户名', trigger: 'blur' }

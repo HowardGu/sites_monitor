@@ -49,10 +49,12 @@ export default {
     data() {
         return {
             siteId: 1,
+
             queryInfo: {
                 pageNum: 1,
                 pageSize: 20
             },
+
             logList: [
                 {
                     siteId: 1,
@@ -69,6 +71,7 @@ export default {
                     onlineState: 'offline'
                 }
             ],
+
             totalCount: 50
         };
     },
