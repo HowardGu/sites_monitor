@@ -5,7 +5,7 @@
             <el-breadcrumb-item>报警日志</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card class="box-card">
+        <el-card>
             <div slot="header" class="logs-header">
                 <span>报警日志</span>
             </div>

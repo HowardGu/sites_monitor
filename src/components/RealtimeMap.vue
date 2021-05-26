@@ -5,7 +5,7 @@
             <el-breadcrumb-item>实时地图</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card class="box-card">
+        <el-card>
             <div slot="header" class="realtimeMap-header">
                 <span>实时地图</span>
                 <el-button type="primary">刷新</el-button>

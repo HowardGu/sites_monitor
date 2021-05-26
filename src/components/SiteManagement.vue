@@ -5,7 +5,7 @@
             <el-breadcrumb-item>站点管理</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card class="box-card">
+        <el-card>
             <div slot="header" class="siteManagement-header">
                 <span>站点管理</span>
                 <el-button type="primary" @click="addSiteDialogVisible = true">新增站点</el-button>

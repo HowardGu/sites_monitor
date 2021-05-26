@@ -5,10 +5,10 @@
             <el-breadcrumb-item>站点列表</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card class="box-card">
+        <el-card>
             <div slot="header" class="sites-header">
                 <span>站点列表</span>
-                <el-button type="primary">刷新</el-button>
+                <el-button type="primary" @click="test">刷新</el-button>
             </div>
         </el-card>
     </div>
@@ -16,7 +16,21 @@
 
 <script>
 export default {
+    data() {
+        return {
 
+        };
+    },
+    methods: {
+        test() {
+            this.$router.push({
+                path: '/siteInfo',
+                query: {
+                    siteId: 18
+                }
+            });
+        }
+    }
 }
 </script>
 

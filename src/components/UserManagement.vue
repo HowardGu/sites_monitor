@@ -5,7 +5,7 @@
             <el-breadcrumb-item>用户管理</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card class="box-card">
+        <el-card>
             <div slot="header" class="userManagement-header">
                 <span>用户管理</span>
                 <el-button type="primary" @click="addUserDialogVisible = true">新增用户</el-button>

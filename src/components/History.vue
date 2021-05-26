@@ -5,7 +5,7 @@
             <el-breadcrumb-item>历史记录</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card class="box-card">
+        <el-card>
             <div slot="header" class="history-header">
                 <span>历史记录</span>
                 <div>
