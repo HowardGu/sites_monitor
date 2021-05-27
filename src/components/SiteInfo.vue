@@ -35,7 +35,7 @@
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="6"><el-button @click="getSiteInfo(siteId)">读取信息</el-button></el-col>
                     <el-col :span="6"><el-button @click="siteControllingDialogVisible = true">站点控制</el-button></el-col>
-                    <el-col :span="6"><el-button>站点设置</el-button></el-col>
+                    <el-col :span="6"><el-button @click="siteSettingDialogVisible = true">站点设置</el-button></el-col>
                 </el-row>
             </el-card>
 
@@ -117,7 +117,7 @@
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4"><span>开关状态：</span></el-col>
                     <el-col :span="6">
-                        <el-select v-model="siteControllingDate.state" placeholder="请选择开关状态">
+                        <el-select v-model="siteControllingDate.onOffState" placeholder="请选择开关状态">
                             <el-option label="关机" :value="false"></el-option>
                             <el-option label="开机" :value="true"></el-option>
                         </el-select>
@@ -140,6 +140,122 @@
                 <el-button @click="siteControllingDialogVisible = false">关闭</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog title="站点设置" :visible.sync="siteSettingDialogVisible" width="50%">
+            <el-card class="siteInfo-inner-card">
+                <div slot="header" class="siteInfo-inner-card-header">
+                    <span>报警电平设置</span>
+                </div>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4"><span>入射报警电平：</span></el-col>
+                    <el-col :span="6">
+                        <el-select v-model="siteSettingDate.incidentAlertState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4"><span>反射报警电平：</span></el-col>
+                    <el-col :span="6">
+                        <el-select v-model="siteSettingDate.reflectedAlertState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4"><span>推动报警电平：</span></el-col>
+                    <el-col :span="6">
+                        <el-select v-model="siteSettingDate.pushAlertState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                </el-row>
+            </el-card>
+
+            <el-card class="siteInfo-inner-card">
+                <div slot="header" class="siteInfo-inner-card-header">
+                    <span>报警上下限设置</span>
+                </div>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4">
+                        <span>入射功率：</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.incidentPowerLowerLimit" placeholder="下限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.incidentPowerUpperLimit" placeholder="上限"></el-input>
+                    </el-col>
+                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4">
+                        <span>反射功率：</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.reflectedPowerLowerLimit" placeholder="下限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.reflectedPowerUpperLimit" placeholder="上限"></el-input>
+                    </el-col>
+                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4">
+                        <span>推动功率：</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.pushPowerLowerLimit" placeholder="下限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.pushPowerUpperLimit" placeholder="上限"></el-input>
+                    </el-col>
+                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4">
+                        <span>功放电流：</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.pushPowerLowerLimit" placeholder="下限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.pushPowerUpperLimit" placeholder="上限"></el-input>
+                    </el-col>
+                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4">
+                        <span>功放温度：</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.temperatureLowerLimit" placeholder="下限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingDate.temperatureUpperLimit" placeholder="上限"></el-input>
+                    </el-col>
+                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                </el-row>
+            </el-card>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="siteSettingDialogVisible = false">关闭</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -155,8 +271,26 @@ export default {
                 dateTime: '',
                 serverAddress: '',
                 serverPort: '',
-                state: false,
+                onOffState: false,
                 ratedPower: 0
+            },
+
+            siteSettingDialogVisible: false,
+
+            siteSettingDate: {
+                incidentAlertState: false,
+                reflectedAlertState: true,
+                pushAlertState: false,
+                incidentPowerLowerLimit: 24.2,
+                incidentPowerUpperLimit: 50.2,
+                reflectedPowerLowerLimit: 0.9,
+                reflectedPowerUpperLimit: 9.9,
+                pushPowerLowerLimit: 71.4,
+                pushPowerUpperLimit: 171.4,
+                electricCurrentLowerLimit: 3.7,
+                electricCurrentUpperLimit: 13.7,
+                temperatureLowerLimit: 1,
+                temperatureUpperLimit: 51
             }
         };
     },
