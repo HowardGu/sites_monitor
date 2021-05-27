@@ -1,6 +1,7 @@
 <template>
     <div class="login_container">
         <div class="login_box">
+            <h2 align="center">欢迎使用厦门市隧道监控系统</h2>
             <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
                 <el-form-item prop="telephone">
                     <el-input v-model="loginForm.telephone" prefix-icon="el-icon-user"></el-input>

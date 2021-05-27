@@ -31,6 +31,15 @@
                     </template>
                 </el-table-column>
             </el-table>
+
+            <el-pagination
+                @current-change="handleCurrentPageChange"
+                :current-page="queryInfo.pageNum"
+                :page-size="queryInfo.pageSize"
+                layout="total, prev, pager, next, jumper"
+                :total="totalCount"
+                class="siteManagement-pagination">
+            </el-pagination>
         </el-card>
 
         <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" @close="resetAddSiteDialog">
@@ -160,7 +169,14 @@ export default {
                 latitude: [
                     { required: true, message: '请输入纬度', trigger: 'blur' }
                 ]
-            }
+            },
+
+            queryInfo: {
+                pageNum: 1,
+                pageSize: 20
+            },
+
+            totalCount: 10
         };
     },
     methods: {
@@ -215,6 +231,11 @@ export default {
             } else {
                 this.$message.success('删除成功');
             }
+        },
+
+        handleCurrentPageChange(newPage) {
+            console.log(newPage);
+            this.queryInfo.pageNum = newPage;
         }
     }
 }
@@ -225,5 +246,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.siteManagement-pagination {
+    margin-top: 15px;
 }
 </style>
