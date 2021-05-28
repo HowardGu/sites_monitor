@@ -42,8 +42,8 @@
             </el-pagination>
         </el-card>
 
-        <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" @close="resetAddSiteDialog">
-            <el-form :model="addSiteForm" :rules="addSiteFormRules" ref="addSiteFormRef" label-width="70px">
+        <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" @close="resetAddSiteDialog" :close-on-click-modal="false">
+            <el-form :model="addSiteForm" :rules="addSiteFormRules" ref="addSiteFormRef" label-width="70px" label-position="left">
                 <el-form-item label="站点号">
                     <el-input-number v-model="addSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
                 </el-form-item>
@@ -72,8 +72,8 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="编辑站点" :visible.sync="editSiteDialogVisible" width="50%" @close="resetEditSiteDialog">
-            <el-form :model="editSiteForm" :rules="editSiteFormRules" ref="editSiteFormRef" label-width="70px">
+        <el-dialog title="编辑站点" :visible.sync="editSiteDialogVisible" width="50%" @close="resetEditSiteDialog" :close-on-click-modal="false">
+            <el-form :model="editSiteForm" :rules="editSiteFormRules" ref="editSiteFormRef" label-width="70px" label-position="left">
                 <el-form-item label="站点号">
                     <el-input-number v-model="editSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
                 </el-form-item>

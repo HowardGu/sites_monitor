@@ -38,7 +38,7 @@
             </el-pagination>
         </el-card>
 
-        <el-dialog title="新增用户" :visible.sync="addUserDialogVisible" width="50%" @close="resetAddUserDialog">
+        <el-dialog title="新增用户" :visible.sync="addUserDialogVisible" width="50%" @close="resetAddUserDialog" :close-on-click-modal="false">
             <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef" label-width="80px" label-position="left">
                 <el-form-item label="用户名" prop="userName">
                     <el-input v-model="addUserForm.userName"></el-input>
@@ -64,7 +64,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="编辑用户" :visible.sync="editUserDialogVisible" width="50%" @close="resetEditUserDialog">
+        <el-dialog title="编辑用户" :visible.sync="editUserDialogVisible" width="50%" @close="resetEditUserDialog" :close-on-click-modal="false">
             <el-form :model="editUserForm" :rules="editUserFormRules" ref="editUserFormRef" label-width="80px" label-position="left">
                 <el-form-item label="用户名" prop="userName">
                     <el-input v-model="editUserForm.userName"></el-input>

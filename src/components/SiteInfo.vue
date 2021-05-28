@@ -72,7 +72,7 @@
             </el-card>
         </el-card>
 
-        <el-dialog title="站点控制" :visible.sync="siteControllingDialogVisible" width="50%">
+        <el-dialog title="站点控制" :visible.sync="siteControllingDialogVisible" width="50%" :close-on-click-modal="false">
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
                     <span>设备信息</span>
@@ -141,7 +141,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="站点设置" :visible.sync="siteSettingDialogVisible" width="50%">
+        <el-dialog title="站点设置" :visible.sync="siteSettingDialogVisible" width="50%" :close-on-click-modal="false">
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
                     <span>报警电平设置</span>
