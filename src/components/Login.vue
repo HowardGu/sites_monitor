@@ -3,8 +3,8 @@
         <div class="login_box">
             <h2 align="center">欢迎使用厦门市隧道监控系统</h2>
             <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
-                <el-form-item prop="telephone">
-                    <el-input v-model="loginForm.telephone" prefix-icon="el-icon-user"></el-input>
+                <el-form-item prop="userName">
+                    <el-input v-model="loginForm.userName" prefix-icon="el-icon-user"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password"></el-input>
@@ -23,12 +23,12 @@ export default {
     data() {
         return {
             loginForm: {
-                telephone: '12345678905',
-                password: '12345678901'
+                userName: 'root',
+                password: 'Password1'
             },
 
             loginFormRules: {
-                telephone: [
+                userName: [
                     { required: true, message: '请输入用户名', trigger: 'blur' }
                 ],
                 password: [
@@ -51,18 +51,25 @@ export default {
                 if (this.$localTest) {
                     this.$message.success('Login Success');
                     window.sessionStorage.setItem('token', 'thisistesttokenstr');
+                    window.sessionStorage.setItem('userName', 'root');
+                    window.sessionStorage.setItem('userGroup', 'admin');
                     this.$router.push('/home');
                 } else {
-                    const result = await this.$http.post('login', this.loginForm).catch((err) => { return err; });
-                    console.log(result);
-
-                    if (result.status !== 200) {
-                        return this.$message.error('Login Failed');
-                    } else {
-                        this.$message.success('Login Success');
+                    try {
+                        const result = await this.$http.post('login', this.loginForm);
                         window.sessionStorage.setItem('token', result.data.data.token);
                         console.log(result.data.data.token);
+
+                        const info = await this.$http.get('info', { headers: { Authorization: `Bearer ${result.data.data.token}` } });
+                        console.log(info.data.data.data.user.userName);
+                        console.log(info.data.data.data.user.userGroup);
+                        window.sessionStorage.setItem('userName', info.data.data.data.user.userName);
+                        window.sessionStorage.setItem('userGroup', info.data.data.data.user.userGroup);
+
+                        this.$message.success('登录成功！');
                         this.$router.push('/home');
+                    } catch (err) {
+                        return this.$message.error(err.response.data.msg);
                     }
                 }
             });
@@ -85,7 +92,7 @@ export default {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -80%);
 }
 
 .login_form_buttons {
