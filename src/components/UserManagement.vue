@@ -39,12 +39,15 @@
         </el-card>
 
         <el-dialog title="新增用户" :visible.sync="addUserDialogVisible" width="50%" @close="resetAddUserDialog">
-            <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef" label-width="70px">
+            <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef" label-width="80px" label-position="left">
                 <el-form-item label="用户名" prop="userName">
                     <el-input v-model="addUserForm.userName"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="addUserForm.password"></el-input>
+                    <el-input v-model="addUserForm.password" type="password"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="password2">
+                    <el-input v-model="addUserForm.password2" type="password"></el-input>
                 </el-form-item>
                 <el-form-item label="用户组" prop="userGroup">
                     <el-select v-model="addUserForm.userGroup" placeholder="请选择用户组">
@@ -62,12 +65,15 @@
         </el-dialog>
 
         <el-dialog title="编辑用户" :visible.sync="editUserDialogVisible" width="50%" @close="resetEditUserDialog">
-            <el-form :model="editUserForm" :rules="editUserFormRules" ref="editUserFormRef" label-width="70px">
+            <el-form :model="editUserForm" :rules="editUserFormRules" ref="editUserFormRef" label-width="80px" label-position="left">
                 <el-form-item label="用户名" prop="userName">
                     <el-input v-model="editUserForm.userName"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="editUserForm.password"></el-input>
+                    <el-input v-model="editUserForm.password" type="password"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="password2">
+                    <el-input v-model="editUserForm.password2" type="password"></el-input>
                 </el-form-item>
                 <el-form-item label="用户组" prop="userGroup">
                     <el-select v-model="editUserForm.userGroup" placeholder="请选择用户组">
@@ -89,6 +95,38 @@
 <script>
 export default {
     data() {
+        const validateAddUserFormPassword = (rule, value, callback) => {
+            if (this.addUserForm.password2 !== '') {
+                this.$refs.addUserForm.validateField('password2');
+            } else {
+                callback();
+            }
+        };
+
+        const validateAddUserFormPassword2 = (rule, value, callback) => {
+            if (value !== this.addUserForm.password) {
+                callback(new Error('两次输入密码不一致'));
+            } else {
+                callback();
+            }
+        };
+
+        const validateEditUserFormPassword = (rule, value, callback) => {
+            if (this.editUserForm.password2 !== '') {
+                this.$refs.editUserForm.validateField('password2');
+            } else {
+                callback();
+            }
+        };
+
+        const validateEditUserFormPassword2 = (rule, value, callback) => {
+            if (value !== this.editUserForm.password) {
+                callback(new Error('两次输入密码不一致'));
+            } else {
+                callback();
+            }
+        };
+
         return {
             userList: [
                 {
@@ -110,6 +148,7 @@ export default {
             addUserForm: {
                 userName: '',
                 password: '',
+                password2: '',
                 userGroup: ''
             },
 
@@ -118,7 +157,12 @@ export default {
                     { required: true, message: '请输入用户名', trigger: 'blur' }
                 ],
                 password: [
-                    { required: true, message: '请输入密码', trigger: 'blur' }
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { validator: validateAddUserFormPassword, trigger: 'blur' }
+                ],
+                password2: [
+                    { required: true, message: '请再次输入密码', trigger: 'blur' },
+                    { validator: validateAddUserFormPassword2, trigger: 'blur' }
                 ],
                 userGroup: [
                     { required: true, message: '请选择用户组', trigger: 'blur' }
@@ -130,6 +174,7 @@ export default {
             editUserForm: {
                 userName: '',
                 password: '',
+                password2: '',
                 userGroup: ''
             },
 
@@ -138,7 +183,12 @@ export default {
                     { required: true, message: '请输入用户名', trigger: 'blur' }
                 ],
                 password: [
-                    { required: true, message: '请输入密码', trigger: 'blur' }
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { validator: validateEditUserFormPassword, trigger: 'blur' }
+                ],
+                password2: [
+                    { required: true, message: '请再次输入密码', trigger: 'blur' },
+                    { validator: validateEditUserFormPassword2, trigger: 'blur' }
                 ],
                 userGroup: [
                     { required: true, message: '请选择用户组', trigger: 'blur' }
