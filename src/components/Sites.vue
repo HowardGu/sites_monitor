@@ -8,7 +8,6 @@
         <el-card>
             <div slot="header" class="sites-card-header">
                 <span>站点列表</span>
-                <el-button type="primary">刷新</el-button>
             </div>
 
             <el-tree :data="siteTree" :props="siteTreeProps" @node-click="handleNodeClick"></el-tree>

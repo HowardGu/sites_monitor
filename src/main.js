@@ -5,10 +5,10 @@ import './plugins/element.js'
 import './assets/css/global.css'
 
 import axios from 'axios'
-axios.defaults.baseURL = 'http://10.236.206.252:1016/v1/auth/'
+axios.defaults.baseURL = 'http://10.236.206.252:1016/v1/'
 Vue.prototype.$http = axios
 
-Vue.prototype.$localTest = true
+Vue.prototype.$localTest = false
 
 Vue.config.productionTip = false
 

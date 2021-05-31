@@ -56,11 +56,11 @@ export default {
                     this.$router.push('/home');
                 } else {
                     try {
-                        const result = await this.$http.post('login', this.loginForm);
+                        const result = await this.$http.post('auth/login', this.loginForm);
                         window.sessionStorage.setItem('token', result.data.data.token);
                         console.log(result.data.data.token);
 
-                        const info = await this.$http.get('info', { headers: { Authorization: `Bearer ${result.data.data.token}` } });
+                        const info = await this.$http.get('auth/info', { headers: { Authorization: `Bearer ${result.data.data.token}` } });
                         console.log(info.data.data.data.user.userName);
                         console.log(info.data.data.data.user.userGroup);
                         window.sessionStorage.setItem('userName', info.data.data.data.user.userName);

@@ -97,10 +97,10 @@ export default {
     data() {
         const validateAddUserFormPassword = (rule, value, callback) => {
             if (this.addUserForm.password2 !== '') {
-                this.$refs.addUserForm.validateField('password2');
-            } else {
-                callback();
+                this.$refs.addUserFormRef.validateField('password2');
             }
+
+            callback();
         };
 
         const validateAddUserFormPassword2 = (rule, value, callback) => {
@@ -113,10 +113,10 @@ export default {
 
         const validateEditUserFormPassword = (rule, value, callback) => {
             if (this.editUserForm.password2 !== '') {
-                this.$refs.editUserForm.validateField('password2');
-            } else {
-                callback();
+                this.$refs.editUserFormRef.validateField('password2');
             }
+
+            callback();
         };
 
         const validateEditUserFormPassword2 = (rule, value, callback) => {
@@ -197,7 +197,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: 20
+                pageSize: 5
             },
 
             totalCount: 10
@@ -209,14 +209,25 @@ export default {
         },
 
         submitAddUserForm() {
-            this.$refs.addUserFormRef.validate((valid) => {
+            this.$refs.addUserFormRef.validate(async (valid) => {
                 if (!valid) {
                     return;
                 }
 
-                console.log(valid);
+                if (!this.$localTest) {
+                    try {
+                        const tokenStr = window.sessionStorage.getItem('token');
+                        const result = await this.$http.post('users', this.addUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                        this.$message.success('新增用户成功！');
+                        console.log(result);
+
+                        this.getUsers();
+                    } catch (err) {
+                        return this.$message.error(err.response.data.msg);
+                    }
+                }
+
                 this.addUserDialogVisible = false;
-                // after add user, need to get user list again
             });
         },
 
@@ -253,14 +264,39 @@ export default {
             if (confirmResult !== 'confirm') {
                 this.$message.info('已取消删除')
             } else {
-                this.$message.success('删除成功');
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.delete('users', { data: { userId: this.queryInfo }, headers: { Authorization: `Bearer ${tokenStr}` } });
+                    console.log(result);
+                    this.$message.success('删除成功');
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
+                }
             }
         },
 
         handleCurrentPageChange(newPage) {
-            console.log(newPage);
             this.queryInfo.pageNum = newPage;
+            this.getUsers();
+        },
+
+        async getUsers() {
+            if (!this.$localTest) {
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.get('users', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
+                    console.log(result);
+
+                    this.userList = result.data.data.users;
+                    this.totalCount = result.data.data.totalCount;
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
+                }
+            }
         }
+    },
+    created() {
+        this.getUsers();
     }
 }
 </script>
