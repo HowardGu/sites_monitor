@@ -23,10 +23,10 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="dark" content="编辑" placement="top" :enterable="false">
-                            <el-button type="warning" icon="el-icon-edit" circle @click="editSite(scope.row.siteId)"></el-button>
+                            <el-button type="warning" icon="el-icon-edit" circle @click="editSite(scope.row.id)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="删除" placement="top" :enterable="false">
-                            <el-button type="danger" icon="el-icon-delete" circle @click="removeSite(scope.row.siteId)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" circle @click="removeSite(scope.row.id)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -173,7 +173,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: 20
+                pageSize: 5
             },
 
             totalCount: 10
@@ -212,12 +212,12 @@ export default {
             });
         },
 
-        editSite(siteId) {
+        editSite(siteUUID) {
             this.editSiteDialogVisible = true;
-            this.editSiteForm = (this.siteList.filter((site) => { return site.siteId === siteId; }))[0];
+            this.editSiteForm = (this.siteList.filter((site) => { return site.siteUUID === siteUUID; }))[0];
         },
 
-        async removeSite(siteId) {
+        async removeSite(siteUUID) {
             const confirmResult = await this.$confirm('此操作将永久删除该站点, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -229,14 +229,39 @@ export default {
             if (confirmResult !== 'confirm') {
                 this.$message.info('已取消删除')
             } else {
-                this.$message.success('删除成功');
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.delete(`sites/${siteUUID}`, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                    this.$message.success('删除成功');
+
+                    this.getSites();
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
+                }
             }
         },
 
         handleCurrentPageChange(newPage) {
-            console.log(newPage);
             this.queryInfo.pageNum = newPage;
+            this.getSites();
+        },
+
+        async getSites() {
+            if (!this.$localTest) {
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.get('sites', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
+
+                    this.siteList = result.data.data.sites;
+                    this.totalCount = result.data.data.totalCount;
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
+                }
+            }
         }
+    },
+    created() {
+        this.getSites();
     }
 }
 </script>
