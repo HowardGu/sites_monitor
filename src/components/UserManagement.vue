@@ -14,7 +14,6 @@
             <el-table :data="userList" :border="true" style="width: 100%">
                 <el-table-column type="index"></el-table-column>
                 <el-table-column prop="userName" label="用户名"></el-table-column>
-                <el-table-column prop="password" label="密码"></el-table-column>
                 <el-table-column prop="userGroup" label="用户组"></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
@@ -96,7 +95,7 @@
 export default {
     data() {
         const validateAddUserFormPassword = (rule, value, callback) => {
-            if (this.addUserForm.password2 !== '') {
+            if (this.addUserForm.password2) {
                 this.$refs.addUserFormRef.validateField('password2');
             }
 
@@ -112,7 +111,7 @@ export default {
         };
 
         const validateEditUserFormPassword = (rule, value, callback) => {
-            if (this.editUserForm.password2 !== '') {
+            if (this.editUserForm.password2) {
                 this.$refs.editUserFormRef.validateField('password2');
             }
 
@@ -132,13 +131,11 @@ export default {
                 {
                     userId: 1,
                     userName: 'admin',
-                    password: 'admin',
                     userGroup: 'admin'
                 },
                 {
                     userId: 2,
                     userName: 'manager',
-                    password: 'manager',
                     userGroup: 'manager'
                 }
             ],
@@ -172,6 +169,7 @@ export default {
             editUserDialogVisible: false,
 
             editUserForm: {
+                userId: 0,
                 userName: '',
                 password: '',
                 password2: '',
@@ -236,14 +234,25 @@ export default {
         },
 
         submitEditUserForm() {
-            this.$refs.editUserFormRef.validate((valid) => {
+            this.$refs.editUserFormRef.validate(async (valid) => {
                 if (!valid) {
                     return;
                 }
 
-                console.log(valid);
+                if (!this.$localTest) {
+                    try {
+                        const tokenStr = window.sessionStorage.getItem('token');
+                        const result = await this.$http.put(`users/${this.editUserForm.userId}`, this.editUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                        this.$message.success('编辑用户成功！');
+                        console.log(result);
+
+                        this.getUsers();
+                    } catch (err) {
+                        return this.$message.error(err.response.data.msg);
+                    }
+                }
+
                 this.editUserDialogVisible = false;
-                // after edit user, need to get user list again
             });
         },
 
@@ -266,9 +275,12 @@ export default {
             } else {
                 try {
                     const tokenStr = window.sessionStorage.getItem('token');
-                    const result = await this.$http.delete('users', { data: { userId: this.queryInfo }, headers: { Authorization: `Bearer ${tokenStr}` } });
+                    console.log(userId);
+                    const result = await this.$http.delete(`users/${userId}`, { headers: { Authorization: `Bearer ${tokenStr}` } });
                     console.log(result);
                     this.$message.success('删除成功');
+
+                    this.getUsers();
                 } catch (err) {
                     return this.$message.error(err.response.data.msg);
                 }

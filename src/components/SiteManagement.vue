@@ -23,10 +23,10 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="dark" content="编辑" placement="top" :enterable="false">
-                            <el-button type="warning" icon="el-icon-edit" circle @click="editSite(scope.row.siteId)"></el-button>
+                            <el-button type="warning" icon="el-icon-edit" circle @click="editSite(scope.row.id)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="删除" placement="top" :enterable="false">
-                            <el-button type="danger" icon="el-icon-delete" circle @click="removeSite(scope.row.siteId)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" circle @click="removeSite(scope.row.id)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -43,7 +43,7 @@
         </el-card>
 
         <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" @close="resetAddSiteDialog" :close-on-click-modal="false">
-            <el-form :model="addSiteForm" :rules="addSiteFormRules" ref="addSiteFormRef" label-width="70px" label-position="left">
+            <el-form :model="addSiteForm" :rules="addEditSiteFormRules" ref="addSiteFormRef" label-width="70px" label-position="left">
                 <el-form-item label="站点号">
                     <el-input-number v-model="addSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
                 </el-form-item>
@@ -53,13 +53,13 @@
                 <el-form-item label="纬度" prop="latitude">
                     <el-input v-model="addSiteForm.latitude"></el-input>
                 </el-form-item>
-                <el-form-item label="隧道">
+                <el-form-item label="隧道" prop="tunnel">
                     <el-input v-model="addSiteForm.tunnel"></el-input>
                 </el-form-item>
-                <el-form-item label="地段">
+                <el-form-item label="地段" prop="location">
                     <el-input v-model="addSiteForm.location"></el-input>
                 </el-form-item>
-                <el-form-item label="站点">
+                <el-form-item label="站点" prop="siteName">
                     <el-input v-model="addSiteForm.siteName"></el-input>
                 </el-form-item>
                 <el-form-item label="描述">
@@ -73,7 +73,7 @@
         </el-dialog>
 
         <el-dialog title="编辑站点" :visible.sync="editSiteDialogVisible" width="50%" @close="resetEditSiteDialog" :close-on-click-modal="false">
-            <el-form :model="editSiteForm" :rules="editSiteFormRules" ref="editSiteFormRef" label-width="70px" label-position="left">
+            <el-form :model="editSiteForm" :rules="addEditSiteFormRules" ref="editSiteFormRef" label-width="70px" label-position="left">
                 <el-form-item label="站点号">
                     <el-input-number v-model="editSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
                 </el-form-item>
@@ -83,13 +83,13 @@
                 <el-form-item label="纬度" prop="latitude">
                     <el-input v-model="editSiteForm.latitude"></el-input>
                 </el-form-item>
-                <el-form-item label="隧道">
+                <el-form-item label="隧道" prop="tunnel">
                     <el-input v-model="editSiteForm.tunnel"></el-input>
                 </el-form-item>
-                <el-form-item label="地段">
+                <el-form-item label="地段" prop="location">
                     <el-input v-model="editSiteForm.location"></el-input>
                 </el-form-item>
-                <el-form-item label="站点">
+                <el-form-item label="站点" prop="siteName">
                     <el-input v-model="editSiteForm.siteName"></el-input>
                 </el-form-item>
                 <el-form-item label="描述">
@@ -111,8 +111,8 @@ export default {
             siteList: [
                 {
                     siteId: 1,
-                    longitude: '118.1095150000',
-                    latitude: '24.5019670000',
+                    longitude: 118.1095150000,
+                    latitude: 24.5019670000,
                     tunnel: '仙岳路隧道',
                     location: '横洞',
                     siteName: 'FM远端机1',
@@ -120,8 +120,8 @@ export default {
                 },
                 {
                     siteId: 2,
-                    longitude: '118.1095150000',
-                    latitude: '24.5019670000',
+                    longitude: 118.1095150000,
+                    latitude: 24.5019670000,
                     tunnel: '仙岳路隧道',
                     location: '横洞',
                     siteName: 'FM远端机1',
@@ -133,20 +133,29 @@ export default {
 
             addSiteForm: {
                 siteId: 0,
-                longitude: '',
-                latitude: '',
+                longitude: 0,
+                latitude: 0,
                 tunnel: '',
                 location: '',
                 siteName: '',
                 description: ''
             },
 
-            addSiteFormRules: {
+            addEditSiteFormRules: {
                 longitude: [
                     { required: true, message: '请输入经度', trigger: 'blur' }
                 ],
                 latitude: [
                     { required: true, message: '请输入纬度', trigger: 'blur' }
+                ],
+                tunnel: [
+                    { required: true, message: '请输入隧道', trigger: 'blur' }
+                ],
+                location: [
+                    { required: true, message: '请输入地段', trigger: 'blur' }
+                ],
+                siteName: [
+                    { required: true, message: '请输入站点', trigger: 'blur' }
                 ]
             },
 
@@ -154,26 +163,17 @@ export default {
 
             editSiteForm: {
                 siteId: 0,
-                longitude: '',
-                latitude: '',
+                longitude: 0,
+                latitude: 0,
                 tunnel: '',
                 location: '',
                 siteName: '',
                 description: ''
             },
 
-            editSiteFormRules: {
-                longitude: [
-                    { required: true, message: '请输入经度', trigger: 'blur' }
-                ],
-                latitude: [
-                    { required: true, message: '请输入纬度', trigger: 'blur' }
-                ]
-            },
-
             queryInfo: {
                 pageNum: 1,
-                pageSize: 20
+                pageSize: 5
             },
 
             totalCount: 10
@@ -185,14 +185,33 @@ export default {
         },
 
         submitAddSiteForm() {
-            this.$refs.addSiteFormRef.validate((valid) => {
+            this.$refs.addSiteFormRef.validate(async (valid) => {
                 if (!valid) {
                     return;
                 }
 
-                console.log(valid);
+                if (!this.$localTest) {
+                    try {
+                        this.addSiteForm.longitude = Number(this.addSiteForm.longitude);
+                        this.addSiteForm.latitude = Number(this.addSiteForm.latitude);
+
+                        const tokenStr = window.sessionStorage.getItem('token');
+                        const result = await this.$http.post('sites', this.addSiteForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
+
+                        console.log(result);
+
+                        if (result.data.code === 200) {
+                            this.$message.success('新增站点成功');
+                            this.getSites();
+                        } else {
+                            this.$message.error(result.data.msg);
+                        }
+                    } catch (err) {
+                        return this.$message.error(err.response.data.msg);
+                    }
+                }
+
                 this.addSiteDialogVisible = false;
-                // after add site, need to get site list again
             });
         },
 
@@ -201,23 +220,42 @@ export default {
         },
 
         submitEditSiteForm() {
-            this.$refs.editSiteFormRef.validate((valid) => {
+            this.$refs.editSiteFormRef.validate(async (valid) => {
                 if (!valid) {
                     return;
                 }
 
-                console.log(valid);
+                if (!this.$localTest) {
+                    try {
+                        this.editSiteForm.longitude = Number(this.editSiteForm.longitude);
+                        this.editSiteForm.latitude = Number(this.editSiteForm.latitude);
+
+                        const tokenStr = window.sessionStorage.getItem('token');
+                        const result = await this.$http.put(`sites/${this.editSiteForm.id}`, this.editSiteForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
+
+                        console.log(result);
+
+                        if (result.data.code === 200) {
+                            this.$message.success('编辑站点成功');
+                            this.getSites();
+                        } else {
+                            this.$message.error(result.data.msg);
+                        }
+                    } catch (err) {
+                        return this.$message.error(err.response.data.msg);
+                    }
+                }
+
                 this.editSiteDialogVisible = false;
-                // after edit site, need to get site list again
             });
         },
 
-        editSite(siteId) {
+        editSite(siteUUID) {
             this.editSiteDialogVisible = true;
-            this.editSiteForm = (this.siteList.filter((site) => { return site.siteId === siteId; }))[0];
+            this.editSiteForm = (this.siteList.filter((site) => { return site.id === siteUUID; }))[0];
         },
 
-        async removeSite(siteId) {
+        async removeSite(siteUUID) {
             const confirmResult = await this.$confirm('此操作将永久删除该站点, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -229,14 +267,49 @@ export default {
             if (confirmResult !== 'confirm') {
                 this.$message.info('已取消删除')
             } else {
-                this.$message.success('删除成功');
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.delete(`sites/${siteUUID}`, { headers: { Authorization: `Bearer ${tokenStr}` } });
+
+                    if (result.data.code === 200) {
+                        this.$message.success('删除成功');
+                        this.getSites();
+                    } else {
+                        this.$message.error(result.data.msg);
+                    }
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
+                }
             }
         },
 
         handleCurrentPageChange(newPage) {
-            console.log(newPage);
             this.queryInfo.pageNum = newPage;
+            this.getSites();
+        },
+
+        async getSites() {
+            if (!this.$localTest) {
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.get('sites', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
+
+                    console.log(result);
+
+                    if (result.data.code === 200) {
+                        this.siteList = result.data.data.sites;
+                        this.totalCount = result.data.data.totalCount;
+                    } else {
+                        this.$message.error(result.data.msg);
+                    }
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
+                }
+            }
         }
+    },
+    created() {
+        this.getSites();
     }
 }
 </script>
