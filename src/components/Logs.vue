@@ -56,20 +56,6 @@ export default {
             },
 
             logList: [
-                {
-                    siteId: 1,
-                    alertState: 'dismiss',
-                    dateTime: '2015-7-23 12:02:11',
-                    incidentAlerts: 0,
-                    reflectedAlerts: 5,
-                    pushAlerts: 10,
-                    incidentPower: 24.2,
-                    reflectedPower: 0.9,
-                    pushPower: 71.4,
-                    electricCurrent: 3.7,
-                    temperature: 51,
-                    onlineState: 'offline'
-                }
             ],
 
             totalCount: 50
@@ -88,8 +74,12 @@ export default {
                     const result = await this.$http.get('logs', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
                     console.log(result);
 
-                    this.logList = result.data.data.logs;
-                    this.totalCount = result.data.data.totalCount;
+                    if (result.data.code === 200) {
+                        this.logList = result.data.data.logs;
+                        this.totalCount = result.data.data.totalCount;
+                    } else {
+                        this.$message.error(result.data.msg);
+                    }
                 } catch (err) {
                     return this.$message.error(err.response.data.msg);
                 }
@@ -103,8 +93,12 @@ export default {
                     const result = await this.$http.post(`logs/sites/${siteId}`, this.queryInfo, { headers: { Authorization: `Bearer ${tokenStr}` } });
                     console.log(result);
 
-                    this.logList = result.data.data.logs;
-                    this.totalCount = result.data.data.totalCount;
+                    if (result.data.code === 200) {
+                        this.logList = result.data.data.logs;
+                        this.totalCount = result.data.data.totalCount;
+                    } else {
+                        this.$message.error(result.data.msg);
+                    }
                 } catch (err) {
                     return this.$message.error(err.response.data.msg);
                 }

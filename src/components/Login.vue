@@ -60,14 +60,18 @@ export default {
                         window.sessionStorage.setItem('token', result.data.data.token);
                         console.log(result.data.data.token);
 
-                        const info = await this.$http.get('auth/info', { headers: { Authorization: `Bearer ${result.data.data.token}` } });
-                        console.log(info.data.data.data.user.userName);
-                        console.log(info.data.data.data.user.userGroup);
-                        window.sessionStorage.setItem('userName', info.data.data.data.user.userName);
-                        window.sessionStorage.setItem('userGroup', info.data.data.data.user.userGroup);
+                        if (result.data.code === 200) {
+                            const info = await this.$http.get('auth/info', { headers: { Authorization: `Bearer ${result.data.data.token}` } });
+                            console.log(info.data.data.data.user.userName);
+                            console.log(info.data.data.data.user.userGroup);
+                            window.sessionStorage.setItem('userName', info.data.data.data.user.userName);
+                            window.sessionStorage.setItem('userGroup', info.data.data.data.user.userGroup);
 
-                        this.$message.success('登录成功！');
-                        this.$router.push('/home');
+                            this.$message.success('登录成功');
+                            this.$router.push('/home');
+                        } else {
+                            this.$message.error(result.data.msg);
+                        }
                     } catch (err) {
                         return this.$message.error(err.response.data.msg);
                     }

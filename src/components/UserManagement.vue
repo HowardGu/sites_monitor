@@ -128,16 +128,6 @@ export default {
 
         return {
             userList: [
-                {
-                    userId: 1,
-                    userName: 'admin',
-                    userGroup: 'admin'
-                },
-                {
-                    userId: 2,
-                    userName: 'manager',
-                    userGroup: 'manager'
-                }
             ],
 
             addUserDialogVisible: false,
@@ -216,10 +206,14 @@ export default {
                     try {
                         const tokenStr = window.sessionStorage.getItem('token');
                         const result = await this.$http.post('users', this.addUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
-                        this.$message.success('新增用户成功！');
                         console.log(result);
 
-                        this.getUsers();
+                        if (result.data.code === 200) {
+                            this.$message.success('新增用户成功');
+                            this.getUsers();
+                        } else {
+                            this.$message.error(result.data.msg);
+                        }
                     } catch (err) {
                         return this.$message.error(err.response.data.msg);
                     }
@@ -243,10 +237,14 @@ export default {
                     try {
                         const tokenStr = window.sessionStorage.getItem('token');
                         const result = await this.$http.put(`users/${this.editUserForm.userId}`, this.editUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
-                        this.$message.success('编辑用户成功！');
                         console.log(result);
 
-                        this.getUsers();
+                        if (result.data.code === 200) {
+                            this.$message.success('编辑用户成功');
+                            this.getUsers();
+                        } else {
+                            this.$message.error(result.data.msg);
+                        }
                     } catch (err) {
                         return this.$message.error(err.response.data.msg);
                     }
@@ -278,9 +276,13 @@ export default {
                     console.log(userId);
                     const result = await this.$http.delete(`users/${userId}`, { headers: { Authorization: `Bearer ${tokenStr}` } });
                     console.log(result);
-                    this.$message.success('删除成功');
 
-                    this.getUsers();
+                    if (result.data.code === 200) {
+                        this.$message.success('删除成功');
+                        this.getUsers();
+                    } else {
+                        this.$message.error(result.data.msg);
+                    }
                 } catch (err) {
                     return this.$message.error(err.response.data.msg);
                 }
@@ -299,8 +301,12 @@ export default {
                     const result = await this.$http.get('users', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
                     console.log(result);
 
-                    this.userList = result.data.data.users;
-                    this.totalCount = result.data.data.totalCount;
+                    if (result.data.code === 200) {
+                        this.userList = result.data.data.users;
+                        this.totalCount = result.data.data.totalCount;
+                    } else {
+                        this.$message.error(result.data.msg);
+                    }
                 } catch (err) {
                     return this.$message.error(err.response.data.msg);
                 }
