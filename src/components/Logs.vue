@@ -12,8 +12,8 @@
 
             <div class="logs-search-bar">
                 <el-input-number v-model="siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
-                <el-button class="logs-search-bar-button" icon="el-icon-search">查询</el-button>
-                <el-button class="logs-search-bar-button" icon="el-icon-search">查询所有站点</el-button>
+                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getSiteLogs(siteId)">查询</el-button>
+                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getLogs()">查询所有站点</el-button>
             </div>
 
             <el-table :data="logList" :border="true" style="width: 100%">
@@ -52,7 +52,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: 20
+                pageSize: 10
             },
 
             logList: [
@@ -79,7 +79,40 @@ export default {
         handleCurrentPageChange(newPage) {
             console.log(newPage);
             this.queryInfo.pageNum = newPage;
+        },
+
+        async getLogs() {
+            if (!this.$localTest) {
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.get('logs', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
+                    console.log(result);
+
+                    this.logList = result.data.data.logs;
+                    this.totalCount = result.data.data.totalCount;
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
+                }
+            }
+        },
+
+        async getSiteLogs(siteId) {
+            if (!this.$localTest) {
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.post(`logs/sites/${siteId}`, this.queryInfo, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                    console.log(result);
+
+                    this.logList = result.data.data.logs;
+                    this.totalCount = result.data.data.totalCount;
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
+                }
+            }
         }
+    },
+    created() {
+        this.getLogs();
     }
 }
 </script>
