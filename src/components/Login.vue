@@ -62,10 +62,10 @@ export default {
 
                         if (result.data.code === 200) {
                             const info = await this.$http.get('auth/info', { headers: { Authorization: `Bearer ${result.data.data.token}` } });
-                            console.log(info.data.data.data.user.userName);
-                            console.log(info.data.data.data.user.userGroup);
-                            window.sessionStorage.setItem('userName', info.data.data.data.user.userName);
-                            window.sessionStorage.setItem('userGroup', info.data.data.data.user.userGroup);
+                            console.log(info.data.data.user.userName);
+                            console.log(info.data.data.user.userGroup);
+                            window.sessionStorage.setItem('userName', info.data.data.user.userName);
+                            window.sessionStorage.setItem('userGroup', info.data.data.user.userGroup);
 
                             this.$message.success('登录成功');
                             this.$router.push('/home');
