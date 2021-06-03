@@ -62,8 +62,22 @@ export default {
     },
     methods: {
         exportToCSV() {
-            const header = ['时间', '入射功率', '反射功率'];
-            CsvExportor.downloadCsv(this.logList, { header }, 'history.csv');
+            if (this.logList.length > 0) {
+                const csvData = this.logList.map((log) => {
+                return {
+                    dateTime: log.dateTime,
+                    incidentPower: log.incidentPower,
+                    reflectedPower: log.reflectedPower,
+                    pushPower: log.pushPower,
+                    electricCurrent: log.electricCurrent,
+                    temperature: log.temperature
+                    };
+                });
+                const header = ['时间', '入射功率', '反射功率', '推动功率', '功放电流', '功放温度'];
+                CsvExportor.downloadCsv(csvData, { header }, 'history.csv');
+            } else {
+                 this.$message('请先点击刷新曲线获取站点数据');
+            }
         },
 
         async getSiteHistory(siteId) {
