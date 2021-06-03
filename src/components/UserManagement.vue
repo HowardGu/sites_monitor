@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import userService from '@/service/userService';
 export default {
     data() {
         const validateAddUserFormPassword = (rule, value, callback) => {
@@ -203,8 +204,7 @@ export default {
                 }
 
                 try {
-                    const tokenStr = window.sessionStorage.getItem('token');
-                    const result = await this.$http.post('users', this.addUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                    const result = await userService.create(this.addUserForm);
                     console.log(result);
 
                     if (result.data.code === 200) {
@@ -232,8 +232,7 @@ export default {
                 }
 
                 try {
-                    const tokenStr = window.sessionStorage.getItem('token');
-                    const result = await this.$http.put(`users/${this.editUserForm.userId}`, this.editUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                    const result = await userService.update(this.editUserForm.userId, this.editUserForm);
                     console.log(result);
 
                     if (result.data.code === 200) {
@@ -268,9 +267,8 @@ export default {
                 this.$message.info('已取消删除')
             } else {
                 try {
-                    const tokenStr = window.sessionStorage.getItem('token');
                     console.log(userId);
-                    const result = await this.$http.delete(`users/${userId}`, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                    const result = await userService.remove(userId);
                     console.log(result);
 
                     if (result.data.code === 200) {
@@ -292,8 +290,7 @@ export default {
 
         async getUsers() {
             try {
-                const tokenStr = window.sessionStorage.getItem('token');
-                const result = await this.$http.get('users', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
+                const result = await userService.showAll(this.queryInfo);
                 console.log(result);
 
                 if (result.data.code === 200) {

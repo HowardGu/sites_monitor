@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import logService from '@/service/logService';
 export default {
     data() {
         return {
@@ -69,13 +70,12 @@ export default {
 
         async getLogs() {
             try {
-                const tokenStr = window.sessionStorage.getItem('token');
-                const result = await this.$http.get('logs', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
+                const result = await logService.showAll(this.queryInfo);
                 console.log(result);
 
                 if (result.data.code === 200) {
-                   this.logList = result.data.data.logs;
-                   this.totalCount = result.data.data.totalCount;
+                    this.logList = result.data.data.logs;
+                    this.totalCount = result.data.data.totalCount;
                 } else {
                     this.$message.error(result.data.msg);
                 }
@@ -86,8 +86,7 @@ export default {
 
         async getSiteLogs(siteId) {
             try {
-                const tokenStr = window.sessionStorage.getItem('token');
-                const result = await this.$http.post(`logs/sites/${siteId}`, this.queryInfo, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                const result = await logService.show(siteId);
                 console.log(result);
 
                 if (result.data.code === 200) {

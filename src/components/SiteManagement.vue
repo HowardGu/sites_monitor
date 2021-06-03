@@ -105,6 +105,7 @@
 </template>
 
 <script>
+import siteService from '@/service/siteService';
 export default {
     data() {
         return {
@@ -194,9 +195,7 @@ export default {
                     this.addSiteForm.longitude = Number(this.addSiteForm.longitude);
                     this.addSiteForm.latitude = Number(this.addSiteForm.latitude);
 
-                    const tokenStr = window.sessionStorage.getItem('token');
-                    const result = await this.$http.post('sites', this.addSiteForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
-
+                    const result = await siteService.create(this.addSiteForm);
                     console.log(result);
 
                     if (result.data.code === 200) {
@@ -227,9 +226,7 @@ export default {
                     this.editSiteForm.longitude = Number(this.editSiteForm.longitude);
                     this.editSiteForm.latitude = Number(this.editSiteForm.latitude);
 
-                    const tokenStr = window.sessionStorage.getItem('token');
-                    const result = await this.$http.put(`sites/${this.editSiteForm.id}`, this.editSiteForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
-
+                    const result = await siteService.update(this.editSiteForm.id, this.editSiteForm);
                     console.log(result);
 
                     if (result.data.code === 200) {
@@ -264,8 +261,7 @@ export default {
                 this.$message.info('已取消删除')
             } else {
                 try {
-                    const tokenStr = window.sessionStorage.getItem('token');
-                    const result = await this.$http.delete(`sites/${siteUUID}`, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                    const result = await siteService.remove(siteUUID);
 
                     if (result.data.code === 200) {
                         this.$message.success('删除成功');
@@ -286,9 +282,7 @@ export default {
 
         async getSites() {
             try {
-                const tokenStr = window.sessionStorage.getItem('token');
-                const result = await this.$http.get('sites', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
-
+                const result = await siteService.showAll(this.queryInfo);
                 console.log(result);
 
                 if (result.data.code === 200) {

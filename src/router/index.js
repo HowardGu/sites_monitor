@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store';
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import RealtimeMap from '../components/RealtimeMap.vue'
@@ -67,7 +68,7 @@ router.beforeEach((to, from, next) => {
         return next();
     }
 
-    const tokenStr = window.sessionStorage.getItem('token');
+    const tokenStr = store.state.userModule.token;
     if (!tokenStr) {
         return next('/login');
     } else {

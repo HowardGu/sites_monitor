@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import siteService from '@/service/siteService';
 export default {
     data() {
         return {
@@ -42,9 +43,7 @@ export default {
 
         async getTunnels(resolve) {
             try {
-                const tokenStr = window.sessionStorage.getItem('token');
-                const result = await this.$http.get('sites/tunnels', { headers: { Authorization: `Bearer ${tokenStr}` } });
-
+                const result = await siteService.showTunnels();
                 console.log(result);
 
                 if (result.data.code === 200) {
@@ -69,9 +68,7 @@ export default {
             console.log(tunnel);
 
             try {
-                const tokenStr = window.sessionStorage.getItem('token');
-                const result = await this.$http.get(`sites/tunnels/${tunnel}/locations`, { headers: { Authorization: `Bearer ${tokenStr}` } });
-
+                const result = await siteService.showLocations(tunnel);
                 console.log(result);
 
                 if (result.data.code === 200) {
@@ -98,9 +95,7 @@ export default {
             console.log(tunnel);
 
             try {
-                const tokenStr = window.sessionStorage.getItem('token');
-                const result = await this.$http.get(`sites/tunnels/${tunnel}/locations/${location}`, { headers: { Authorization: `Bearer ${tokenStr}` } });
-
+                const result = await siteService.showSites(tunnel, location);
                 console.log(result);
 
                 if (result.data.code === 200) {

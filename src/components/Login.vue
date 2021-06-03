@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     data() {
         return {
@@ -38,10 +39,10 @@ export default {
         };
     },
     methods: {
+        ...mapActions('userModule', { userlogin: 'login' }),
         resetLoginForm() {
             this.$refs.loginFormRef.resetFields();
         },
-
         submitLoginForm() {
             this.$refs.loginFormRef.validate(async (valid) => {
                 if (!valid) {
@@ -55,26 +56,12 @@ export default {
                     window.sessionStorage.setItem('userGroup', 'admin');
                     this.$router.push('/home');
                 } else {
-                    try {
-                        const result = await this.$http.post('auth/login', this.loginForm);
-                        window.sessionStorage.setItem('token', result.data.data.token);
-                        console.log(result.data.data.token);
-
-                        if (result.data.code === 200) {
-                            const info = await this.$http.get('auth/info', { headers: { Authorization: `Bearer ${result.data.data.token}` } });
-                            console.log(info.data.data.user.userName);
-                            console.log(info.data.data.user.userGroup);
-                            window.sessionStorage.setItem('userName', info.data.data.user.userName);
-                            window.sessionStorage.setItem('userGroup', info.data.data.user.userGroup);
-
-                            this.$message.success('登录成功');
-                            this.$router.push('/home');
-                        } else {
-                            this.$message.error(result.data.msg);
-                        }
-                    } catch (err) {
+                    this.userlogin(this.loginForm).then(() => {
+                        this.$message.success('登录成功！');
+                        this.$router.push('/home');
+                    }).catch((err) => {
                         return this.$message.error(err.response.data.msg);
-                    }
+                    });
                 }
             });
         }
@@ -84,31 +71,31 @@ export default {
 
 <style lang="less" scoped>
 .login_container {
-    background: #2b4b6b;
-    height: 100%;
+  background: #2b4b6b;
+  height: 100%;
 }
 
 .login_box {
-    width: 450px;
-    height: 300px;
-    background-color: #fff;
-    border-radius: 3px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -80%);
+  width: 450px;
+  height: 300px;
+  background-color: #fff;
+  border-radius: 3px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -80%);
 }
 
 .login_form_buttons {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .login_form {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0 20px;
-    box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 </style>

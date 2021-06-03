@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     data() {
         return {
@@ -59,9 +60,9 @@ export default {
         };
     },
     methods: {
+        ...mapActions('userModule', { userlogout: 'logout' }),
         logout() {
-            window.sessionStorage.clear();
-            this.$router.push('/login');
+            this.userlogout()
         }
     }
 }

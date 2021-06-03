@@ -11,11 +11,11 @@ module.exports = {
     parser: 'babel-eslint'
   },
   rules: {
-    'indent': ['off',2],
+    'indent': ['warn', 4],
     'space-before-function-paren': ['error', {
-        'anonymous': 'never',
-        'named': 'never',
-        'asyncArrow': 'always'
+      'anonymous': 'never',
+      'named': 'never',
+      'asyncArrow': 'always'
     }],
     'semi': 0,
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

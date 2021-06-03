@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import logService from '@/service/logService';
 import * as echarts from 'echarts'
 import CsvExportor from 'csv-exportor'
 
@@ -64,19 +65,19 @@ export default {
         exportToCSV() {
             if (this.logList.length > 0) {
                 const csvData = this.logList.map((log) => {
-                return {
-                    dateTime: log.dateTime,
-                    incidentPower: log.incidentPower,
-                    reflectedPower: log.reflectedPower,
-                    pushPower: log.pushPower,
-                    electricCurrent: log.electricCurrent,
-                    temperature: log.temperature
+                    return {
+                        dateTime: log.dateTime,
+                        incidentPower: log.incidentPower,
+                        reflectedPower: log.reflectedPower,
+                        pushPower: log.pushPower,
+                        electricCurrent: log.electricCurrent,
+                        temperature: log.temperature
                     };
                 });
                 const header = ['时间', '入射功率', '反射功率', '推动功率', '功放电流', '功放温度'];
                 CsvExportor.downloadCsv(csvData, { header }, 'history.csv');
             } else {
-                 this.$message('请先点击刷新曲线获取站点数据');
+                this.$message('请先点击刷新曲线获取站点数据');
             }
         },
 
@@ -84,8 +85,7 @@ export default {
             this.queryInfo.startTime = (new Date(this.dateTimeRange[0])).toISOString();
             this.queryInfo.endTime = (new Date(this.dateTimeRange[1])).toISOString();
             try {
-                const tokenStr = window.sessionStorage.getItem('token');
-                const result = await this.$http.post(`history/sites/${siteId}`, this.queryInfo, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                const result = await logService.showHistory(siteId, this.queryInfo);
                 console.log(result);
 
                 if (result.data.code === 200) {
@@ -100,7 +100,7 @@ export default {
                     this.$message.error(result.data.msg);
                 }
             } catch (err) {
-                 return this.$message.error(err.response.data.msg);
+                return this.$message.error(err.response.data.msg);
             }
         },
 
