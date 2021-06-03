@@ -202,21 +202,19 @@ export default {
                     return;
                 }
 
-                if (!this.$localTest) {
-                    try {
-                        const tokenStr = window.sessionStorage.getItem('token');
-                        const result = await this.$http.post('users', this.addUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
-                        console.log(result);
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.post('users', this.addUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                    console.log(result);
 
-                        if (result.data.code === 200) {
-                            this.$message.success('新增用户成功');
-                            this.getUsers();
-                        } else {
-                            this.$message.error(result.data.msg);
-                        }
-                    } catch (err) {
-                        return this.$message.error(err.response.data.msg);
+                    if (result.data.code === 200) {
+                        this.$message.success('新增用户成功');
+                        this.getUsers();
+                    } else {
+                        this.$message.error(result.data.msg);
                     }
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
                 }
 
                 this.addUserDialogVisible = false;
@@ -233,21 +231,19 @@ export default {
                     return;
                 }
 
-                if (!this.$localTest) {
-                    try {
-                        const tokenStr = window.sessionStorage.getItem('token');
-                        const result = await this.$http.put(`users/${this.editUserForm.userId}`, this.editUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
-                        console.log(result);
+                try {
+                    const tokenStr = window.sessionStorage.getItem('token');
+                    const result = await this.$http.put(`users/${this.editUserForm.userId}`, this.editUserForm, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                    console.log(result);
 
-                        if (result.data.code === 200) {
-                            this.$message.success('编辑用户成功');
-                            this.getUsers();
-                        } else {
-                            this.$message.error(result.data.msg);
-                        }
-                    } catch (err) {
-                        return this.$message.error(err.response.data.msg);
+                    if (result.data.code === 200) {
+                        this.$message.success('编辑用户成功');
+                        this.getUsers();
+                    } else {
+                        this.$message.error(result.data.msg);
                     }
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
                 }
 
                 this.editUserDialogVisible = false;
@@ -295,21 +291,19 @@ export default {
         },
 
         async getUsers() {
-            if (!this.$localTest) {
-                try {
-                    const tokenStr = window.sessionStorage.getItem('token');
-                    const result = await this.$http.get('users', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
-                    console.log(result);
+            try {
+                const tokenStr = window.sessionStorage.getItem('token');
+                const result = await this.$http.get('users', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
+                console.log(result);
 
-                    if (result.data.code === 200) {
-                        this.userList = result.data.data.users;
-                        this.totalCount = result.data.data.totalCount;
-                    } else {
-                        this.$message.error(result.data.msg);
-                    }
-                } catch (err) {
-                    return this.$message.error(err.response.data.msg);
+                if (result.data.code === 200) {
+                    this.userList = result.data.data.users;
+                    this.totalCount = result.data.data.totalCount;
+                } else {
+                    this.$message.error(result.data.msg);
                 }
+            } catch (err) {
+                return this.$message.error(err.response.data.msg);
             }
         }
     },

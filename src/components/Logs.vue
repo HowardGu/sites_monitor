@@ -68,40 +68,36 @@ export default {
         },
 
         async getLogs() {
-            if (!this.$localTest) {
-                try {
-                    const tokenStr = window.sessionStorage.getItem('token');
-                    const result = await this.$http.get('logs', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
-                    console.log(result);
+            try {
+                const tokenStr = window.sessionStorage.getItem('token');
+                const result = await this.$http.get('logs', { params: this.queryInfo, headers: { Authorization: `Bearer ${tokenStr}` } });
+                console.log(result);
 
-                    if (result.data.code === 200) {
-                        this.logList = result.data.data.logs;
-                        this.totalCount = result.data.data.totalCount;
-                    } else {
-                        this.$message.error(result.data.msg);
-                    }
-                } catch (err) {
-                    return this.$message.error(err.response.data.msg);
+                if (result.data.code === 200) {
+                   this.logList = result.data.data.logs;
+                   this.totalCount = result.data.data.totalCount;
+                } else {
+                    this.$message.error(result.data.msg);
                 }
+            } catch (err) {
+                return this.$message.error(err.response.data.msg);
             }
         },
 
         async getSiteLogs(siteId) {
-            if (!this.$localTest) {
-                try {
-                    const tokenStr = window.sessionStorage.getItem('token');
-                    const result = await this.$http.post(`logs/sites/${siteId}`, this.queryInfo, { headers: { Authorization: `Bearer ${tokenStr}` } });
-                    console.log(result);
+            try {
+                const tokenStr = window.sessionStorage.getItem('token');
+                const result = await this.$http.post(`logs/sites/${siteId}`, this.queryInfo, { headers: { Authorization: `Bearer ${tokenStr}` } });
+                console.log(result);
 
-                    if (result.data.code === 200) {
-                        this.logList = result.data.data.logs;
-                        this.totalCount = result.data.data.totalCount;
-                    } else {
-                        this.$message.error(result.data.msg);
-                    }
-                } catch (err) {
-                    return this.$message.error(err.response.data.msg);
+                if (result.data.code === 200) {
+                    this.logList = result.data.data.logs;
+                    this.totalCount = result.data.data.totalCount;
+                } else {
+                    this.$message.error(result.data.msg);
                 }
+            } catch (err) {
+                return this.$message.error(err.response.data.msg);
             }
         }
     },
