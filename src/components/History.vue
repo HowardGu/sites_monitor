@@ -82,8 +82,10 @@ export default {
         },
 
         async getSiteHistory(siteId) {
-            this.queryInfo.startTime = (new Date(this.dateTimeRange[0])).toISOString();
-            this.queryInfo.endTime = (new Date(this.dateTimeRange[1])).toISOString();
+            const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+            this.queryInfo.startTime = (new Date(this.dateTimeRange[0] - tzoffset)).toISOString();
+            this.queryInfo.endTime = (new Date(this.dateTimeRange[1] - tzoffset)).toISOString();
+
             try {
                 logService.showHistory(siteId, this.queryInfo).then((res) => {
                     console.log(res);
