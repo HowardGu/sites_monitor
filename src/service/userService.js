@@ -12,8 +12,8 @@ const create = (userParams) => {
     return request.post('users', userParams);
 };
 
-const update = (userId, userParams) => {
-    return request.put(`users/${userId}`, userParams);
+const update = (userParams) => {
+    return request.put(`users/${userParams.userId}`, userParams);
 };
 
 const show = (userId) => {

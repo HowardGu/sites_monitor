@@ -69,35 +69,23 @@ export default {
         },
 
         async getLogs() {
-            try {
-                const result = await logService.showAll(this.queryInfo);
-                console.log(result);
-
-                if (result.data.code === 200) {
-                    this.logList = result.data.data.logs;
-                    this.totalCount = result.data.data.totalCount;
-                } else {
-                    this.$message.error(result.data.msg);
-                }
-            } catch (err) {
+            logService.showAll(this.queryInfo).then((res) => {
+                console.log(res);
+                this.logList = res.data.data.logs;
+                this.totalCount = res.data.data.totalCount;
+            }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
-            }
+            })
         },
 
         async getSiteLogs(siteId) {
-            try {
-                const result = await logService.show(siteId);
-                console.log(result);
-
-                if (result.data.code === 200) {
-                    this.logList = result.data.data.logs;
-                    this.totalCount = result.data.data.totalCount;
-                } else {
-                    this.$message.error(result.data.msg);
-                }
-            } catch (err) {
+            logService.show(siteId).then((res) => {
+                console.log(res);
+                this.logList = res.data.data.logs;
+                this.totalCount = res.data.data.totalCount;
+            }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
-            }
+            })
         }
     },
     created() {

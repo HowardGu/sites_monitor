@@ -85,20 +85,18 @@ export default {
             this.queryInfo.startTime = (new Date(this.dateTimeRange[0])).toISOString();
             this.queryInfo.endTime = (new Date(this.dateTimeRange[1])).toISOString();
             try {
-                const result = await logService.showHistory(siteId, this.queryInfo);
-                console.log(result);
-
-                if (result.data.code === 200) {
-                    if (result.data.data.logs) {
-                        this.logList = result.data.data.logs;
+                logService.showHistory(siteId, this.queryInfo).then((res) => {
+                    console.log(res);
+                    if (res.data.data.logs) {
+                        this.logList = res.data.data.logs;
                         this.renderCharts();
                     } else {
                         this.resetCharts();
                         this.$message('站点' + this.siteId + '在此时间段内没有日志');
                     }
-                } else {
-                    this.$message.error(result.data.msg);
-                }
+                }).catch((err) => {
+                    this.$message.error(err.response.data.msg);
+                });
             } catch (err) {
                 return this.$message.error(err.response.data.msg);
             }

@@ -4,8 +4,8 @@ const create = (siteParams) => {
     return request.post('sites', siteParams);
 };
 
-const update = (siteId, siteParams) => {
-    return request.put(`sites/${siteId}`, siteParams);
+const update = (siteParams) => {
+    return request.put(`sites/${siteParams.id}`, siteParams);
 };
 
 const show = (siteId) => {

@@ -42,50 +42,38 @@ export default {
         },
 
         async getTunnels(resolve) {
-            try {
-                const result = await siteService.showTunnels();
-                console.log(result);
+            siteService.showTunnels().then((res) => {
+                console.log(res);
+                const tunnels = res.data.data.tunnels;
+                if (tunnels) {
+                    const tunnelsData = tunnels.map((tunnel) => {
+                        return { label: tunnel, leaf: false };
+                    });
 
-                if (result.data.code === 200) {
-                    const tunnels = result.data.data.tunnels;
-                    if (tunnels) {
-                        const tunnelsData = tunnels.map((tunnel) => {
-                            return { label: tunnel, leaf: false };
-                        });
-
-                        resolve(tunnelsData);
-                    }
-                } else {
-                    this.$message.error(result.data.msg);
+                    resolve(tunnelsData);
                 }
-            } catch (err) {
+            }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
-            }
+            })
         },
 
         async getLocations(node, resolve) {
             const tunnel = node.data.label;
             console.log(tunnel);
 
-            try {
-                const result = await siteService.showLocations(tunnel);
-                console.log(result);
+            siteService.showLocations(tunnel).then((res) => {
+                console.log(res);
+                const locations = res.data.data.locations;
+                if (locations) {
+                    const locationsData = locations.map((location) => {
+                        return { label: location, leaf: false, father: tunnel };
+                    });
 
-                if (result.data.code === 200) {
-                    const locations = result.data.data.locations;
-                    if (locations) {
-                        const locationsData = locations.map((location) => {
-                            return { label: location, leaf: false, father: tunnel };
-                        });
-
-                        resolve(locationsData);
-                    }
-                } else {
-                    this.$message.error(result.data.msg);
+                    resolve(locationsData);
                 }
-            } catch (err) {
+            }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
-            }
+            })
         },
 
         async getSites(node, resolve) {
@@ -94,25 +82,19 @@ export default {
             const tunnel = node.data.father;
             console.log(tunnel);
 
-            try {
-                const result = await siteService.showSites(tunnel, location);
-                console.log(result);
+            siteService.showSites(tunnel, location).then((res) => {
+                console.log(res);
+                const sites = res.data.data.sites;
+                if (sites) {
+                    const sitesData = sites.map((site) => {
+                        return { label: site.siteName, siteId: site.siteId, siteUUID: site.id, leaf: true };
+                    });
 
-                if (result.data.code === 200) {
-                    const sites = result.data.data.sites;
-                    if (sites) {
-                        const sitesData = sites.map((site) => {
-                            return { label: site.siteName, siteId: site.siteId, siteUUID: site.id, leaf: true };
-                        });
-
-                        resolve(sitesData);
-                    }
-                } else {
-                    this.$message.error(result.data.msg);
+                    resolve(sitesData);
                 }
-            } catch (err) {
+            }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
-            }
+            })
         },
 
         loadNode(node, resolve) {

@@ -203,19 +203,13 @@ export default {
                     return;
                 }
 
-                try {
-                    const result = await userService.create(this.addUserForm);
-                    console.log(result);
-
-                    if (result.data.code === 200) {
-                        this.$message.success('新增用户成功');
-                        this.getUsers();
-                    } else {
-                        this.$message.error(result.data.msg);
-                    }
-                } catch (err) {
+                userService.create(this.addUserForm).then((res) => {
+                    console.log(res);
+                    this.$message.success('新增用户成功');
+                    this.getUsers();
+                }).catch((err) => {
                     return this.$message.error(err.response.data.msg);
-                }
+                });
 
                 this.addUserDialogVisible = false;
             });
@@ -231,20 +225,12 @@ export default {
                     return;
                 }
 
-                try {
-                    const result = await userService.update(this.editUserForm.userId, this.editUserForm);
-                    console.log(result);
-
-                    if (result.data.code === 200) {
-                        this.$message.success('编辑用户成功');
-                        this.getUsers();
-                    } else {
-                        this.$message.error(result.data.msg);
-                    }
-                } catch (err) {
+                userService.update(this.editUserForm).then((res) => {
+                    this.$message.success('编辑用户成功');
+                    this.getUsers();
+                }).catch((err) => {
                     return this.$message.error(err.response.data.msg);
-                }
-
+                });
                 this.editUserDialogVisible = false;
             });
         },
@@ -266,20 +252,13 @@ export default {
             if (confirmResult !== 'confirm') {
                 this.$message.info('已取消删除')
             } else {
-                try {
-                    console.log(userId);
-                    const result = await userService.remove(userId);
-                    console.log(result);
-
-                    if (result.data.code === 200) {
-                        this.$message.success('删除成功');
-                        this.getUsers();
-                    } else {
-                        this.$message.error(result.data.msg);
-                    }
-                } catch (err) {
+                console.log(userId);
+                userService.remove(userId).then((res) => {
+                    this.$message.success('删除成功');
+                    this.getUsers();
+                }).catch((err) => {
                     return this.$message.error(err.response.data.msg);
-                }
+                });
             }
         },
 
@@ -289,19 +268,13 @@ export default {
         },
 
         async getUsers() {
-            try {
-                const result = await userService.showAll(this.queryInfo);
-                console.log(result);
-
-                if (result.data.code === 200) {
-                    this.userList = result.data.data.users;
-                    this.totalCount = result.data.data.totalCount;
-                } else {
-                    this.$message.error(result.data.msg);
-                }
-            } catch (err) {
+            userService.showAll(this.queryInfo).then((res) => {
+                console.log(res);
+                this.userList = res.data.data.users;
+                this.totalCount = res.data.data.totalCount;
+            }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
-            }
+            })
         }
     },
     created() {

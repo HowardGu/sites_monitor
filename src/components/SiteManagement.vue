@@ -191,22 +191,16 @@ export default {
                     return;
                 }
 
-                try {
-                    this.addSiteForm.longitude = Number(this.addSiteForm.longitude);
-                    this.addSiteForm.latitude = Number(this.addSiteForm.latitude);
+                this.addSiteForm.longitude = Number(this.addSiteForm.longitude);
+                this.addSiteForm.latitude = Number(this.addSiteForm.latitude);
 
-                    const result = await siteService.create(this.addSiteForm);
-                    console.log(result);
-
-                    if (result.data.code === 200) {
-                        this.$message.success('新增站点成功');
-                        this.getSites();
-                    } else {
-                        this.$message.error(result.data.msg);
-                    }
-                } catch (err) {
+                siteService.create(this.addSiteForm).then((res) => {
+                    console.log(res);
+                    this.$message.success('新增站点成功');
+                    this.getSites();
+                }).catch((err) => {
                     return this.$message.error(err.response.data.msg);
-                }
+                })
 
                 this.addSiteDialogVisible = false;
             });
@@ -222,22 +216,16 @@ export default {
                     return;
                 }
 
-                try {
-                    this.editSiteForm.longitude = Number(this.editSiteForm.longitude);
-                    this.editSiteForm.latitude = Number(this.editSiteForm.latitude);
+                this.editSiteForm.longitude = Number(this.editSiteForm.longitude);
+                this.editSiteForm.latitude = Number(this.editSiteForm.latitude);
 
-                    const result = await siteService.update(this.editSiteForm.id, this.editSiteForm);
-                    console.log(result);
-
-                    if (result.data.code === 200) {
-                        this.$message.success('编辑站点成功');
-                        this.getSites();
-                    } else {
-                        this.$message.error(result.data.msg);
-                    }
-                } catch (err) {
+                siteService.update(this.editSiteForm).then((res) => {
+                    console.log(res);
+                    this.$message.success('编辑站点成功');
+                    this.getSites();
+                }).catch((err) => {
                     return this.$message.error(err.response.data.msg);
-                }
+                })
 
                 this.editSiteDialogVisible = false;
             });
@@ -260,18 +248,12 @@ export default {
             if (confirmResult !== 'confirm') {
                 this.$message.info('已取消删除')
             } else {
-                try {
-                    const result = await siteService.remove(siteUUID);
-
-                    if (result.data.code === 200) {
-                        this.$message.success('删除成功');
-                        this.getSites();
-                    } else {
-                        this.$message.error(result.data.msg);
-                    }
-                } catch (err) {
+                siteService.remove(siteUUID).then((res) => {
+                    this.$message.success('删除成功');
+                    this.getSites();
+                }).catch((err) => {
                     return this.$message.error(err.response.data.msg);
-                }
+                })
             }
         },
 
@@ -281,19 +263,13 @@ export default {
         },
 
         async getSites() {
-            try {
-                const result = await siteService.showAll(this.queryInfo);
-                console.log(result);
-
-                if (result.data.code === 200) {
-                    this.siteList = result.data.data.sites;
-                    this.totalCount = result.data.data.totalCount;
-                } else {
-                    this.$message.error(result.data.msg);
-                }
-            } catch (err) {
+            siteService.showAll(this.queryInfo).then((res) => {
+                console.log(res);
+                this.siteList = res.data.data.sites;
+                this.totalCount = res.data.data.totalCount;
+            }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
-            }
+            })
         }
     },
     created() {
