@@ -77,30 +77,34 @@ export default {
                 const header = ['时间', '入射功率', '反射功率', '推动功率', '功放电流', '功放温度'];
                 CsvExportor.downloadCsv(csvData, { header }, 'history.csv');
             } else {
-                this.$message('请先点击刷新曲线获取站点数据');
+                this.$message.warning('请先点击刷新曲线获取站点数据');
             }
         },
 
         async getSiteHistory(siteId) {
-            const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-            this.queryInfo.startTime = (new Date(this.dateTimeRange[0] - tzoffset)).toISOString();
-            this.queryInfo.endTime = (new Date(this.dateTimeRange[1] - tzoffset)).toISOString();
+            if (this.dateTimeRange !== '') {
+                const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+                this.queryInfo.startTime = (new Date(this.dateTimeRange[0] - tzoffset)).toISOString();
+                this.queryInfo.endTime = (new Date(this.dateTimeRange[1] - tzoffset)).toISOString();
 
-            try {
-                logService.showHistory(siteId, this.queryInfo).then((res) => {
-                    console.log(res);
-                    if (res.data.data.logs) {
-                        this.logList = res.data.data.logs;
-                        this.renderCharts();
-                    } else {
-                        this.resetCharts();
-                        this.$message('站点' + this.siteId + '在此时间段内没有日志');
-                    }
-                }).catch((err) => {
-                    this.$message.error(err.response.data.msg);
-                });
-            } catch (err) {
-                return this.$message.error(err.response.data.msg);
+                try {
+                    logService.showHistory(siteId, this.queryInfo).then((res) => {
+                        console.log(res);
+                        if (res.data.data.logs) {
+                            this.logList = res.data.data.logs;
+                            this.renderCharts();
+                        } else {
+                            this.resetCharts();
+                            this.$message('站点' + this.siteId + '在此时间段内没有日志');
+                        }
+                    }).catch((err) => {
+                        this.$message.error(err.response.data.msg);
+                    });
+                } catch (err) {
+                    return this.$message.error(err.response.data.msg);
+                }
+            } else {
+                this.$message.warning('请选择开始时间和结束时间');
             }
         },
 
