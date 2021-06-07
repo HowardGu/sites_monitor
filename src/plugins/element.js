@@ -15,6 +15,8 @@ import {
     Footer,
     Input,
     InputNumber,
+    Link,
+    Loading,
     Main,
     Message,
     MessageBox,
@@ -56,5 +58,7 @@ Vue.use(InputNumber)
 Vue.use(DatePicker)
 Vue.use(Pagination)
 Vue.use(Tree)
+Vue.use(Link)
+Vue.use(Loading)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
