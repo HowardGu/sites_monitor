@@ -16,21 +16,21 @@
 
                 <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" ></bm-navigation>
 
-                <bm-marker v-for="marker of markers" :key="marker.siteId" :position="{lng: marker.longitude, lat: marker.latitude}" @click="openInfoWindow(marker)">
-                    <bm-info-window :show="showInfoWindow" @close="closeInfoWindow" :width="400" :height="100" :autoPan="true">
-                        <el-row  class="infoWindow-row">
-                            <el-col :span="8"><span>站点号：{{ infoWindowData.siteId }}</span></el-col>
-                        </el-row>
-                        <el-row class="infoWindow-row">
-                            <el-col :span="8"><span>{{ infoWindowData.tunnel }}</span></el-col>
-                            <el-col :span="8"> <span>{{ infoWindowData.location }}</span></el-col>
-                            <el-col :span="8"><span>{{ infoWindowData.siteName }}</span></el-col>
-                        </el-row>
-                        <el-row class="infoWindow-row">
-                            <el-col :span="10"><el-link type="primary" @click="checkSiteInfo">查看详细信息</el-link></el-col>
-                        </el-row>
-                    </bm-info-window>
-                </bm-marker>
+                <bm-marker v-for="marker of markers" :key="marker.siteId" :position="{lng: marker.longitude, lat: marker.latitude}" @click="showMarkerInfo(marker)"></bm-marker>
+
+                <bm-info-window :show="infoWindow.show" @close="infoWindowClose" @open="infoWindowOpen" :width="400" :height="100" :autoPan="true" :position="{lng: infoWindow.longitude, lat: infoWindow.latitude}">
+                    <el-row  class="infoWindow-row">
+                        <el-col :span="8"><span>站点号：{{ infoWindow.data.siteId }}</span></el-col>
+                    </el-row>
+                    <el-row class="infoWindow-row">
+                        <el-col :span="8"><span>{{ infoWindow.data.tunnel }}</span></el-col>
+                        <el-col :span="8"> <span>{{ infoWindow.data.location }}</span></el-col>
+                        <el-col :span="8"><span>{{ infoWindow.data.siteName }}</span></el-col>
+                    </el-row>
+                    <el-row class="infoWindow-row">
+                        <el-col :span="10"><el-link type="primary" @click="showSiteInfo">查看详细信息</el-link></el-col>
+                    </el-row>
+                </bm-info-window>
             </baidu-map>
         </el-card>
     </div>
@@ -71,27 +71,40 @@ export default {
                     siteName: 'FM远端机1',
                     description: 'test site 1',
                     uuid: ''
+                },
+                {
+                    siteId: 2,
+                    longitude: 117.1095150000,
+                    latitude: 25.5019670000,
+                    tunnel: '仙岳路隧道',
+                    location: '横洞',
+                    siteName: 'FM远端机1',
+                    description: 'test site 1',
+                    uuid: ''
                 }
             ],
 
-            infoWindowData: {
-                siteId: 0,
-                tunnel: '',
-                location: '',
-                siteName: '',
-                uuid: ''
-            },
-
-            showInfoWindow: false
+            infoWindow: {
+                show: false,
+                longitude: 0,
+                latitude: 0,
+                data: {
+                    siteId: 0,
+                    tunnel: '',
+                    location: '',
+                    siteName: '',
+                    uuid: ''
+                }
+            }
         };
     },
     methods: {
-        checkSiteInfo() {
+        showSiteInfo() {
             this.$router.push({
                 path: '/siteInfo',
                 query: {
-                    siteId: this.infoWindowData.siteId,
-                    siteUUID: this.infoWindowData.siteUUID
+                    siteId: this.infoWindow.data.siteId,
+                    siteUUID: this.infoWindow.data.siteUUID
                 }
             });
         },
@@ -100,13 +113,19 @@ export default {
             this.map.height = document.body.clientHeight - 160 + 'px';
         },
 
-        openInfoWindow(marker) {
-            this.showInfoWindow = true;
-            this.infoWindowData = marker;
+        showMarkerInfo(marker) {
+            this.infoWindow.data = marker;
+            this.infoWindow.longitude = marker.longitude;
+            this.infoWindow.latitude = marker.latitude;
+            this.infoWindow.show = true;
         },
 
-        closeInfoWindow() {
-            this.showInfoWindow = false;
+        infoWindowClose(e) {
+            this.infoWindow.show = false
+        },
+
+        infoWindowOpen(e) {
+            this.infoWindow.show = true
         }
     }
 }
