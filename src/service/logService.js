@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
-const show = (siteId) => {
-    return request.get(`logs/sites/${siteId}`);
+const show = (siteId, axiosParams) => {
+    return request.get(`logs/sites/${siteId}`, { params: axiosParams });
 };
 
 const showLast = (siteId) => {
@@ -13,7 +13,7 @@ const showAll = (axiosParams) => {
 };
 
 const showHistory = (siteId, historyParams) => {
-    return request.get(`history/sites/${siteId}`, historyParams);
+    return request.post(`history/sites/${siteId}`, historyParams);
 };
 
 export default {
