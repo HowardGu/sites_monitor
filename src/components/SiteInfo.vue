@@ -34,8 +34,8 @@
 
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="6"><el-button @click="getSiteInfo(siteId)" icon="el-icon-search">读取信息</el-button></el-col>
-                    <el-col :span="6"><el-button @click="siteControllingDialogVisible = true" icon="el-icon-setting">站点控制</el-button></el-col>
-                    <el-col :span="6"><el-button @click="siteSettingDialogVisible = true" icon="el-icon-setting">站点设置</el-button></el-col>
+                    <el-col :span="6" v-if="userGroup !=='guest'"><el-button @click="siteControllingDialogVisible = true" icon="el-icon-setting">站点控制</el-button></el-col>
+                    <el-col :span="6" v-if="userGroup !=='guest'"><el-button @click="siteSettingDialogVisible = true" icon="el-icon-setting">站点设置</el-button></el-col>
                 </el-row>
             </el-card>
 
@@ -267,9 +267,12 @@
 <script>
 import logService from '@/service/logService';
 import siteService from '@/service/siteService';
+import storageService from '@/service/storageService';
 export default {
     data() {
         return {
+            userGroup: '',
+
             siteId: 1,
 
             siteControllingDialogVisible: false,
@@ -348,6 +351,9 @@ export default {
             console.log(this.$route.query.siteId);
             this.siteId = this.$route.query.siteId;
         }
+
+        const user = JSON.parse(storageService.get(storageService.USER_INFO));
+        this.userGroup = user.userGroup;
     }
 }
 </script>

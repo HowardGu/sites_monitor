@@ -9,6 +9,9 @@ import {
     Container,
     DatePicker,
     Dialog,
+    Dropdown,
+    DropdownMenu,
+    DropdownItem,
     Header,
     Form,
     FormItem,
@@ -60,5 +63,8 @@ Vue.use(Pagination)
 Vue.use(Tree)
 Vue.use(Link)
 Vue.use(Loading)
+Vue.use(Dropdown)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

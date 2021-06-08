@@ -4,7 +4,12 @@
             <div>
                 <span>厦门市 监控中心</span>
             </div>
-            <el-button type="info" @click="logout">Exit</el-button>
+            <el-dropdown size="medium" :split-button="true" type="info" @command="logout">
+                你好，{{ userName }}
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item icon="el-icon-unlock">退出</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
         </el-header>
         <el-container>
             <el-aside width="200px">
@@ -21,7 +26,7 @@
                         <i class="el-icon-document"></i>
                         <span slot="title">站点详情</span>
                     </el-menu-item>
-                    <el-menu-item index="siteManagement">
+                    <el-menu-item index="siteManagement" v-if="userGroup === 'admin' || userGroup === 'manager'">
                         <i class="el-icon-setting"></i>
                         <span slot="title">站点管理</span>
                     </el-menu-item>
@@ -37,7 +42,7 @@
                         <i class="el-icon-document"></i>
                         <span slot="title">Help</span>
                     </el-menu-item>
-                    <el-menu-item index="userManagement">
+                    <el-menu-item index="userManagement" v-if="userGroup === 'admin'">
                         <i class="el-icon-user"></i>
                         <span slot="title">用户管理</span>
                     </el-menu-item>
@@ -53,10 +58,13 @@
 
 <script>
 import { mapActions } from 'vuex';
+import storageService from '@/service/storageService';
 export default {
     data() {
         return {
+            userName: '',
 
+            userGroup: ''
         };
     },
     methods: {
@@ -64,6 +72,11 @@ export default {
         logout() {
             this.userlogout()
         }
+    },
+    created() {
+        const user = JSON.parse(storageService.get(storageService.USER_INFO));
+        this.userName = user.userName;
+        this.userGroup = user.userGroup;
     }
 }
 </script>
