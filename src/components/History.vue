@@ -5,7 +5,7 @@
             <el-breadcrumb-item>历史记录</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card>
+        <el-card v-loading="loading" :element-loading-text="loadingText">
             <div slot="header" class="history-card-header">
                 <span>历史记录</span>
                 <div>
@@ -39,6 +39,10 @@ import CsvExportor from 'csv-exportor'
 export default {
     data() {
         return {
+            loading: false,
+
+            loadingText: '',
+
             siteId: 2,
 
             dateTimeRange: '',
@@ -65,6 +69,9 @@ export default {
     methods: {
         exportToCSV() {
             if (this.logList.length > 0) {
+                this.loading = true;
+                this.loadingText = '数据导出中';
+
                 const csvData = this.logList.map((log) => {
                     return {
                         dateTime: log.dateTime,
@@ -77,13 +84,18 @@ export default {
                 });
                 const header = ['时间', '入射功率', '反射功率', '推动功率', '功放电流', '功放温度'];
                 CsvExportor.downloadCsv(csvData, { header }, 'history.csv');
+
+                this.loading = false;
             } else {
                 this.$message.warning('请先点击刷新曲线获取站点数据');
             }
         },
 
-        async getSiteHistory(siteId) {
+        getSiteHistory(siteId) {
             if (this.dateTimeRange !== '') {
+                this.loading = true;
+                this.loadingText = '数据加载中';
+
                 const tzoffset = (new Date()).getTimezoneOffset() * 60000;
                 this.queryInfo.startTime = (new Date(this.dateTimeRange[0] - tzoffset)).toISOString();
                 this.queryInfo.endTime = (new Date(this.dateTimeRange[1] - tzoffset)).toISOString();
@@ -98,9 +110,12 @@ export default {
                             this.resetCharts();
                             this.$message('站点' + this.siteId + '在此时间段内没有日志');
                         }
+
+                        this.loading = false;
                     })
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                    this.loading = false;
                 });
             } else {
                 this.$message.warning('请选择开始时间和结束时间');
