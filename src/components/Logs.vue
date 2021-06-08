@@ -81,7 +81,7 @@ export default {
 
         async getSiteLogs(siteId) {
             siteService.getUUID(siteId).then((res) => {
-                logService.show(res.data.siteUUID, this.queryInfo).then((res) => {
+                logService.show(res.data.data.siteUUID, this.queryInfo).then((res) => {
                     console.log(res);
                     this.logList = res.data.data.logs;
                     this.totalCount = res.data.data.totalCount;
