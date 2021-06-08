@@ -110,9 +110,10 @@ export default {
                             this.resetCharts();
                             this.$message('站点' + this.siteId + '在此时间段内没有日志');
                         }
-
                         this.loading = false;
-                    })
+                    }).catch((err) => {
+                        err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                    });
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                     this.loading = false;

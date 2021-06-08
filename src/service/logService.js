@@ -4,7 +4,7 @@ const show = (siteUUID, axiosParams) => {
     return request.get(`logs/sites/${siteUUID}`, { params: axiosParams });
 };
 
-const showLast = (siteUUID) => {
+const showCurrentInfo = (siteUUID) => {
     return request.get(`logs/sites/${siteUUID}/last`);
 };
 
@@ -18,7 +18,7 @@ const showHistory = (siteUUID, historyParams) => {
 
 export default {
     show,
-    showLast,
+    showCurrentInfo,
     showAll,
     showHistory
 }

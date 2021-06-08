@@ -16,15 +16,15 @@
                     <el-input-number v-model="siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
                 </el-col>
                 <el-col :span="6"><span>版本号：</span></el-col>
-                <el-col :span="6"><span>时钟：</span></el-col>
+                <el-col :span="6"><span>时钟： {{ siteData.dateTime }}</span></el-col>
                 <el-col :span="6"><span>状态：</span></el-col>
             </el-row>
 
             <el-row :gutter="20" class="siteInfo-row">
-                <el-col :span="6"><span>隧道：</span></el-col>
-                <el-col :span="6"><span>地段：</span></el-col>
-                <el-col :span="6"><span>站点：</span></el-col>
-                <el-col :span="6"><span>描述：</span></el-col>
+                <el-col :span="6"><span>隧道： {{ siteData.tunnel }}</span></el-col>
+                <el-col :span="6"><span>地段： {{ siteData.location }}</span></el-col>
+                <el-col :span="6"><span>站点： {{ siteData.siteName }}</span></el-col>
+                <el-col :span="6"><span>描述： {{ siteData.description }}</span></el-col>
             </el-row>
 
             <el-card class="siteInfo-inner-card">
@@ -45,9 +45,9 @@
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6"><span>入射报警：</span></el-col>
-                    <el-col :span="6"><span>反射报警：</span></el-col>
-                    <el-col :span="6"><span>推动报警：</span></el-col>
+                    <el-col :span="6"><span>入射报警： {{ siteData.incidentAlerts }}</span></el-col>
+                    <el-col :span="6"><span>反射报警： {{ siteData.reflectedAlerts }}</span></el-col>
+                    <el-col :span="6"><span>推动报警： {{ siteData.pushAlerts }}</span></el-col>
                 </el-row>
             </el-card>
 
@@ -57,11 +57,11 @@
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6"><span>入射功率(W)：</span></el-col>
-                    <el-col :span="6"><span>反射功率(W)：</span></el-col>
-                    <el-col :span="6"><span>推动功率(mW)：</span></el-col>
-                    <el-col :span="6"><span>功放电流(A)：</span></el-col>
-                    <el-col :span="6"><span>功放温度(℃)：</span></el-col>
+                    <el-col :span="6"><span>入射功率(W)： {{ siteData.incidentPower }}</span></el-col>
+                    <el-col :span="6"><span>反射功率(W)： {{ siteData.reflectedPower }}</span></el-col>
+                    <el-col :span="6"><span>推动功率(mW)： {{ siteData.pushPower }}</span></el-col>
+                    <el-col :span="6"><span>功放电流(A)： {{ siteData.electricCurrent }}</span></el-col>
+                    <el-col :span="6"><span>功放温度(℃)： {{ siteData.temperature }}</span></el-col>
                 </el-row>
             </el-card>
 
@@ -71,8 +71,8 @@
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6"><span>报警状态：</span></el-col>
-                    <el-col :span="6"><span>在线状态：</span></el-col>
+                    <el-col :span="6"><span>报警状态： {{ siteData.alertState }}</span></el-col>
+                    <el-col :span="6"><span>在线状态： {{ siteData.onlineState }}</span></el-col>
                 </el-row>
             </el-card>
         </el-card>
@@ -265,6 +265,8 @@
 </template>
 
 <script>
+import logService from '@/service/logService';
+import siteService from '@/service/siteService';
 export default {
     data() {
         return {
@@ -296,12 +298,49 @@ export default {
                 electricCurrentUpperLimit: 13.7,
                 temperatureLowerLimit: 1,
                 temperatureUpperLimit: 51
+            },
+
+            siteData: {
+                siteId: 0,
+                longitude: 0,
+                latitude: 0,
+                tunnel: '',
+                location: '',
+                siteName: '',
+                description: '',
+                alertState: '',
+                dateTime: '',
+                incidentAlerts: 0,
+                reflectedAlerts: 0,
+                pushAlerts: 0,
+                incidentPower: 0.0,
+                reflectedPower: 0.0,
+                pushPower: 0.0,
+                electricCurrent: 0.0,
+                temperature: 0.0,
+                onlineState: ''
             }
         };
     },
     methods: {
         getSiteInfo(siteId) {
             console.log(this.siteId);
+            logService.showCurrentInfo(siteId)
+
+            siteService.getUUID(siteId).then((res) => {
+                logService.showCurrentInfo(res.data.data.siteUUID).then((res) => {
+                    console.log(res);
+                    if (res.data.data && res.data.data.state) {
+                        this.siteData = res.data.data.state;
+                    } else {
+                        this.$message('没有站点' + this.siteId + '信息');
+                    }
+                }).catch((err) => {
+                    err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                });
+            }).catch((err) => {
+                err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+            });
         }
     },
     created() {

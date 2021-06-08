@@ -85,6 +85,8 @@ export default {
                     console.log(res);
                     this.logList = res.data.data.logs;
                     this.totalCount = res.data.data.totalCount;
+                }).catch((err) => {
+                    return this.$message.error(err.response.data.msg);
                 })
             }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
