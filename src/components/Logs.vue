@@ -46,6 +46,7 @@
 
 <script>
 import logService from '@/service/logService';
+import siteService from '@/service/siteService';
 export default {
     data() {
         return {
@@ -79,10 +80,12 @@ export default {
         },
 
         async getSiteLogs(siteId) {
-            logService.show(siteId, this.queryInfo).then((res) => {
-                console.log(res);
-                this.logList = res.data.data.logs;
-                this.totalCount = res.data.data.totalCount;
+            siteService.getUUID(siteId).then((res) => {
+                logService.show(res.data.siteUUID, this.queryInfo).then((res) => {
+                    console.log(res);
+                    this.logList = res.data.data.logs;
+                    this.totalCount = res.data.data.totalCount;
+                })
             }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
             })

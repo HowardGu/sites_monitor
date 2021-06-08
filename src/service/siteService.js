@@ -8,12 +8,12 @@ const update = (siteParams) => {
     return request.put(`sites/${siteParams.id}`, siteParams);
 };
 
-const show = (siteId) => {
-    return request.get(`sites/${siteId}`);
+const show = (siteUUID) => {
+    return request.get(`sites/${siteUUID}`);
 };
 
-const remove = (siteId) => {
-    return request.delete(`sites/${siteId}`);
+const remove = (siteUUID) => {
+    return request.delete(`sites/${siteUUID}`);
 };
 
 const showAll = (axiosParams) => {
@@ -32,6 +32,10 @@ const showSites = (tunnel, location) => {
     return request.get(`sites/tunnels/${tunnel}/locations/${location}`);
 };
 
+const getUUID = (siteId) => {
+    return request.get(`sites/${siteId}/UUID`);
+};
+
 export default {
     create,
     update,
@@ -40,5 +44,6 @@ export default {
     showAll,
     showTunnels,
     showLocations,
-    showSites
+    showSites,
+    getUUID
 };

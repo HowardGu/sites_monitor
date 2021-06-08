@@ -32,6 +32,7 @@
 
 <script>
 import logService from '@/service/logService';
+import siteService from '@/service/siteService';
 import * as echarts from 'echarts'
 import CsvExportor from 'csv-exportor'
 
@@ -87,8 +88,8 @@ export default {
                 this.queryInfo.startTime = (new Date(this.dateTimeRange[0] - tzoffset)).toISOString();
                 this.queryInfo.endTime = (new Date(this.dateTimeRange[1] - tzoffset)).toISOString();
 
-                try {
-                    logService.showHistory(siteId, this.queryInfo).then((res) => {
+                siteService.getUUID(siteId).then((res) => {
+                    logService.showHistory(res.data.data.siteUUID, this.queryInfo).then((res) => {
                         console.log(res);
                         if (res.data.data.logs) {
                             this.logList = res.data.data.logs;
@@ -97,12 +98,10 @@ export default {
                             this.resetCharts();
                             this.$message('站点' + this.siteId + '在此时间段内没有日志');
                         }
-                    }).catch((err) => {
-                        this.$message.error(err.response.data.msg);
-                    });
-                } catch (err) {
-                    return this.$message.error(err.response.data.msg);
-                }
+                    })
+                }).catch((err) => {
+                    err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                });
             } else {
                 this.$message.warning('请选择开始时间和结束时间');
             }

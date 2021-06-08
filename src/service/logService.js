@@ -1,19 +1,19 @@
 import request from '@/utils/request';
 
-const show = (siteId, axiosParams) => {
-    return request.get(`logs/sites/${siteId}`, { params: axiosParams });
+const show = (siteUUID, axiosParams) => {
+    return request.get(`logs/sites/${siteUUID}`, { params: axiosParams });
 };
 
-const showLast = (siteId) => {
-    return request.get(`logs/sites/${siteId}/last`);
+const showLast = (siteUUID) => {
+    return request.get(`logs/sites/${siteUUID}/last`);
 };
 
 const showAll = (axiosParams) => {
     return request.get('logs', { params: axiosParams });
 };
 
-const showHistory = (siteId, historyParams) => {
-    return request.post(`history/sites/${siteId}`, historyParams);
+const showHistory = (siteUUID, historyParams) => {
+    return request.post(`history/sites/${siteUUID}`, historyParams);
 };
 
 export default {
