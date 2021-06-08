@@ -42,6 +42,7 @@ import BmScale from 'vue-baidu-map/components/controls/Scale'
 import BmNavigation from 'vue-baidu-map/components/controls/Navigation'
 import BmMarker from 'vue-baidu-map/components/overlays/Marker'
 import BmInfoWindow from 'vue-baidu-map/components/overlays/InfoWindow'
+import siteService from '@/service/siteService';
 export default {
     components: {
         BaiduMap,
@@ -61,28 +62,7 @@ export default {
                 height: '600px'
             },
 
-            markers: [
-                {
-                    siteId: 1,
-                    longitude: 118.1095150000,
-                    latitude: 24.5019670000,
-                    tunnel: '仙岳路隧道',
-                    location: '横洞',
-                    siteName: 'FM远端机1',
-                    description: 'test site 1',
-                    uuid: ''
-                },
-                {
-                    siteId: 2,
-                    longitude: 117.1095150000,
-                    latitude: 25.5019670000,
-                    tunnel: '仙岳路隧道',
-                    location: '横洞',
-                    siteName: 'FM远端机1',
-                    description: 'test site 1',
-                    uuid: ''
-                }
-            ],
+            markers: [],
 
             infoWindow: {
                 show: false,
@@ -111,6 +91,7 @@ export default {
 
         mapHandler({ BMap, map }) {
             this.map.height = document.body.clientHeight - 160 + 'px';
+            this.getSites();
         },
 
         showMarkerInfo(marker) {
@@ -126,6 +107,15 @@ export default {
 
         infoWindowOpen(e) {
             this.infoWindow.show = true
+        },
+
+        getSites() {
+            siteService.showAll(this.queryInfo).then((res) => {
+                console.log(res);
+                this.markers = res.data.data.sites;
+            }).catch((err) => {
+                return this.$message.error(err.response.data.msg);
+            })
         }
     }
 }
