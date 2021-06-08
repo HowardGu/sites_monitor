@@ -110,9 +110,6 @@ export default {
                 this.getSites(node, resolve);
             }
         }
-    },
-    created() {
-        // this.getTunnels();
     }
 }
 </script>

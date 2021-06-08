@@ -69,6 +69,11 @@
                 <div slot="header" class="siteInfo-inner-card-header">
                     <span>控制状态</span>
                 </div>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="6"><span>报警状态：</span></el-col>
+                    <el-col :span="6"><span>在线状态：</span></el-col>
+                </el-row>
             </el-card>
         </el-card>
 

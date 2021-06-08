@@ -49,20 +49,12 @@ export default {
                     return;
                 }
 
-                if (this.$localTest) {
-                    this.$message.success('Login Success');
-                    window.sessionStorage.setItem('token', 'thisistesttokenstr');
-                    window.sessionStorage.setItem('userName', 'root');
-                    window.sessionStorage.setItem('userGroup', 'admin');
+                this.userlogin(this.loginForm).then(() => {
+                    this.$message.success('登录成功！');
                     this.$router.push('/home');
-                } else {
-                    this.userlogin(this.loginForm).then(() => {
-                        this.$message.success('登录成功！');
-                        this.$router.push('/home');
-                    }).catch((err) => {
-                        return this.$message.error(err.response.data.msg);
-                    });
-                }
+                }).catch((err) => {
+                    return this.$message.error(err.response.data.msg);
+                });
             });
         }
     }
