@@ -4,14 +4,14 @@
             <h2 align="center">欢迎使用厦门市隧道监控系统</h2>
             <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
                 <el-form-item prop="userName">
-                    <el-input v-model="loginForm.userName" prefix-icon="el-icon-user"></el-input>
+                    <el-input v-model="loginForm.userName" prefix-icon="el-icon-user" @keyup.enter.native="submitLoginForm"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password"></el-input>
+                    <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password" @keyup.enter.native="submitLoginForm"></el-input>
                 </el-form-item>
                 <el-form-item class="login_form_buttons">
-                    <el-button type="primary" @click="submitLoginForm">Login</el-button>
-                    <el-button type="info" @click="resetLoginForm">Reset</el-button>
+                    <el-button type="primary" @click="submitLoginForm">登录</el-button>
+                    <el-button type="info" @click="resetLoginForm">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -40,9 +40,11 @@ export default {
     },
     methods: {
         ...mapActions('userModule', { userlogin: 'login' }),
+
         resetLoginForm() {
             this.$refs.loginFormRef.resetFields();
         },
+
         submitLoginForm() {
             this.$refs.loginFormRef.validate(async (valid) => {
                 if (!valid) {
@@ -56,7 +58,19 @@ export default {
                     return this.$message.error(err.response.data.msg);
                 });
             });
-        }
+        },
+
+        keyupEnter() {
+            document.onkeydown = (e) => {
+                const body = document.getElementsByTagName('body')[0];
+                if (e.keyCode === 13 && e.target.baseURI.match('/') && e.target === body) {
+                    this.submitLoginForm();
+                }
+            }
+      }
+    },
+    created() {
+        this.keyupEnter();
     }
 }
 </script>
