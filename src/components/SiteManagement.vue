@@ -186,7 +186,7 @@ export default {
         },
 
         submitAddSiteForm() {
-            this.$refs.addSiteFormRef.validate(async (valid) => {
+            this.$refs.addSiteFormRef.validate((valid) => {
                 if (!valid) {
                     return;
                 }
@@ -211,7 +211,7 @@ export default {
         },
 
         submitEditSiteForm() {
-            this.$refs.editSiteFormRef.validate(async (valid) => {
+            this.$refs.editSiteFormRef.validate((valid) => {
                 if (!valid) {
                     return;
                 }
@@ -262,7 +262,7 @@ export default {
             this.getSites();
         },
 
-        async getSites() {
+        getSites() {
             siteService.showAll(this.queryInfo).then((res) => {
                 console.log(res);
                 this.siteList = res.data.data.sites;

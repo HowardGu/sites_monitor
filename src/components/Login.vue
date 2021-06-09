@@ -46,7 +46,7 @@ export default {
         },
 
         submitLoginForm() {
-            this.$refs.loginFormRef.validate(async (valid) => {
+            this.$refs.loginFormRef.validate((valid) => {
                 if (!valid) {
                     return;
                 }
@@ -67,7 +67,7 @@ export default {
                     this.submitLoginForm();
                 }
             }
-      }
+        }
     },
     created() {
         this.keyupEnter();

@@ -41,7 +41,7 @@ export default {
             }
         },
 
-        async getTunnels(resolve) {
+        getTunnels(resolve) {
             siteService.showTunnels().then((res) => {
                 console.log(res);
                 const tunnels = res.data.data.tunnels;
@@ -57,7 +57,7 @@ export default {
             })
         },
 
-        async getLocations(node, resolve) {
+        getLocations(node, resolve) {
             const tunnel = node.data.label;
             console.log(tunnel);
 
@@ -76,7 +76,7 @@ export default {
             })
         },
 
-        async getSites(node, resolve) {
+        getSites(node, resolve) {
             const location = node.data.label;
             console.log(location);
             const tunnel = node.data.father;

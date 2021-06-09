@@ -198,7 +198,7 @@ export default {
         },
 
         submitAddUserForm() {
-            this.$refs.addUserFormRef.validate(async (valid) => {
+            this.$refs.addUserFormRef.validate((valid) => {
                 if (!valid) {
                     return;
                 }
@@ -220,7 +220,7 @@ export default {
         },
 
         submitEditUserForm() {
-            this.$refs.editUserFormRef.validate(async (valid) => {
+            this.$refs.editUserFormRef.validate((valid) => {
                 if (!valid) {
                     return;
                 }
@@ -267,7 +267,7 @@ export default {
             this.getUsers();
         },
 
-        async getUsers() {
+        getUsers() {
             userService.showAll(this.queryInfo).then((res) => {
                 console.log(res);
                 this.userList = res.data.data.users;

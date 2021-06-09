@@ -69,7 +69,7 @@ export default {
             this.queryInfo.pageNum = newPage;
         },
 
-        async getLogs() {
+        getLogs() {
             logService.showAll(this.queryInfo).then((res) => {
                 console.log(res);
                 this.logList = res.data.data.logs;
@@ -79,7 +79,7 @@ export default {
             })
         },
 
-        async getSiteLogs(siteId) {
+        getSiteLogs(siteId) {
             siteService.getUUID(siteId).then((res) => {
                 logService.show(res.data.data.siteUUID, this.queryInfo).then((res) => {
                     console.log(res);
