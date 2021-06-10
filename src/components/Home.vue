@@ -13,7 +13,7 @@
         </el-header>
         <el-container>
             <el-aside width="200px">
-                <el-menu background-color="#333744" text-color="#FFF" active-text-color="#409EFF" :router="true">
+                <el-menu background-color="#333744" text-color="#FFF" active-text-color="#409EFF" :router="true" :default-active="activePath.substring(1)">
                     <el-menu-item index="realtimeMap">
                         <i class="el-icon-map-location"></i>
                         <span slot="title">实时地图</span>
@@ -64,19 +64,27 @@ export default {
         return {
             userName: '',
 
-            userGroup: ''
+            userGroup: '',
+
+            activePath: '/realtimeMap'
         };
     },
     methods: {
         ...mapActions('userModule', { userlogout: 'logout' }),
         logout() {
-            this.userlogout()
+            this.userlogout();
         }
     },
     created() {
         const user = JSON.parse(storageService.get(storageService.USER_INFO));
         this.userName = user.userName;
         this.userGroup = user.userGroup;
+    },
+    watch: {
+        '$route.path': function(newVal, oldVal) {
+            console.log('From ' + oldVal + ' to ' + newVal);
+            this.activePath = newVal;
+        }
     }
 }
 </script>
