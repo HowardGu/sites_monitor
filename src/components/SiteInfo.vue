@@ -350,6 +350,7 @@ export default {
         if (this.$route.query.siteId) {
             console.log(this.$route.query.siteId);
             this.siteId = this.$route.query.siteId;
+            this.getSiteInfo(this.siteId);
         }
 
         const user = JSON.parse(storageService.get(storageService.USER_INFO));
