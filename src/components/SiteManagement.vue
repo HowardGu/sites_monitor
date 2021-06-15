@@ -20,6 +20,11 @@
                 <el-table-column prop="location" label="地段"></el-table-column>
                 <el-table-column prop="siteName" label="站点"></el-table-column>
                 <el-table-column prop="description" label="描述"></el-table-column>
+                <el-table-column label="屏蔽报警">
+                    <template slot-scope="scope">
+                        <el-switch v-model="scope.row.ignoreAlert" @change="updateIgnoreAlertState(scope.row)"></el-switch>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="dark" content="编辑" placement="top" :enterable="false">
@@ -109,26 +114,7 @@ import siteService from '@/service/siteService';
 export default {
     data() {
         return {
-            siteList: [
-                {
-                    siteId: 1,
-                    longitude: 118.1095150000,
-                    latitude: 24.5019670000,
-                    tunnel: '仙岳路隧道',
-                    location: '横洞',
-                    siteName: 'FM远端机1',
-                    description: 'test site 1'
-                },
-                {
-                    siteId: 2,
-                    longitude: 118.1095150000,
-                    latitude: 24.5019670000,
-                    tunnel: '仙岳路隧道',
-                    location: '横洞',
-                    siteName: 'FM远端机1',
-                    description: ''
-                }
-            ],
+            siteList: [],
 
             addSiteDialogVisible: false,
 
@@ -270,6 +256,10 @@ export default {
             }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
             })
+        },
+
+        updateIgnoreAlertState(siteInfo) {
+            console.log(siteInfo.id + ' ' + siteInfo.ignoreAlert);
         }
     },
     created() {

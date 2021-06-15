@@ -29,6 +29,7 @@ import {
     Pagination,
     Row,
     Select,
+    Switch,
     Table,
     TableColumn,
     Tooltip,
@@ -66,5 +67,6 @@ Vue.use(Loading)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+Vue.use(Switch)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
