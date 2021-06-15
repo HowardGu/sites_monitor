@@ -16,7 +16,8 @@
 
                 <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" ></bm-navigation>
 
-                <bm-marker v-for="marker of markers" :key="marker.siteId" :position="{lng: marker.longitude, lat: marker.latitude}" @click="showMarkerInfo(marker)"></bm-marker>
+                <bm-point-collection :points="goodPoints" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_HUGE" @click="showMarkerInfo"></bm-point-collection>
+                <bm-point-collection :points="badPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="green" size="BMAP_POINT_SIZE_BIG" @click="showMarkerInfo"></bm-point-collection>
 
                 <bm-info-window :show="infoWindow.show" @close="infoWindowClose" @open="infoWindowOpen" :width="400" :height="100" :autoPan="true" :position="{lng: infoWindow.longitude, lat: infoWindow.latitude}">
                     <el-row  class="infoWindow-row">
@@ -40,16 +41,16 @@
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import BmScale from 'vue-baidu-map/components/controls/Scale'
 import BmNavigation from 'vue-baidu-map/components/controls/Navigation'
-import BmMarker from 'vue-baidu-map/components/overlays/Marker'
 import BmInfoWindow from 'vue-baidu-map/components/overlays/InfoWindow'
+import BmPointCollection from 'vue-baidu-map/components/overlays/PointCollection'
 import siteService from '@/service/siteService';
 export default {
     components: {
         BaiduMap,
         BmScale,
         BmNavigation,
-        BmMarker,
-        BmInfoWindow
+        BmInfoWindow,
+        BmPointCollection
     },
     data() {
         return {
@@ -62,7 +63,9 @@ export default {
                 height: '600px'
             },
 
-            markers: [],
+            goodPoints: [],
+
+            badPoints: [],
 
             infoWindow: {
                 show: false,
@@ -94,10 +97,10 @@ export default {
             this.getSites();
         },
 
-        showMarkerInfo(marker) {
-            this.infoWindow.data = marker;
-            this.infoWindow.longitude = marker.longitude;
-            this.infoWindow.latitude = marker.latitude;
+        showMarkerInfo(e) {
+            this.infoWindow.data = e.point;
+            this.infoWindow.longitude = e.point.lng;
+            this.infoWindow.latitude = e.point.lat;
             this.infoWindow.show = true;
         },
 
@@ -112,7 +115,27 @@ export default {
         getSites() {
             siteService.showAll(this.queryInfo).then((res) => {
                 console.log(res);
-                this.markers = res.data.data.sites;
+                const points = res.data.data.sites.map((site) => {
+                    return {
+                        description: site.description,
+                        siteUUID: site.id,
+                        lat: site.latitude,
+                        lng: site.longitude,
+                        location: site.location,
+                        siteId: site.siteId,
+                        siteName: site.siteName,
+                        tunnel: site.tunnel,
+                        hasAlert: site.siteId === 1
+                    };
+                });
+
+                this.goodPoints = points.filter((point) => {
+                    return !point.hasAlert;
+                });
+
+                this.badPoints = points.filter((point) => {
+                    return point.hasAlert;
+                });
             }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
             })
