@@ -52,7 +52,7 @@ export default {
                 }
 
                 this.userlogin(this.loginForm).then(() => {
-                    this.$message.success('登录成功！');
+                    this.$message.success('登录成功');
                     this.$router.push('/home');
                 }).catch((err) => {
                     return this.$message.error(err.response.data.msg);

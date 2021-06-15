@@ -71,13 +71,7 @@ export default {
                 show: false,
                 longitude: 0,
                 latitude: 0,
-                data: {
-                    siteId: 0,
-                    tunnel: '',
-                    location: '',
-                    siteName: '',
-                    uuid: ''
-                }
+                data: {}
             }
         };
     },
