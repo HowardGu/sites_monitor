@@ -11,8 +11,14 @@
             </div>
 
             <div class="logs-search-bar">
-                <el-input-number v-model="siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
-                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getSiteLogs(siteId)">查询</el-button>
+                <el-select v-model="selectedSiteUUID" placeholder="请选择站点">
+                    <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId" :value="site.siteUUID">
+                        <span style="float: left">{{ site.siteFullName }}</span>
+                        <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
+                    </el-option>
+                </el-select>
+
+                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getSiteLogs()">查询</el-button>
                 <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getLogs()">查询所有站点</el-button>
             </div>
 
@@ -50,17 +56,18 @@ import siteService from '@/service/siteService';
 export default {
     data() {
         return {
-            siteId: 1,
+            selectedSiteUUID: '',
 
             queryInfo: {
                 pageNum: 1,
                 pageSize: 10
             },
 
-            logList: [
-            ],
+            logList: [],
 
-            totalCount: 50
+            siteList: [],
+
+            totalCount: 0
         };
     },
     methods: {
@@ -79,22 +86,34 @@ export default {
             })
         },
 
-        getSiteLogs(siteId) {
-            siteService.getUUID(siteId).then((res) => {
-                logService.show(res.data.data.siteUUID, this.queryInfo).then((res) => {
-                    console.log(res);
-                    this.logList = res.data.data.logs;
-                    this.totalCount = res.data.data.totalCount;
-                }).catch((err) => {
-                    return this.$message.error(err.response.data.msg);
-                })
+        getSiteLogs() {
+            logService.show(this.selectedSiteUUID, this.queryInfo).then((res) => {
+                console.log(res);
+                this.logList = res.data.data.logs;
+                this.totalCount = res.data.data.totalCount;
+            }).catch((err) => {
+                return this.$message.error(err.response.data.msg);
+            })
+        },
+
+        getSites() {
+            siteService.showAll().then((res) => {
+                this.siteList = res.data.data.sites.map((site) => {
+                    return {
+                        siteFullName: site.tunnel + ' - ' + site.location + ' - ' + site.siteName,
+                        siteId: site.siteId,
+                        siteUUID: site.id
+                    }
+                });
+                this.selectedSiteUUID = this.siteList[0].siteUUID;
+                console.log(this.siteList);
             }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
             })
         }
     },
     created() {
-        this.getLogs();
+        this.getSites();
     }
 }
 </script>

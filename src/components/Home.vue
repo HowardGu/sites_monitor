@@ -2,7 +2,7 @@
     <el-container class="home-container">
         <el-header>
             <div>
-                <span>厦门市 监控中心</span>
+                <span>厦门市监控中心</span>
             </div>
             <el-dropdown size="medium" :split-button="true" type="info" @command="logout">
                 你好，{{ userName }}
