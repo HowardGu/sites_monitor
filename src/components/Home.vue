@@ -52,7 +52,7 @@
                 <router-view></router-view>
             </el-main>
         </el-container>
-        <el-footer>Footer</el-footer>
+        <el-footer>&copy; {{ year }}上海东方明珠信息技术有限公司</el-footer>
     </el-container>
 </template>
 
@@ -66,7 +66,9 @@ export default {
 
             userGroup: '',
 
-            activePath: '/realtimeMap'
+            activePath: '/realtimeMap',
+
+            year: new Date().getFullYear()
         };
     },
     methods: {
@@ -119,5 +121,6 @@ export default {
     justify-content: space-between;
     align-items: center;
     color: #FFF;
+    font-size: 12px;
 }
 </style>
