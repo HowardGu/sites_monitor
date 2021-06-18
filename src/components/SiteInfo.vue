@@ -10,7 +10,7 @@
                 <span>站点详情</span>
             </div>
 
-            <el-select v-model="selectedSiteUUID" placeholder="请选择站点">
+            <el-select v-model="selectedSiteUUID" placeholder="请选择站点" @change="getSiteInfo()">
                 <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
                     <span style="float: left">{{ site.siteFullName }}</span>
                     <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
@@ -43,7 +43,7 @@
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6"><el-button @click="getSiteInfo(siteId)" icon="el-icon-search">读取信息</el-button></el-col>
+                    <el-col :span="6"><el-button @click="getSiteInfo()" icon="el-icon-search">读取信息</el-button></el-col>
                     <el-col :span="6" v-if="userGroup !=='guest'"><el-button @click="siteControllingDialogVisible = true" icon="el-icon-setting">站点控制</el-button></el-col>
                     <el-col :span="6" v-if="userGroup !=='guest'"><el-button @click="siteSettingDialogVisible = true" icon="el-icon-setting">站点设置</el-button></el-col>
                 </el-row>
@@ -340,12 +340,9 @@ export default {
         };
     },
     methods: {
-        getSiteInfo(siteId) {
-            console.log(this.siteId);
-            logService.showCurrentInfo(siteId)
-
-            siteService.getUUID(siteId).then((res) => {
-                logService.showCurrentInfo(res.data.data.siteUUID).then((res) => {
+        getSiteInfo() {
+            if (this.selectedSiteUUID !== '') {
+                logService.showCurrentInfo(this.selectedSiteUUID).then((res) => {
                     console.log(res);
                     if (res.data.data && res.data.data.state) {
                         this.siteData = res.data.data.state;
@@ -355,9 +352,9 @@ export default {
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
-            }).catch((err) => {
-                err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
-            });
+            } else {
+                this.$message.warning('请选择站点');
+            }
         },
 
         getSites() {
@@ -380,7 +377,7 @@ export default {
             console.log(this.$route.query.siteId + this.$route.query.siteUUID);
             this.siteId = this.$route.query.siteId;
             this.selectedSiteUUID = this.$route.query.siteUUID;
-            this.getSiteInfo(this.siteId);
+            this.getSiteInfo();
         }
 
         this.getSites();
