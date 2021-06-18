@@ -12,7 +12,7 @@
 
             <div class="logs-search-bar">
                 <el-select v-model="selectedSiteUUID" placeholder="请选择站点">
-                    <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId" :value="site.siteUUID">
+                    <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
                         <span style="float: left">{{ site.siteFullName }}</span>
                         <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
                     </el-option>
@@ -87,13 +87,17 @@ export default {
         },
 
         getSiteLogs() {
-            logService.show(this.selectedSiteUUID, this.queryInfo).then((res) => {
-                console.log(res);
-                this.logList = res.data.data.logs;
-                this.totalCount = res.data.data.totalCount;
-            }).catch((err) => {
-                return this.$message.error(err.response.data.msg);
-            })
+            if (this.selectedSiteUUID !== '') {
+                logService.show(this.selectedSiteUUID, this.queryInfo).then((res) => {
+                    console.log(res);
+                    this.logList = res.data.data.logs;
+                    this.totalCount = res.data.data.totalCount;
+                }).catch((err) => {
+                    return this.$message.error(err.response.data.msg);
+                })
+            } else {
+                this.$message.warning('请选择站点');
+            }
         },
 
         getSites() {
@@ -105,7 +109,7 @@ export default {
                         siteUUID: site.id
                     }
                 });
-                this.selectedSiteUUID = this.siteList[0].siteUUID;
+                // this.selectedSiteUUID = this.siteList[0].siteUUID;
                 console.log(this.siteList);
             }).catch((err) => {
                 return this.$message.error(err.response.data.msg);
@@ -136,5 +140,9 @@ export default {
 
 .logs-pagination {
     margin-top: 15px;
+}
+
+.el-select {
+    width: 400px;
 }
 </style>

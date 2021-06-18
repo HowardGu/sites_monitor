@@ -10,22 +10,32 @@
                 <span>站点详情</span>
             </div>
 
-            <el-row :gutter="20" class="siteInfo-row">
-                <el-col :span="6">
-                    <span>站点号：</span>
-                    <el-input-number v-model="siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
-                </el-col>
-                <el-col :span="6"><span>版本号：</span></el-col>
-                <el-col :span="6"><span>时钟： {{ siteData.dateTime }}</span></el-col>
-                <el-col :span="6"><span>状态：</span></el-col>
-            </el-row>
+            <el-select v-model="selectedSiteUUID" placeholder="请选择站点">
+                <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
+                    <span style="float: left">{{ site.siteFullName }}</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
+                </el-option>
+            </el-select>
 
-            <el-row :gutter="20" class="siteInfo-row">
-                <el-col :span="6"><span>隧道： {{ siteData.tunnel }}</span></el-col>
-                <el-col :span="6"><span>地段： {{ siteData.location }}</span></el-col>
-                <el-col :span="6"><span>站点： {{ siteData.siteName }}</span></el-col>
-                <el-col :span="6"><span>描述： {{ siteData.description }}</span></el-col>
-            </el-row>
+            <el-card class="siteInfo-inner-card">
+                <div slot="header" class="siteInfo-inner-card-header">
+                    <span>基础信息</span>
+                </div>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="6"><span>站点号： {{ siteData.siteId }}</span></el-col>
+                    <el-col :span="6"><span>版本号：</span></el-col>
+                    <el-col :span="6"><span>时钟： {{ siteData.dateTime }}</span></el-col>
+                    <el-col :span="6"><span>状态：</span></el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="6"><span>隧道： {{ siteData.tunnel }}</span></el-col>
+                    <el-col :span="6"><span>地段： {{ siteData.location }}</span></el-col>
+                    <el-col :span="6"><span>站点： {{ siteData.siteName }}</span></el-col>
+                    <el-col :span="6"><span>描述： {{ siteData.description }}</span></el-col>
+                </el-row>
+            </el-card>
 
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
@@ -322,7 +332,11 @@ export default {
                 electricCurrent: 0.0,
                 temperature: 0.0,
                 onlineState: ''
-            }
+            },
+
+            siteList: [],
+
+            selectedSiteUUID: ''
         };
     },
     methods: {
@@ -344,14 +358,32 @@ export default {
             }).catch((err) => {
                 err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             });
+        },
+
+        getSites() {
+            siteService.showAll().then((res) => {
+                this.siteList = res.data.data.sites.map((site) => {
+                    return {
+                        siteFullName: site.tunnel + ' - ' + site.location + ' - ' + site.siteName,
+                        siteId: site.siteId,
+                        siteUUID: site.id
+                    }
+                });
+                console.log(this.siteList);
+            }).catch((err) => {
+                return this.$message.error(err.response.data.msg);
+            })
         }
     },
     created() {
         if (this.$route.query.siteId) {
-            console.log(this.$route.query.siteId);
+            console.log(this.$route.query.siteId + this.$route.query.siteUUID);
             this.siteId = this.$route.query.siteId;
+            this.selectedSiteUUID = this.$route.query.siteUUID;
             this.getSiteInfo(this.siteId);
         }
+
+        this.getSites();
 
         const user = JSON.parse(storageService.get(storageService.USER_INFO));
         this.userGroup = user.userGroup;
@@ -381,5 +413,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.el-select {
+    width: 400px;
 }
 </style>
