@@ -15,10 +15,16 @@
             </div>
 
             <div class="history-search-bar">
-                <el-input-number v-model="siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
+                <el-select v-model="selectedSiteUUID" placeholder="请选择站点">
+                    <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
+                        <span style="float: left">{{ site.siteFullName }}</span>
+                        <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
+                    </el-option>
+                </el-select>
+
                 <el-date-picker v-model="dateTimeRange" type="datetimerange"  class="history-search-bar-datepicker" :unlink-panels="true"
                     start-placeholder="开始时间" end-placeholder="结束时间" :default-time="['12:00:00']"></el-date-picker>
-                <el-button class="history-search-bar-button" icon="el-icon-search" @click="getSiteHistory(siteId)">刷新曲线</el-button>
+                <el-button class="history-search-bar-button" icon="el-icon-search" @click="getSiteHistory()">刷新曲线</el-button>
             </div>
 
             <div id="incidentPowerChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
@@ -52,8 +58,11 @@ export default {
                 endTime: ''
             },
 
-            logList: [
-            ],
+            logList: [],
+
+            siteList: [],
+
+            selectedSiteUUID: '',
 
             incidentPowerChart: null,
 
@@ -91,8 +100,8 @@ export default {
             }
         },
 
-        getSiteHistory(siteId) {
-            if (this.dateTimeRange !== '') {
+        getSiteHistory() {
+            if (this.dateTimeRange !== '' && this.selectedSiteUUID !== '') {
                 this.loading = true;
                 this.loadingText = '数据加载中';
 
@@ -100,27 +109,37 @@ export default {
                 this.queryInfo.startTime = (new Date(this.dateTimeRange[0] - tzoffset)).toISOString();
                 this.queryInfo.endTime = (new Date(this.dateTimeRange[1] - tzoffset)).toISOString();
 
-                siteService.getUUID(siteId).then((res) => {
-                    logService.showHistory(res.data.data.siteUUID, this.queryInfo).then((res) => {
-                        console.log(res);
-                        if (res.data.data.logs) {
-                            this.logList = res.data.data.logs;
-                            this.renderCharts();
-                        } else {
-                            this.resetCharts();
-                            this.$message('站点' + this.siteId + '在此时间段内没有日志');
-                        }
-                        this.loading = false;
-                    }).catch((err) => {
-                        err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
-                    });
+                logService.showHistory(this.selectedSiteUUID, this.queryInfo).then((res) => {
+                    console.log(res);
+                    if (res.data.data.logs) {
+                        this.logList = res.data.data.logs;
+                        this.renderCharts();
+                    } else {
+                        this.resetCharts();
+                        this.$message('站点' + this.siteId + '在此时间段内没有日志');
+                    }
+                    this.loading = false;
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
-                    this.loading = false;
                 });
             } else {
-                this.$message.warning('请选择开始时间和结束时间');
+                this.$message.warning('请选择站点和时间');
             }
+        },
+
+        getSites() {
+            siteService.showAll().then((res) => {
+                this.siteList = res.data.data.sites.map((site) => {
+                    return {
+                        siteFullName: site.tunnel + ' - ' + site.location + ' - ' + site.siteName,
+                        siteId: site.siteId,
+                        siteUUID: site.id
+                    }
+                });
+                console.log(this.siteList);
+            }).catch((err) => {
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+            })
         },
 
         renderCharts() {
@@ -233,6 +252,9 @@ export default {
     mounted() {
         this.initCharts();
         this.resetCharts();
+    },
+    created() {
+        this.getSites();
     }
 }
 </script>
@@ -255,5 +277,9 @@ export default {
 
 .history-search-bar-datepicker {
     margin-left: 10px;
+}
+
+.el-select {
+    width: 400px;
 }
 </style>
