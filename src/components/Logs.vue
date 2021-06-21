@@ -35,6 +35,9 @@
                 <el-table-column prop="pushPower" label="推动功率" :formatter="formatAlert"></el-table-column>
                 <el-table-column prop="electricCurrent" label="功放电流" :formatter="formatAlert"></el-table-column>
                 <el-table-column prop="temperature" label="功放温度" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="supplyVoltage" label="电源电压" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="inputPower" label="输入功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="standingWaveRatio" label="驻波比" :formatter="formatAlert"></el-table-column>
                 <el-table-column prop="offlineAlert" label="在线状态" :formatter="formatOfflineState"></el-table-column>
             </el-table>
 
