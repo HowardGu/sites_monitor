@@ -10,8 +10,10 @@
                 <span>站点列表</span>
             </div>
 
-            <el-tree :props="siteTreeProps" @node-click="handleNodeClick"
-            :lazy="true" :load="loadNode"></el-tree>
+            <el-input placeholder="输入站点信息进行搜索" v-model="searchText"></el-input>
+
+            <el-tree :props="siteTreeProps" @node-click="handleNodeClick" :lazy="true" :load="loadNode"
+            ref="siteTreeRef" :filter-node-method="filterNode" class="site-tree"></el-tree>
         </el-card>
     </div>
 </template>
@@ -25,7 +27,9 @@ export default {
                 children: 'children',
                 label: 'label',
                 isLeaf: 'leaf'
-            }
+            },
+
+            searchText: ''
         };
     },
     methods: {
@@ -109,6 +113,19 @@ export default {
             if (node.level === 2) {
                 this.getSites(node, resolve);
             }
+        },
+
+        filterNode(value, data) {
+            if (!value) {
+                return true;
+            }
+
+            return data.label.indexOf(value) !== -1;
+        }
+    },
+    watch: {
+        searchText(val) {
+            this.$refs.siteTreeRef.filter(val);
         }
     }
 }
@@ -119,5 +136,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.site-tree {
+    margin-top: 10px;
 }
 </style>
