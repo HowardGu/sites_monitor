@@ -208,7 +208,7 @@ export default {
                     this.$message.success('新增用户成功');
                     this.getUsers();
                 }).catch((err) => {
-                    return this.$message.error(err.response.data.msg);
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
 
                 this.addUserDialogVisible = false;
@@ -229,7 +229,7 @@ export default {
                     this.$message.success('编辑用户成功');
                     this.getUsers();
                 }).catch((err) => {
-                    return this.$message.error(err.response.data.msg);
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
                 this.editUserDialogVisible = false;
             });
@@ -257,7 +257,7 @@ export default {
                     this.$message.success('删除成功');
                     this.getUsers();
                 }).catch((err) => {
-                    return this.$message.error(err.response.data.msg);
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
             }
         },
@@ -273,7 +273,7 @@ export default {
                 this.userList = res.data.data.users;
                 this.totalCount = res.data.data.totalCount;
             }).catch((err) => {
-                return this.$message.error(err.response.data.msg);
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
         }
     },

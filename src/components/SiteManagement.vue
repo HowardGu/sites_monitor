@@ -185,7 +185,7 @@ export default {
                     this.$message.success('新增站点成功');
                     this.getSites();
                 }).catch((err) => {
-                    return this.$message.error(err.response.data.msg);
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 })
 
                 this.addSiteDialogVisible = false;
@@ -210,7 +210,7 @@ export default {
                     this.$message.success('编辑站点成功');
                     this.getSites();
                 }).catch((err) => {
-                    return this.$message.error(err.response.data.msg);
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 })
 
                 this.editSiteDialogVisible = false;
@@ -238,7 +238,7 @@ export default {
                     this.$message.success('删除成功');
                     this.getSites();
                 }).catch((err) => {
-                    return this.$message.error(err.response.data.msg);
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 })
             }
         },
@@ -254,11 +254,12 @@ export default {
                 this.siteList = res.data.data.sites;
                 this.totalCount = res.data.data.totalCount;
             }).catch((err) => {
-                return this.$message.error(err.response.data.msg);
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
         },
 
         updateIgnoreAlertState(siteInfo) {
+            siteService.ignoreAlert(siteInfo)
             console.log(siteInfo.id + ' ' + siteInfo.ignoreAlert);
         }
     },

@@ -55,7 +55,7 @@ export default {
                     this.$message.success('登录成功');
                     this.$router.push('/home');
                 }).catch((err) => {
-                    return this.$message.error(err.response.data.msg);
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
             });
         },

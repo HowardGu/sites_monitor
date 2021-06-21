@@ -53,7 +53,7 @@ export default {
                     resolve(tunnelsData);
                 }
             }).catch((err) => {
-                return this.$message.error(err.response.data.msg);
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
         },
 
@@ -72,7 +72,7 @@ export default {
                     resolve(locationsData);
                 }
             }).catch((err) => {
-                return this.$message.error(err.response.data.msg);
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
         },
 
@@ -93,7 +93,7 @@ export default {
                     resolve(sitesData);
                 }
             }).catch((err) => {
-                return this.$message.error(err.response.data.msg);
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
         },
 

@@ -22,20 +22,20 @@
                 <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getLogs()">查询所有站点</el-button>
             </div>
 
-            <el-table :data="logList" :border="true" style="width: 100%">
+            <el-table :data="alertList" :border="true" style="width: 100%">
                 <el-table-column type="index"></el-table-column>
                 <el-table-column prop="siteId" label="站点号"></el-table-column>
-                <el-table-column prop="alertState" label="报警状态"></el-table-column>
+                <el-table-column prop="alertState" label="报警状态" :formatter="formatAlertState"></el-table-column>
                 <el-table-column prop="dateTime" label="时间"></el-table-column>
-                <el-table-column prop="incidentAlerts" label="入射报警"></el-table-column>
-                <el-table-column prop="reflectedAlerts" label="反射报警"></el-table-column>
-                <el-table-column prop="pushAlerts" label="推动报警"></el-table-column>
-                <el-table-column prop="incidentPower" label="入射功率"></el-table-column>
-                <el-table-column prop="reflectedPower" label="反射功率"></el-table-column>
-                <el-table-column prop="pushPower" label="推动功率"></el-table-column>
-                <el-table-column prop="electricCurrent" label="功放电流"></el-table-column>
-                <el-table-column prop="temperature" label="功放温度"></el-table-column>
-                <el-table-column prop="onlineState" label="在线状态"></el-table-column>
+                <el-table-column prop="incidentAlerts" label="入射报警" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="reflectedAlerts" label="反射报警" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="pushAlerts" label="推动报警" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="incidentPower" label="入射功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="reflectedPower" label="反射功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="pushPower" label="推动功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="electricCurrent" label="功放电流" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="temperature" label="功放温度" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="offlineAlert" label="在线状态" :formatter="formatOfflineState"></el-table-column>
             </el-table>
 
             <el-pagination
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import logService from '@/service/logService';
+import alertService from '@/service/alertService';
 import siteService from '@/service/siteService';
 export default {
     data() {
@@ -63,7 +63,7 @@ export default {
                 pageSize: 10
             },
 
-            logList: [],
+            alertList: [],
 
             siteList: [],
 
@@ -77,23 +77,23 @@ export default {
         },
 
         getLogs() {
-            logService.showAll(this.queryInfo).then((res) => {
+            alertService.showAll(this.queryInfo).then((res) => {
                 console.log(res);
-                this.logList = res.data.data.logs;
+                this.alertList = res.data.data.alerts;
                 this.totalCount = res.data.data.totalCount;
             }).catch((err) => {
-                return this.$message.error(err.response.data.msg);
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
         },
 
         getSiteLogs() {
             if (this.selectedSiteUUID !== '') {
-                logService.show(this.selectedSiteUUID, this.queryInfo).then((res) => {
+                alertService.show(this.selectedSiteUUID, this.queryInfo).then((res) => {
                     console.log(res);
-                    this.logList = res.data.data.logs;
+                    this.alertList = res.data.data.alerts;
                     this.totalCount = res.data.data.totalCount;
                 }).catch((err) => {
-                    return this.$message.error(err.response.data.msg);
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 })
             } else {
                 this.$message.warning('请选择站点');
@@ -112,8 +112,38 @@ export default {
                 // this.selectedSiteUUID = this.siteList[0].siteUUID;
                 console.log(this.siteList);
             }).catch((err) => {
-                return this.$message.error(err.response.data.msg);
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
+        },
+
+        formatAlertState: function(row, column, cellValue) {
+            var ret = ''
+            if (cellValue) {
+                ret = '报警开始'
+            } else {
+                ret = '报警解除'
+            }
+            return ret;
+        },
+
+        formatAlert: function(row, column, cellValue) {
+            var ret = ''
+            if (cellValue) {
+                ret = '异常'
+            } else {
+                ret = '正常'
+            }
+            return ret;
+        },
+
+        formatOfflineState: function(row, column, cellValue) {
+            var ret = ''
+            if (cellValue) {
+                ret = '掉线'
+            } else {
+                ret = '在线'
+            }
+            return ret;
         }
     },
     created() {

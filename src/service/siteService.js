@@ -8,6 +8,10 @@ const update = (siteParams) => {
     return request.put(`sites/${siteParams.id}`, siteParams);
 };
 
+const ignoreAlert = (siteParams) => {
+    return request.put(`sites/${siteParams.id}/alert`, { ignore: siteParams.ignoreAlert });
+};
+
 const show = (siteUUID) => {
     return request.get(`sites/${siteUUID}`);
 };
@@ -39,6 +43,7 @@ const getUUID = (siteId) => {
 export default {
     create,
     update,
+    ignoreAlert,
     show,
     remove,
     showAll,

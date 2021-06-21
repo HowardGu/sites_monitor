@@ -131,7 +131,7 @@ export default {
                     return point.hasAlert;
                 });
             }).catch((err) => {
-                return this.$message.error(err.response.data.msg);
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
         }
     }
