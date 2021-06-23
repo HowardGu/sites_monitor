@@ -347,7 +347,10 @@ export default {
                     if (res.data.data && res.data.data.state) {
                         this.siteData = res.data.data.state;
                     } else {
-                        this.$message('没有站点' + this.siteId + '信息');
+                        const targetSite = this.siteList.find((site) => {
+                            return site.siteUUID === this.selectedSiteUUID;
+                        });
+                        this.$message('没有站点' + targetSite.siteId + '信息');
                     }
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
