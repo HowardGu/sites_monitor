@@ -38,13 +38,13 @@
                         <i class="el-icon-bell"></i>
                         <span slot="title">报警日志</span>
                     </el-menu-item>
-                    <el-menu-item index="help">
-                        <i class="el-icon-document"></i>
-                        <span slot="title">Help</span>
-                    </el-menu-item>
                     <el-menu-item index="userManagement" v-if="userGroup === 'admin'">
                         <i class="el-icon-user"></i>
                         <span slot="title">用户管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="help">
+                        <i class="el-icon-document"></i>
+                        <span slot="title">帮助手册</span>
                     </el-menu-item>
                 </el-menu>
             </el-aside>

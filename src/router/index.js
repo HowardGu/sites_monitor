@@ -10,6 +10,7 @@ import SiteManagement from '../components/SiteManagement.vue'
 import History from '../components/History.vue'
 import Logs from '../components/Logs.vue'
 import UserManagement from '../components/UserManagement.vue'
+import Help from '../components/Help.vue'
 
 Vue.use(VueRouter)
 
@@ -54,6 +55,10 @@ const routes = [
             {
                 path: '/userManagement',
                 component: UserManagement
+            },
+            {
+                path: '/help',
+                component: Help
             }
         ]
     }
