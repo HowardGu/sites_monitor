@@ -5,19 +5,34 @@
             <el-breadcrumb-item>实时地图</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card v-loading="loading" element-loading-text="地图加载中">
+        <el-card v-loading="loading" element-loading-text="地图加载中" class="realtimeMap-card">
             <div slot="header" class="realtimeMap-card-header">
                 <span>实时地图</span>
             </div>
 
-            <baidu-map :style="{width:map.width,height:map.height}" class="map" :scroll-wheel-zoom="true"
+            <el-collapse class="sites-collapse">
+                <el-collapse-item title="报警站点">
+                    <div v-for="badPoint of badPoints" :key="badPoint.siteUUID">
+                        <el-divider></el-divider>
+                        <el-link type="primary" @click="showMarkerInfo2(badPoint)">{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</el-link>
+                    </div>
+                </el-collapse-item>
+                <el-collapse-item title="正常站点">
+                    <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID">
+                        <el-divider></el-divider>
+                        <el-link type="primary" @click="showMarkerInfo2(goodPoint)">{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</el-link>
+                    </div>
+                </el-collapse-item>
+            </el-collapse>
+
+            <baidu-map :style="{width:map.width,height:map.height}" :scroll-wheel-zoom="true"
                 center="厦门" @ready="mapHandler" @load="loading = false" ak="ak">
                 <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
 
                 <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" ></bm-navigation>
 
-                <bm-point-collection :points="goodPoints" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_HUGE" @click="showMarkerInfo"></bm-point-collection>
-                <bm-point-collection :points="badPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="green" size="BMAP_POINT_SIZE_BIG" @click="showMarkerInfo"></bm-point-collection>
+                <bm-point-collection :points="badPoints" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_HUGE" @click="showMarkerInfo"></bm-point-collection>
+                <bm-point-collection :points="goodPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="green" size="BMAP_POINT_SIZE_BIG" @click="showMarkerInfo"></bm-point-collection>
 
                 <bm-info-window :show="infoWindow.show" @close="infoWindowClose" @open="infoWindowOpen" :width="400" :height="100" :autoPan="true" :position="{lng: infoWindow.longitude, lat: infoWindow.latitude}">
                     <el-row  class="infoWindow-row">
@@ -98,6 +113,13 @@ export default {
             this.infoWindow.show = true;
         },
 
+        showMarkerInfo2(point) {
+            this.infoWindow.data = point;
+            this.infoWindow.longitude = point.lng;
+            this.infoWindow.latitude = point.lat;
+            this.infoWindow.show = true;
+        },
+
         infoWindowClose(e) {
             this.infoWindow.show = false
         },
@@ -139,15 +161,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.realtimeMap-card {
+    position: relative;
+}
+
 .realtimeMap-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.map {
-    width: 100%;
-    height: 600px;
 }
 
 .infoWindow-row {
@@ -155,5 +176,11 @@ export default {
     align-items: center;
     margin-top: 10px;
     font-size: 12;
+}
+
+.sites-collapse {
+    position: absolute;
+    z-index: 999;
+    width: 300px;
 }
 </style>
