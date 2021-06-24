@@ -11,16 +11,18 @@
             </div>
 
             <el-collapse class="sites-collapse">
-                <el-collapse-item title="报警站点">
+                <el-collapse-item>
+                    <template slot="title"><h3 align="center" class="sites-collapse-item-title">报警站点({{ badPoints.length }})</h3></template>
                     <div v-for="badPoint of badPoints" :key="badPoint.siteUUID">
                         <el-divider></el-divider>
-                        <el-link type="primary" @click="showMarkerInfo2(badPoint)">{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</el-link>
+                        <el-link type="primary" @click="showMarkerInfo2(badPoint)" class="sites-collapse-item-content">{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</el-link>
                     </div>
                 </el-collapse-item>
-                <el-collapse-item title="正常站点">
+                <el-collapse-item>
+                    <template slot="title"><h3 align="center" class="sites-collapse-item-title">正常站点({{ goodPoints.length }})</h3></template>
                     <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID">
                         <el-divider></el-divider>
-                        <el-link type="primary" @click="showMarkerInfo2(goodPoint)">{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</el-link>
+                        <el-link type="primary" @click="showMarkerInfo2(goodPoint)" class="sites-collapse-item-content">{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</el-link>
                     </div>
                 </el-collapse-item>
             </el-collapse>
@@ -182,5 +184,18 @@ export default {
     position: absolute;
     z-index: 999;
     width: 300px;
+}
+
+.el-collapse {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.sites-collapse-item-title {
+    margin-left: 10px;
+}
+
+.sites-collapse-item-content {
+    margin-left: 10px;
 }
 </style>
