@@ -7,7 +7,7 @@
 
         <el-card v-loading="loading" :element-loading-text="loadingText">
             <div slot="header" class="history-card-header">
-                <span>历史记录</span>
+                <h2 align="center">历史记录</h2>
                 <div>
                     <el-button type="primary" icon="el-icon-share" @click="exportToCSV">导出曲线</el-button>
                     <el-button type="primary" icon="el-icon-share">导出报表</el-button>

@@ -7,7 +7,7 @@
 
         <el-card v-loading="loading" element-loading-text="地图加载中" class="realtimeMap-card">
             <div slot="header" class="realtimeMap-card-header">
-                <span>实时地图</span>
+                <h2 align="center">实时地图</h2>
             </div>
 
             <el-collapse class="sites-collapse">

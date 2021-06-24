@@ -7,7 +7,7 @@
 
         <el-card>
             <div slot="header" class="userManagement-card-header">
-                <span>用户管理</span>
+                <h2 align="center">用户管理</h2>
                 <el-button type="primary" @click="addUserDialogVisible = true">新增用户</el-button>
             </div>
 

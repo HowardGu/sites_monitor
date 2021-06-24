@@ -7,7 +7,7 @@
 
         <el-card>
             <div slot="header" class="logs-card-header">
-                <span>报警日志</span>
+                <h2 align="center">报警日志</h2>
             </div>
 
             <div class="logs-search-bar">

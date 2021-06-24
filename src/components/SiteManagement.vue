@@ -7,7 +7,7 @@
 
         <el-card>
             <div slot="header" class="siteManagement-card-header">
-                <span>站点管理</span>
+                <h2 align="center">站点管理</h2>
                 <el-button type="primary" @click="addSiteDialogVisible = true">新增站点</el-button>
             </div>
 

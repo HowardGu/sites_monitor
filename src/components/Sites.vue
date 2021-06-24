@@ -7,7 +7,7 @@
 
         <el-card>
             <div slot="header" class="sites-card-header">
-                <span>站点列表</span>
+                <h2 align="center">站点列表</h2>
             </div>
 
             <el-input placeholder="输入站点信息进行搜索" v-model="searchText"></el-input>

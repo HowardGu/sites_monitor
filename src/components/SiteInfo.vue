@@ -7,7 +7,7 @@
 
         <el-card>
             <div slot="header" class="siteInfo-card-header">
-                <span>站点详情</span>
+                <h2 align="center">站点详情</h2>
             </div>
 
             <el-select v-model="selectedSiteUUID" placeholder="请选择站点" @change="getSiteInfo()">
@@ -19,7 +19,7 @@
 
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
-                    <span>基础信息</span>
+                    <h3 align="center">基础信息</h3>
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -39,7 +39,7 @@
 
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
-                    <span>设备管理</span>
+                    <h3 align="center">设备管理</h3>
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -51,7 +51,7 @@
 
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
-                    <span>数字量</span>
+                    <h3 align="center">数字量</h3>
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -63,7 +63,7 @@
 
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
-                    <span>模拟量</span>
+                    <h3 align="center">模拟量</h3>
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -77,7 +77,7 @@
 
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
-                    <span>控制状态</span>
+                    <h3 align="center">控制状态</h3>
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -90,7 +90,7 @@
         <el-dialog title="站点控制" :visible.sync="siteControllingDialogVisible" width="50%" :close-on-click-modal="false">
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
-                    <span>设备信息</span>
+                    <h3 align="center">设备信息</h3>
                     <el-button type="primary">重启设备</el-button>
                 </div>
 
@@ -126,7 +126,7 @@
 
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
-                    <span>设备控制</span>
+                    <h3 align="center">设备控制</h3>
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -159,7 +159,7 @@
         <el-dialog title="站点设置" :visible.sync="siteSettingDialogVisible" width="50%" :close-on-click-modal="false">
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
-                    <span>报警电平设置</span>
+                    <h3 align="center">报警电平设置</h3>
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -198,7 +198,7 @@
 
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
-                    <span>报警上下限设置</span>
+                    <h3 align="center">报警上下限设置</h3>
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
