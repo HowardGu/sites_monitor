@@ -156,7 +156,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="站点设置" :visible.sync="siteSettingDialogVisible" width="50%" :close-on-click-modal="false">
+        <el-dialog @open="getSiteSetting()" title="站点设置" :visible.sync="siteSettingDialogVisible" width="50%" :close-on-click-modal="false">
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
                     <h3 align="center">报警电平设置</h3>
@@ -165,7 +165,7 @@
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4"><span>入射报警电平：</span></el-col>
                     <el-col :span="6">
-                        <el-select v-model="siteSettingData.incidentAlertState" placeholder="请选择是否报警">
+                        <el-select @change="updateAlertState('IncidentAlert')" v-model="siteSettingData.incidentAlertState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -176,7 +176,7 @@
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4"><span>反射报警电平：</span></el-col>
                     <el-col :span="6">
-                        <el-select v-model="siteSettingData.reflectedAlertState" placeholder="请选择是否报警">
+                        <el-select @change="updateAlertState('ReflectedAlert')" v-model="siteSettingData.reflectedAlertState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -187,7 +187,7 @@
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4"><span>推动报警电平：</span></el-col>
                     <el-col :span="6">
-                        <el-select v-model="siteSettingData.pushAlertState" placeholder="请选择是否报警">
+                        <el-select @change="updateAlertState('PushAlert')" v-model="siteSettingData.pushAlertState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -211,7 +211,11 @@
                     <el-col :span="6">
                         <el-input v-model="siteSettingData.incidentPowerUpperLimit" placeholder="上限"></el-input>
                     </el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                    <el-col :span="6">
+                        <el-button @click="updateAlertThreshold('IncidentPower',
+                            siteSettingData.incidentPowerLowerLimit,
+                            siteSettingData.incidentPowerUpperLimit)">设置</el-button>
+                    </el-col>
                 </el-row>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -224,7 +228,11 @@
                     <el-col :span="6">
                         <el-input v-model="siteSettingData.reflectedPowerUpperLimit" placeholder="上限"></el-input>
                     </el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                    <el-col :span="6">
+                        <el-button @click="updateAlertThreshold('ReflectedPower',
+                            siteSettingData.reflectedPowerLowerLimit,
+                            siteSettingData.reflectedPowerUpperLimit)">设置</el-button>
+                    </el-col>
                 </el-row>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -237,7 +245,11 @@
                     <el-col :span="6">
                         <el-input v-model="siteSettingData.pushPowerUpperLimit" placeholder="上限"></el-input>
                     </el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                    <el-col :span="6">
+                        <el-button @click="updateAlertThreshold('PushPower',
+                            siteSettingData.pushPowerLowerLimit,
+                            siteSettingData.pushPowerUpperLimit)">设置</el-button>
+                    </el-col>
                 </el-row>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -245,12 +257,16 @@
                         <span>功放电流：</span>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.pushPowerLowerLimit" placeholder="下限"></el-input>
+                        <el-input v-model="siteSettingData.electricCurrentLowerLimit" placeholder="下限"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.pushPowerUpperLimit" placeholder="上限"></el-input>
+                        <el-input v-model="siteSettingData.electricCurrentUpperLimit" placeholder="上限"></el-input>
                     </el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                    <el-col :span="6">
+                        <el-button @click="updateAlertThreshold('ElectricCurrent',
+                            siteSettingData.electricCurrentLowerLimit,
+                            siteSettingData.electricCurrentUpperLimit)">设置</el-button>
+                    </el-col>
                 </el-row>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -263,7 +279,11 @@
                     <el-col :span="6">
                         <el-input v-model="siteSettingData.temperatureUpperLimit" placeholder="上限"></el-input>
                     </el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                    <el-col :span="6">
+                        <el-button @click="updateAlertThreshold('Temperature',
+                            siteSettingData.temperatureLowerLimit,
+                            siteSettingData.temperatureUpperLimit)">设置</el-button>
+                    </el-col>
                 </el-row>
             </el-card>
 
@@ -298,19 +318,24 @@ export default {
             siteSettingDialogVisible: false,
 
             siteSettingData: {
-                incidentAlertState: false,
+                incidentAlertState: true,
                 reflectedAlertState: true,
-                pushAlertState: false,
-                incidentPowerLowerLimit: 24.2,
-                incidentPowerUpperLimit: 50.2,
-                reflectedPowerLowerLimit: 0.9,
-                reflectedPowerUpperLimit: 9.9,
-                pushPowerLowerLimit: 71.4,
-                pushPowerUpperLimit: 171.4,
-                electricCurrentLowerLimit: 3.7,
-                electricCurrentUpperLimit: 13.7,
-                temperatureLowerLimit: 1,
-                temperatureUpperLimit: 51
+                pushAlertState: true,
+                incidentPowerState: false,
+                incidentPowerLowerLimit: 0.0,
+                incidentPowerUpperLimit: 0.0,
+                reflectedPowerState: false,
+                reflectedPowerLowerLimit: 0.0,
+                reflectedPowerUpperLimit: 0.0,
+                pushPowerState: false,
+                pushPowerLowerLimit: 0.0,
+                pushPowerUpperLimit: 0.0,
+                electricCurrentState: false,
+                electricCurrentLowerLimit: 0.0,
+                electricCurrentUpperLimit: 0.0,
+                temperatureState: false,
+                temperatureLowerLimit: 0.0,
+                temperatureUpperLimit: 0.0
             },
 
             siteData: {
@@ -373,6 +398,39 @@ export default {
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err); ;
             })
+        },
+
+        getSiteSetting() {
+            if (this.selectedSiteUUID !== '') {
+                siteService.alertConf(this.selectedSiteUUID).then((res) => {
+                    console.log(res);
+                    if (res.data.data && res.data.data.alertConf) {
+                        this.siteSettingData = res.data.data.alertConf;
+                    }
+                }).catch((err) => {
+                    err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                });
+            }
+        },
+
+        updateAlertState(alertName) {
+            if (this.selectedSiteUUID !== '') {
+                siteService.updateAlertState({ id: this.selectedSiteUUID, name: alertName }).then((res) => {
+                    console.log(res);
+                }).catch((err) => {
+                    err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                });
+            }
+        },
+
+        updateAlertThreshold(alertName, lowerLimit, upperLimit) {
+            if (this.selectedSiteUUID !== '') {
+                siteService.updateAlertThreshold({ id: this.selectedSiteUUID, name: alertName, min: Number(lowerLimit), max: Number(upperLimit) }).then((res) => {
+                    console.log(res);
+                }).catch((err) => {
+                    err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                });
+            }
         }
     },
     created() {
