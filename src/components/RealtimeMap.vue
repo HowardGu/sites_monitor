@@ -12,14 +12,14 @@
 
             <el-collapse class="sites-collapse">
                 <el-collapse-item>
-                    <template slot="title"><h3 align="center" class="sites-collapse-item-title">报警站点({{ badPoints.length }})</h3></template>
+                    <template slot="title"><h3 align="center" class="sites-collapse-item-bad-title">报警站点({{ badPoints.length }})</h3></template>
                     <div v-for="badPoint of badPoints" :key="badPoint.siteUUID">
                         <el-divider></el-divider>
                         <el-link type="primary" @click="showMarkerInfo2(badPoint)" class="sites-collapse-item-content">{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</el-link>
                     </div>
                 </el-collapse-item>
                 <el-collapse-item>
-                    <template slot="title"><h3 align="center" class="sites-collapse-item-title">正常站点({{ goodPoints.length }})</h3></template>
+                    <template slot="title"><h3 align="center" class="sites-collapse-item-good-title">正常站点({{ goodPoints.length }})</h3></template>
                     <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID">
                         <el-divider></el-divider>
                         <el-link type="primary" @click="showMarkerInfo2(goodPoint)" class="sites-collapse-item-content">{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</el-link>
@@ -189,6 +189,16 @@ export default {
 .el-collapse {
     margin-top: 10px;
     margin-left: 10px;
+}
+
+.sites-collapse-item-bad-title {
+    margin-left: 10px;
+    color: #FF4136;
+}
+
+.sites-collapse-item-good-title {
+    margin-left: 10px;
+    color: #3D9970;
 }
 
 .sites-collapse-item-title {
