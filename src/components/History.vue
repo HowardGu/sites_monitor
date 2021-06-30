@@ -10,7 +10,7 @@
                 <h2 align="center">历史记录</h2>
                 <div>
                     <el-button type="primary" icon="el-icon-share" @click="exportToCSV">导出曲线</el-button>
-                    <el-button type="primary" icon="el-icon-share">导出报表</el-button>
+                    <el-button type="primary" icon="el-icon-document" @click="showHistoryTextDisplayDialog">文本显示</el-button>
                 </div>
             </div>
 
@@ -33,6 +33,24 @@
             <div id="electricCurrentChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
             <div id="temperatureChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
         </el-card>
+
+        <el-dialog title="历史记录" :visible.sync="historyTextDisplayDialogVisible" width="70%" :close-on-click-modal="false">
+            <el-table :data="logList" :border="true" style="width: 100%">
+                <el-table-column type="index"></el-table-column>
+                <el-table-column prop="dateTime" label="时间"></el-table-column>
+                <el-table-column prop="incidentPower" label="入射功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="reflectedPower" label="反射功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="pushPower" label="推动功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="electricCurrent" label="功放电流" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="temperature" label="功放温度" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="supplyVoltage" label="电源电压" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="inputPower" label="输入功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="standingWaveRatio" label="驻波比" :formatter="formatAlert"></el-table-column>
+            </el-table>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="historyTextDisplayDialogVisible=false">确定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -46,6 +64,8 @@ export default {
     data() {
         return {
             loading: false,
+
+            historyTextDisplayDialogVisible: false,
 
             loadingText: '',
 
@@ -95,6 +115,14 @@ export default {
                 CsvExportor.downloadCsv(csvData, { header }, 'history.csv');
 
                 this.loading = false;
+            } else {
+                this.$message.warning('请先点击刷新曲线获取站点数据');
+            }
+        },
+
+        showHistoryTextDisplayDialog() {
+            if (this.logList.length > 0) {
+                this.historyTextDisplayDialogVisible = true;
             } else {
                 this.$message.warning('请先点击刷新曲线获取站点数据');
             }
