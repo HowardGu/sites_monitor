@@ -212,7 +212,7 @@
                         <el-input v-model="siteSettingData.incidentPowerUpperLimit" placeholder="上限"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-button @click="updateAlertThreshold('IncidentPower',
+                        <el-button @click="updateAlertLimit('IncidentPower',
                             siteSettingData.incidentPowerLowerLimit,
                             siteSettingData.incidentPowerUpperLimit)">设置</el-button>
                     </el-col>
@@ -229,7 +229,7 @@
                         <el-input v-model="siteSettingData.reflectedPowerUpperLimit" placeholder="上限"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-button @click="updateAlertThreshold('ReflectedPower',
+                        <el-button @click="updateAlertLimit('ReflectedPower',
                             siteSettingData.reflectedPowerLowerLimit,
                             siteSettingData.reflectedPowerUpperLimit)">设置</el-button>
                     </el-col>
@@ -246,7 +246,7 @@
                         <el-input v-model="siteSettingData.pushPowerUpperLimit" placeholder="上限"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-button @click="updateAlertThreshold('PushPower',
+                        <el-button @click="updateAlertLimit('PushPower',
                             siteSettingData.pushPowerLowerLimit,
                             siteSettingData.pushPowerUpperLimit)">设置</el-button>
                     </el-col>
@@ -263,7 +263,7 @@
                         <el-input v-model="siteSettingData.electricCurrentUpperLimit" placeholder="上限"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-button @click="updateAlertThreshold('ElectricCurrent',
+                        <el-button @click="updateAlertLimit('ElectricCurrent',
                             siteSettingData.electricCurrentLowerLimit,
                             siteSettingData.electricCurrentUpperLimit)">设置</el-button>
                     </el-col>
@@ -280,7 +280,7 @@
                         <el-input v-model="siteSettingData.temperatureUpperLimit" placeholder="上限"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-button @click="updateAlertThreshold('Temperature',
+                        <el-button @click="updateAlertLimit('Temperature',
                             siteSettingData.temperatureLowerLimit,
                             siteSettingData.temperatureUpperLimit)">设置</el-button>
                     </el-col>
@@ -417,16 +417,18 @@ export default {
             if (this.selectedSiteUUID !== '') {
                 siteService.updateAlertState({ id: this.selectedSiteUUID, name: alertName }).then((res) => {
                     console.log(res);
+                    this.$message.success('设置成功');
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
             }
         },
 
-        updateAlertThreshold(alertName, lowerLimit, upperLimit) {
+        updateAlertLimit(alertName, lowerLimit, upperLimit) {
             if (this.selectedSiteUUID !== '') {
-                siteService.updateAlertThreshold({ id: this.selectedSiteUUID, name: alertName, min: Number(lowerLimit), max: Number(upperLimit) }).then((res) => {
+                siteService.updateAlertLimit({ id: this.selectedSiteUUID, name: alertName, min: Number(lowerLimit), max: Number(upperLimit) }).then((res) => {
                     console.log(res);
+                    this.$message.success('设置成功');
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
