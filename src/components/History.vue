@@ -37,21 +37,31 @@
             <div id="standingWaveRatioChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
         </el-card>
 
-        <el-dialog title="历史记录" :visible.sync="historyTextDisplayDialogVisible" width="70%" :close-on-click-modal="false">
-            <el-table :data="logList" :border="true" style="width: 100%">
+        <el-dialog title="历史记录" :visible.sync="historyTextDisplayDialogVisible" width="70%" :close-on-click-modal="false" @close="resetPageNum">
+            <el-table :data="logList.slice((logListQueryInfo.pageNum - 1) * logListQueryInfo.pageSize, logListQueryInfo.pageNum * logListQueryInfo.pageSize)" :border="true" style="width: 100%">
                 <el-table-column type="index"></el-table-column>
                 <el-table-column prop="dateTime" label="时间"></el-table-column>
-                <el-table-column prop="incidentPower" label="入射功率" :formatter="formatAlert"></el-table-column>
-                <el-table-column prop="reflectedPower" label="反射功率" :formatter="formatAlert"></el-table-column>
-                <el-table-column prop="pushPower" label="推动功率" :formatter="formatAlert"></el-table-column>
-                <el-table-column prop="inputPower" label="输入功率" :formatter="formatAlert"></el-table-column>
-                <el-table-column prop="electricCurrent" label="功放电流" :formatter="formatAlert"></el-table-column>
-                <el-table-column prop="temperature" label="功放温度" :formatter="formatAlert"></el-table-column>
-                <el-table-column prop="supplyVoltage" label="电源电压" :formatter="formatAlert"></el-table-column>
-                <el-table-column prop="standingWaveRatio" label="驻波比" :formatter="formatAlert"></el-table-column>
+                <el-table-column prop="incidentPower" label="入射功率"></el-table-column>
+                <el-table-column prop="reflectedPower" label="反射功率"></el-table-column>
+                <el-table-column prop="pushPower" label="推动功率"></el-table-column>
+                <el-table-column prop="inputPower" label="输入功率"></el-table-column>
+                <el-table-column prop="electricCurrent" label="功放电流"></el-table-column>
+                <el-table-column prop="temperature" label="功放温度"></el-table-column>
+                <el-table-column prop="supplyVoltage" label="电源电压"></el-table-column>
+                <el-table-column prop="standingWaveRatio" label="驻波比"></el-table-column>
             </el-table>
+
+            <el-pagination
+                @current-change="handleCurrentPageChange"
+                :current-page="logListQueryInfo.pageNum"
+                :page-size="logListQueryInfo.pageSize"
+                layout="total, prev, pager, next, jumper"
+                :total="logList.length"
+                class="history-pagination">
+            </el-pagination>
+
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="historyTextDisplayDialogVisible=false">确定</el-button>
+                <el-button type="primary" @click="historyTextDisplayDialogVisible=false">关闭</el-button>
             </div>
         </el-dialog>
     </div>
@@ -83,6 +93,11 @@ export default {
 
             logList: [],
 
+            logListQueryInfo: {
+                pageNum: 1,
+                pageSize: 20
+            },
+
             siteList: [],
 
             selectedSiteUUID: '',
@@ -93,9 +108,15 @@ export default {
 
             pushPowerChart: null,
 
+            inputPowerChart: null,
+
             electricCurrentChart: null,
 
-            temperatureChart: null
+            temperatureChart: null,
+
+            supplyVoltageChart: null,
+
+            standingWaveRatioChart: null
         };
     },
     methods: {
@@ -129,6 +150,14 @@ export default {
             } else {
                 this.$message.warning('请先点击刷新曲线获取站点数据');
             }
+        },
+
+        handleCurrentPageChange(newPage) {
+            this.logListQueryInfo.pageNum = newPage;
+        },
+
+        resetPageNum() {
+            this.logListQueryInfo.pageNum = 1;
         },
 
         getSiteHistory() {
@@ -351,5 +380,9 @@ export default {
 
 .el-select {
     width: 400px;
+}
+
+.history-pagination {
+    margin-top: 15px;
 }
 </style>
