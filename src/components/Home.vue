@@ -2,7 +2,7 @@
     <el-container class="home-container">
         <el-header>
             <div>
-                <span>厦门市监控中心</span>
+                <span>{{ title }}</span>
             </div>
             <el-dropdown size="medium" :split-button="true" type="info" @command="logout">
                 你好，{{ userName }}
@@ -52,7 +52,7 @@
                 <router-view></router-view>
             </el-main>
         </el-container>
-        <el-footer>&copy; {{ year }}上海东方明珠信息技术有限公司</el-footer>
+        <el-footer>&copy; {{ year }} {{ copyright }}</el-footer>
     </el-container>
 </template>
 
@@ -68,7 +68,11 @@ export default {
 
             activePath: '/realtimeMap',
 
-            year: new Date().getFullYear()
+            year: new Date().getFullYear(),
+
+            copyright: process.env.VUE_APP_HOME_COPYRIGHT,
+
+            title: process.env.VUE_APP_HOME_TITLE
         };
     },
     methods: {

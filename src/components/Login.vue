@@ -1,7 +1,7 @@
 <template>
     <div class="login_container">
         <div class="login_box">
-            <h2 align="center">欢迎使用厦门市隧道监控系统</h2>
+            <h2 align="center">{{ title }}</h2>
             <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
                 <el-form-item prop="userName">
                     <el-input v-model="loginForm.userName" prefix-icon="el-icon-user" @keyup.enter.native="submitLoginForm"></el-input>
@@ -23,6 +23,8 @@ import { mapActions } from 'vuex';
 export default {
     data() {
         return {
+            title: process.env.VUE_APP_LOGIN_TITLE,
+
             loginForm: {
                 userName: 'root',
                 password: 'Password1'

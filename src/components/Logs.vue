@@ -63,7 +63,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: 10
+                pageSize: process.env.VUE_APP_LOGS_PAGE_SIZE
             },
 
             alertList: [],

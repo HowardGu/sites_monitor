@@ -95,7 +95,7 @@ export default {
 
             logListQueryInfo: {
                 pageNum: 1,
-                pageSize: 20
+                pageSize: process.env.VUE_APP_HISTORY_PAGE_SIZE
             },
 
             siteList: [],
@@ -131,11 +131,14 @@ export default {
                         incidentPower: log.incidentPower,
                         reflectedPower: log.reflectedPower,
                         pushPower: log.pushPower,
+                        inputPower: log.inputPower,
                         electricCurrent: log.electricCurrent,
-                        temperature: log.temperature
+                        temperature: log.temperature,
+                        supplyVoltage: log.supplyVoltage,
+                        standingWaveRatio: log.standingWaveRatio
                     };
                 });
-                const header = ['时间', '入射功率', '反射功率', '推动功率', '功放电流', '功放温度'];
+                const header = ['时间', '入射功率', '反射功率', '推动功率', '输入功率', '功放电流', '功放温度', '电源电压', '驻波比'];
                 CsvExportor.downloadCsv(csvData, { header }, 'history.csv');
 
                 this.loading = false;

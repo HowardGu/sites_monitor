@@ -8,8 +8,6 @@ import store from './store';
 import axios from 'axios'
 import VueAxios from 'vue-axios';
 
-Vue.prototype.$localTest = false
-
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios);
