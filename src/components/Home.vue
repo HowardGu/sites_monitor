@@ -52,7 +52,7 @@
                 <router-view></router-view>
             </el-main>
         </el-container>
-        <el-footer>&copy; {{ year }} {{ copyright }}</el-footer>
+        <el-footer>&copy; {{ year + copyright }}</el-footer>
     </el-container>
 </template>
 

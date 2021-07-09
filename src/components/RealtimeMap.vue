@@ -13,22 +13,24 @@
             <el-collapse class="sites-collapse">
                 <el-collapse-item>
                     <template slot="title"><h3 align="center" class="sites-collapse-item-bad-title">报警站点({{ badPoints.length }})</h3></template>
-                    <div v-for="badPoint of badPoints" :key="badPoint.siteUUID">
+                    <div v-for="badPoint of badPoints" :key="badPoint.siteUUID" class="sites-collapse-item-container" @click="showMarkerInfo2(badPoint)" >
                         <el-divider></el-divider>
-                        <el-link type="primary" @click="showMarkerInfo2(badPoint)" class="sites-collapse-item-content">{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</el-link>
+                        <h3 class="sites-collapse-item-content">站点号：{{ badPoint.siteId }}</h3>
+                        <span class="sites-collapse-item-content">{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</span>
                     </div>
                 </el-collapse-item>
                 <el-collapse-item>
                     <template slot="title"><h3 align="center" class="sites-collapse-item-good-title">正常站点({{ goodPoints.length }})</h3></template>
-                    <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID">
+                    <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID" class="sites-collapse-item-container" @click="showMarkerInfo2(goodPoint)">
                         <el-divider></el-divider>
-                        <el-link type="primary" @click="showMarkerInfo2(goodPoint)" class="sites-collapse-item-content">{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</el-link>
+                        <h3 class="sites-collapse-item-content">站点号：{{ goodPoint.siteId }}</h3>
+                        <span class="sites-collapse-item-content">{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</span>
                     </div>
                 </el-collapse-item>
             </el-collapse>
 
             <baidu-map :style="{width:map.width,height:map.height}" :scroll-wheel-zoom="true"
-                center="厦门" @ready="mapHandler" @load="loading = false" ak="ak">
+                :center="mapCenter" @ready="mapHandler" @load="loading = false" ak="ak">
                 <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
 
                 <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" ></bm-navigation>
@@ -74,6 +76,8 @@ export default {
             loading: true,
 
             ak: this.$baiduMapAK,
+
+            mapCenter: process.env.VUE_APP_REALTIMEMAP_MAP_CENTER,
 
             map: {
                 width: '100%',
@@ -207,5 +211,16 @@ export default {
 
 .sites-collapse-item-content {
     margin-left: 10px;
+}
+
+.sites-collapse-item-container {
+    &:hover {
+        background-color: #fafafa;
+        cursor: pointer;
+    }
+}
+
+.el-divider {
+    margin: 0;
 }
 </style>
