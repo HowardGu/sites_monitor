@@ -21,10 +21,12 @@
                 </el-collapse-item>
                 <el-collapse-item>
                     <template slot="title"><h3 align="center" class="sites-collapse-item-good-title">正常站点({{ goodPoints.length }})</h3></template>
-                    <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID" class="sites-collapse-item-container" @click="showMarkerInfo2(goodPoint)">
-                        <el-divider></el-divider>
-                        <h3 class="sites-collapse-item-content">站点号：{{ goodPoint.siteId }}</h3>
-                        <span class="sites-collapse-item-content">{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</span>
+                    <div class="sites-collapse-item-container">
+                        <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID" class="sites-collapse-item-content" @click="showMarkerInfo2(goodPoint)">
+                            <el-divider></el-divider>
+                            <h3>站点号：{{ goodPoint.siteId }}</h3>
+                            <span>{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</span>
+                        </div>
                     </div>
                 </el-collapse-item>
             </el-collapse>
@@ -210,14 +212,16 @@ export default {
 }
 
 .sites-collapse-item-content {
-    margin-left: 10px;
-}
-
-.sites-collapse-item-container {
     &:hover {
         background-color: #fafafa;
         cursor: pointer;
     }
+    padding-left: 10px;
+}
+
+.sites-collapse-item-container {
+    max-height: 800px;
+    overflow-y: auto;
 }
 
 .el-divider {
