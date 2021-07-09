@@ -40,18 +40,12 @@
                 <bm-point-collection :points="badPoints" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_HUGE" @click="showMarkerInfo"></bm-point-collection>
                 <bm-point-collection :points="goodPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="green" size="BMAP_POINT_SIZE_BIG" @click="showMarkerInfo"></bm-point-collection>
 
-                <bm-info-window :show="infoWindow.show" @close="infoWindowClose" @open="infoWindowOpen" :width="400" :height="100" :autoPan="true" :position="{lng: infoWindow.longitude, lat: infoWindow.latitude}">
-                    <el-row  class="infoWindow-row">
-                        <el-col :span="8"><span>站点号：{{ infoWindow.data.siteId }}</span></el-col>
-                    </el-row>
-                    <el-row class="infoWindow-row">
-                        <el-col :span="8"><span>{{ infoWindow.data.tunnel }}</span></el-col>
-                        <el-col :span="8"> <span>{{ infoWindow.data.location }}</span></el-col>
-                        <el-col :span="8"><span>{{ infoWindow.data.siteName }}</span></el-col>
-                    </el-row>
-                    <el-row class="infoWindow-row">
-                        <el-col :span="10"><el-link type="primary" @click="showSiteInfo">查看详细信息</el-link></el-col>
-                    </el-row>
+                <bm-info-window :show="infoWindow.show" @close="infoWindowClose" @open="infoWindowOpen" :width="400" :height="140" :autoPan="true" :position="{lng: infoWindow.longitude, lat: infoWindow.latitude}">
+                    <div class="infoWindow-content">
+                        <h3>站点号：{{ infoWindow.data.siteId }}</h3>
+                        <span>{{ infoWindow.data.tunnel + ' - ' + infoWindow.data.location + ' - ' + infoWindow.data.siteName}}</span>
+                        <el-link type="primary" @click="showSiteInfo">查看详细信息</el-link>
+                    </div>
                 </bm-info-window>
             </baidu-map>
         </el-card>
@@ -179,11 +173,10 @@ export default {
     align-items: center;
 }
 
-.infoWindow-row {
+.infoWindow-content {
     display: flex;
-    align-items: center;
-    margin-top: 10px;
-    font-size: 12;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .sites-collapse {
@@ -226,5 +219,9 @@ export default {
 
 .el-divider {
     margin: 0;
+}
+
+.el-link {
+    margin-top: 10px;
 }
 </style>
