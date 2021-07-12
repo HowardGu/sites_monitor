@@ -10,10 +10,20 @@
                 <h2 align="center">帮助手册</h2>
             </div>
 
-            <el-link icon="el-icon-download" type="primary" href="https://www.baidu.com" target="_blank">下载帮助手册</el-link>
+            <el-link icon="el-icon-download" type="primary" :href="url" target="_blank">下载帮助手册</el-link>
         </el-card>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            url: process.env.VUE_APP_HELP_DOWNLOAD_URL
+        };
+    }
+}
+</script>
 
 <style lang="less" scoped>
 .help-card-header {
