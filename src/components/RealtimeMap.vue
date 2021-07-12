@@ -13,10 +13,12 @@
             <el-collapse class="sites-collapse">
                 <el-collapse-item>
                     <template slot="title"><h3 align="center" class="sites-collapse-item-bad-title">报警站点({{ badPoints.length }})</h3></template>
-                    <div v-for="badPoint of badPoints" :key="badPoint.siteUUID" class="sites-collapse-item-container" @click="showMarkerInfo2(badPoint)" >
-                        <el-divider></el-divider>
-                        <h3 class="sites-collapse-item-content">站点号：{{ badPoint.siteId }}</h3>
-                        <span class="sites-collapse-item-content">{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</span>
+                    <div class="sites-collapse-item-container">
+                        <div v-for="badPoint of badPoints" :key="badPoint.siteUUID" class="sites-collapse-item-content" @click="showMarkerInfo2(badPoint)" >
+                            <el-divider></el-divider>
+                            <h3>站点号：{{ badPoint.siteId }}</h3>
+                            <span>{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</span>
+                        </div>
                     </div>
                 </el-collapse-item>
                 <el-collapse-item>
