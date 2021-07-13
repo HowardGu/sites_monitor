@@ -205,6 +205,12 @@
                     <el-col :span="4">
                         <span>入射功率：</span>
                     </el-col>
+                    <el-col :span="4">
+                        <el-select style="width:100%"  @change="updateAlertState('IncidentPower')" v-model="siteSettingData.incidentPowerState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
+                    </el-col>
                     <el-col :span="6">
                         <el-input v-model="siteSettingData.incidentPowerLowerLimit" placeholder="下限"></el-input>
                     </el-col>
@@ -221,6 +227,12 @@
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4">
                         <span>反射功率：</span>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-select style="width:100%"  @change="updateAlertState('ReflectedPower')" v-model="siteSettingData.reflectedPowerState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
                     </el-col>
                     <el-col :span="6">
                         <el-input v-model="siteSettingData.reflectedPowerLowerLimit" placeholder="下限"></el-input>
@@ -239,6 +251,12 @@
                     <el-col :span="4">
                         <span>推动功率：</span>
                     </el-col>
+                    <el-col :span="4">
+                        <el-select style="width:100%"  @change="updateAlertState('PushPower')" v-model="siteSettingData.pushPowerState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
+                    </el-col>
                     <el-col :span="6">
                         <el-input v-model="siteSettingData.pushPowerLowerLimit" placeholder="下限"></el-input>
                     </el-col>
@@ -255,6 +273,12 @@
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4">
                         <span>功放电流：</span>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-select style="width:100%"  @change="updateAlertState('ElectricCurrent')" v-model="siteSettingData.electricCurrentState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
                     </el-col>
                     <el-col :span="6">
                         <el-input v-model="siteSettingData.electricCurrentLowerLimit" placeholder="下限"></el-input>
@@ -273,6 +297,12 @@
                     <el-col :span="4">
                         <span>功放温度：</span>
                     </el-col>
+                    <el-col :span="4">
+                        <el-select style="width:100%"  @change="updateAlertState('Temperature')" v-model="siteSettingData.temperatureState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
+                    </el-col>
                     <el-col :span="6">
                         <el-input v-model="siteSettingData.temperatureLowerLimit" placeholder="下限"></el-input>
                     </el-col>
@@ -283,6 +313,75 @@
                         <el-button @click="updateAlertLimit('Temperature',
                             siteSettingData.temperatureLowerLimit,
                             siteSettingData.temperatureUpperLimit)">设置</el-button>
+                    </el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4">
+                        <span>电源电压：</span>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-select style="width:100%"  @change="updateAlertState('SupplyVoltage')" v-model="siteSettingData.supplyVoltageState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingData.supplyVoltageLowerLimit" placeholder="下限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingData.supplyVoltageLowerLimit" placeholder="上限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-button @click="updateAlertLimit('SupplyVoltage',
+                            siteSettingData.supplyVoltageLowerLimit,
+                            siteSettingData.supplyVoltageUpperLimit)">设置</el-button>
+                    </el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4">
+                        <span>输入功率：</span>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-select style="width:100%"  @change="updateAlertState('InputPower')" v-model="siteSettingData.inputPowerState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingData.inputPowerLowerLimit" placeholder="下限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingData.inputPowerUpperLimit" placeholder="上限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-button @click="updateAlertLimit('InputPower',
+                            siteSettingData.inputPowerLowerLimit,
+                            siteSettingData.inputPowerUpperLimit)">设置</el-button>
+                    </el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4">
+                        <span>驻波比：</span>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-select style="width:100%"  @change="updateAlertState('StandingWaveRatio')" v-model="siteSettingData.standingWaveRatioState" placeholder="请选择是否报警">
+                            <el-option label="不报警" :value="false"></el-option>
+                            <el-option label="报警" :value="true"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingData.standingWaveRatioLowerLimit" placeholder="下限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteSettingData.standingWaveRatioUpperLimit" placeholder="上限"></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-button @click="updateAlertLimit('StandingWaveRatio',
+                            siteSettingData.standingWaveRatioLowerLimit,
+                            siteSettingData.standingWaveRatioUpperLimit)">设置</el-button>
                     </el-col>
                 </el-row>
             </el-card>
@@ -335,7 +434,16 @@ export default {
                 electricCurrentUpperLimit: 0.0,
                 temperatureState: false,
                 temperatureLowerLimit: 0.0,
-                temperatureUpperLimit: 0.0
+                temperatureUpperLimit: 0.0,
+                supplyVoltageState: false,
+                supplyVoltageLowerLimit: 0.0,
+                supplyVoltageUpperLimit: 0.0,
+                inputPowerState: false,
+                inputPowerLowerLimit: 0.0,
+                inputPowerUpperLimit: 0.0,
+                standingWaveRatioState: false,
+                standingWaveRatioLowerLimit: 0.0,
+                standingWaveRatioUpperLimit: 0.0
             },
 
             siteData: {
@@ -356,6 +464,9 @@ export default {
                 pushPower: 0.0,
                 electricCurrent: 0.0,
                 temperature: 0.0,
+                supplyVoltage: 0.0,
+                inputPower: 0.0,
+                standingWaveRatio: 0.0,
                 onlineState: ''
             },
 
