@@ -65,6 +65,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+    base: '/monitor/',
     routes
 })
 
