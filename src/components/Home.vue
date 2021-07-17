@@ -42,6 +42,10 @@
                         <i class="el-icon-user"></i>
                         <span slot="title">用户管理</span>
                     </el-menu-item>
+                    <el-menu-item index="realtimeChart">
+                        <i class="el-icon-s-data"></i>
+                        <span slot="title">实时数据</span>
+                    </el-menu-item>
                     <el-menu-item index="help">
                         <i class="el-icon-document"></i>
                         <span slot="title">帮助手册</span>
