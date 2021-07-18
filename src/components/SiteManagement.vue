@@ -111,6 +111,7 @@
 
 <script>
 import siteService from '@/service/siteService';
+import config from '../../public/config.js';
 export default {
     data() {
         return {
@@ -160,7 +161,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: Number(process.env.VUE_APP_SITEMANAGEMENT_PAGE_SIZE)
+                pageSize: Number(config.properties.SITEMANAGEMENT_PAGE_SIZE)
             },
 
             totalCount: 10

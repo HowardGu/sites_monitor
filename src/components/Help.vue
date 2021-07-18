@@ -16,10 +16,11 @@
 </template>
 
 <script>
+import config from '../../public/config.js';
 export default {
     data() {
         return {
-            url: process.env.VUE_APP_HELP_DOWNLOAD_URL
+            url: config.properties.HELP_DOWNLOAD_URL
         };
     }
 }

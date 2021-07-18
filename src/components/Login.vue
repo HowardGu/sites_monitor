@@ -20,10 +20,11 @@
 
 <script>
 import { mapActions } from 'vuex';
+import config from '../../public/config.js';
 export default {
     data() {
         return {
-            title: process.env.VUE_APP_LOGIN_TITLE,
+            title: config.properties.LOGIN_TITLE,
 
             loginForm: {
                 userName: 'root',

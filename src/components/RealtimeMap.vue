@@ -61,6 +61,7 @@ import BmNavigation from 'vue-baidu-map/components/controls/Navigation'
 import BmInfoWindow from 'vue-baidu-map/components/overlays/InfoWindow'
 import BmPointCollection from 'vue-baidu-map/components/overlays/PointCollection'
 import siteService from '@/service/siteService';
+import config from '../../public/config.js';
 export default {
     components: {
         BaiduMap,
@@ -75,7 +76,7 @@ export default {
 
             ak: this.$baiduMapAK,
 
-            mapCenter: process.env.VUE_APP_REALTIMEMAP_MAP_CENTER,
+            mapCenter: config.properties.REALTIMEMAP_MAP_CENTER,
 
             map: {
                 width: '100%',

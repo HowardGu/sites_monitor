@@ -72,6 +72,7 @@ import logService from '@/service/logService';
 import siteService from '@/service/siteService';
 import * as echarts from 'echarts'
 import CsvExportor from 'csv-exportor'
+import config from '../../public/config.js';
 
 export default {
     data() {
@@ -95,7 +96,7 @@ export default {
 
             logListQueryInfo: {
                 pageNum: 1,
-                pageSize: Number(process.env.VUE_APP_HISTORY_PAGE_SIZE)
+                pageSize: Number(config.properties.HISTORY_PAGE_SIZE)
             },
 
             siteList: [],

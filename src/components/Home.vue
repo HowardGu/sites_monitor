@@ -63,6 +63,7 @@
 <script>
 import { mapActions } from 'vuex';
 import storageService from '@/service/storageService';
+import config from '../../public/config.js';
 export default {
     data() {
         return {
@@ -74,9 +75,9 @@ export default {
 
             year: new Date().getFullYear(),
 
-            copyright: process.env.VUE_APP_HOME_COPYRIGHT,
+            copyright: config.properties.HOME_COPYRIGHT,
 
-            title: process.env.VUE_APP_HOME_TITLE
+            title: config.properties.HOME_TITLE
         };
     },
     methods: {

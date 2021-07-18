@@ -1,8 +1,9 @@
 import axios from 'axios';
 import storageService from '../service/storageService';
+import config from '../../public/config.js';
 
 const service = axios.create({
-    baseURL: process.env.VUE_APP_BASE_URL,
+    baseURL: config.properties.BASE_URL,
     timeout: 1000 * 5
 });
 
