@@ -95,7 +95,7 @@ export default {
 
             logListQueryInfo: {
                 pageNum: 1,
-                pageSize: process.env.VUE_APP_HISTORY_PAGE_SIZE
+                pageSize: Number(process.env.VUE_APP_HISTORY_PAGE_SIZE)
             },
 
             siteList: [],

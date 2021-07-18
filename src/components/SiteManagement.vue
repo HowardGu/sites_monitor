@@ -160,7 +160,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: process.env.VUE_APP_SITEMANAGEMENT_PAGE_SIZE
+                pageSize: Number(process.env.VUE_APP_SITEMANAGEMENT_PAGE_SIZE)
             },
 
             totalCount: 10

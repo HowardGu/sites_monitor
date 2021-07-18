@@ -47,7 +47,23 @@ export default {
 
             realtimeChart: null,
 
-            refreshInterval: null
+            refreshInterval: null,
+
+            chartOption: {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['入射功率', '反射功率', '推动功率', '输入功率', '功放电流', '功放温度', '电源电压', '驻波比']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    type: 'bar'
+                }]
+            }
         };
     },
     methods: {
@@ -58,27 +74,8 @@ export default {
                 if (this.refreshInterval) {
                     window.clearInterval(this.refreshInterval);
                 } else {
-                    this.refreshInterval = window.setInterval(this.refreshSiteData, 5000);
+                    this.refreshInterval = window.setInterval(this.getSiteRealtimeChart, 5000);
                 }
-            } else {
-                this.$message.warning('请选择站点');
-            }
-        },
-
-        refreshSiteData() {
-            if (this.selectedSiteUUID !== '') {
-                logService.showCurrentInfo(this.selectedSiteUUID).then((res) => {
-                    console.log(res);
-                    if (res.data.data && res.data.data.state) {
-                        this.realtimeData = res.data.data.state;
-                        this.updateChartData();
-                    } else {
-                        this.resetChart();
-                        this.$message('站点' + this.siteId + '没有日志');
-                    }
-                }).catch((err) => {
-                    err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
-                });
             } else {
                 this.$message.warning('请选择站点');
             }
@@ -125,8 +122,6 @@ export default {
         },
 
         renderChart() {
-            const xAxisCategory = ['入射功率', '反射功率', '推动功率', '输入功率', '功放电流', '功放温度', '电源电压', '驻波比'];
-
             const xAxisData = [
                 this.realtimeData.incidentPower,
                 this.realtimeData.reflectedPower,
@@ -137,64 +132,16 @@ export default {
                 this.realtimeData.supplyVoltage,
                 this.realtimeData.standingWaveRatio];
 
-            const commonChartOption = {
-                tooltip: {
-                    trigger: 'axis'
-                },
-                xAxis: {
-                    type: 'category',
-                    data: xAxisCategory
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [{
-                    type: 'bar'
-                }]
-            };
-
-            this.realtimeChart.clear();
-            this.realtimeChart.setOption(commonChartOption);
             this.realtimeChart.setOption({ series: [{ data: xAxisData }] });
         },
 
         resetChart() {
-            const commonChartOption = {
-                tooltip: {
-                    trigger: 'axis'
-                },
-                xAxis: {
-                    type: 'category'
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [{
-                    type: 'bar'
-                }]
-            };
-
             this.realtimeChart.clear();
-            this.realtimeChart.setOption(commonChartOption);
-            this.realtimeChart.setOption({});
+            this.realtimeChart.setOption(this.chartOption);
         },
 
         initChart() {
             this.realtimeChart = echarts.init(document.getElementById('realtimeChart'));
-        },
-
-        updateChartData() {
-            const xAxisData = [
-                this.realtimeData.incidentPower,
-                this.realtimeData.reflectedPower,
-                this.realtimeData.pushPower,
-                this.realtimeData.inputPower,
-                this.realtimeData.electricCurrent,
-                this.realtimeData.temperature,
-                this.realtimeData.supplyVoltage,
-                this.realtimeData.standingWaveRatio];
-
-            this.realtimeChart.setOption({ series: [{ data: xAxisData }] });
         }
     },
     mounted() {
