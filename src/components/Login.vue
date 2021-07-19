@@ -26,8 +26,8 @@ export default {
             title: '',
 
             loginForm: {
-                userName: 'root',
-                password: 'Password1'
+                userName: '',
+                password: ''
             },
 
             loginFormRules: {

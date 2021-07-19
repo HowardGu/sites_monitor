@@ -145,7 +145,7 @@ export default {
                         siteId: site.siteId,
                         siteName: site.siteName,
                         tunnel: site.tunnel,
-                        hasAlert: site.siteId === 1
+                        hasAlert: site.alertState
                     };
                 });
 
