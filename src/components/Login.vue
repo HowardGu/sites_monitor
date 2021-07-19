@@ -20,11 +20,10 @@
 
 <script>
 import { mapActions } from 'vuex';
-import config from '../../public/config.js';
 export default {
     data() {
         return {
-            title: config.properties.LOGIN_TITLE,
+            title: '',
 
             loginForm: {
                 userName: 'root',
@@ -73,6 +72,7 @@ export default {
         }
     },
     created() {
+        this.title = this.$customConfig.LOGIN_TITLE;
         this.keyupEnter();
     }
 }

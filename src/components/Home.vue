@@ -63,7 +63,6 @@
 <script>
 import { mapActions } from 'vuex';
 import storageService from '@/service/storageService';
-import config from '../../public/config.js';
 export default {
     data() {
         return {
@@ -75,9 +74,9 @@ export default {
 
             year: new Date().getFullYear(),
 
-            copyright: config.properties.HOME_COPYRIGHT,
+            copyright: '',
 
-            title: config.properties.HOME_TITLE
+            title: ''
         };
     },
     methods: {
@@ -90,6 +89,8 @@ export default {
         const user = JSON.parse(storageService.get(storageService.USER_INFO));
         this.userName = user.userName;
         this.userGroup = user.userGroup;
+        this.copyright = this.$customConfig.HOME_COPYRIGHT;
+        this.title = this.$customConfig.HOME_TITLE;
     },
     watch: {
         '$route.path': function(newVal, oldVal) {

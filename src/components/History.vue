@@ -72,7 +72,6 @@ import logService from '@/service/logService';
 import siteService from '@/service/siteService';
 import * as echarts from 'echarts'
 import CsvExportor from 'csv-exportor'
-import config from '../../public/config.js';
 
 export default {
     data() {
@@ -96,7 +95,7 @@ export default {
 
             logListQueryInfo: {
                 pageNum: 1,
-                pageSize: Number(config.properties.HISTORY_PAGE_SIZE)
+                pageSize: 0
             },
 
             siteList: [],
@@ -357,6 +356,7 @@ export default {
         this.resetCharts();
     },
     created() {
+        this.logListQueryInfo.pageSize = this.$customConfig.HISTORY_PAGE_SIZE;
         this.getSites();
     }
 }

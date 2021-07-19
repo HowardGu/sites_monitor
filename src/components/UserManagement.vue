@@ -93,7 +93,6 @@
 
 <script>
 import userService from '@/service/userService';
-import config from '../../public/config.js';
 export default {
     data() {
         const validateAddUserFormPassword = (rule, value, callback) => {
@@ -187,7 +186,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: Number(config.properties.USERMANAGEMENT_PAGE_SIZE)
+                pageSize: 0
             },
 
             totalCount: 10
@@ -279,6 +278,7 @@ export default {
         }
     },
     created() {
+        this.queryInfo.pageSize = Number(this.$customConfig.USERMANAGEMENT_PAGE_SIZE);
         this.getUsers();
     }
 }

@@ -56,7 +56,6 @@
 <script>
 import alertService from '@/service/alertService';
 import siteService from '@/service/siteService';
-import config from '../../public/config.js';
 export default {
     data() {
         return {
@@ -64,7 +63,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: Number(config.properties.LOGS_PAGE_SIZE)
+                pageSize: 0
             },
 
             alertList: [],
@@ -151,6 +150,7 @@ export default {
         }
     },
     created() {
+        this.queryInfo.pageSize = Number(this.$customConfig.LOGS_PAGE_SIZE);
         this.getSites();
     }
 }

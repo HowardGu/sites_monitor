@@ -111,7 +111,6 @@
 
 <script>
 import siteService from '@/service/siteService';
-import config from '../../public/config.js';
 export default {
     data() {
         return {
@@ -161,7 +160,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: Number(config.properties.SITEMANAGEMENT_PAGE_SIZE)
+                pageSize: 0
             },
 
             totalCount: 10
@@ -265,6 +264,7 @@ export default {
         }
     },
     created() {
+        this.queryInfo.pageSize = Number(this.$customConfig.SITEMANAGEMENT_PAGE_SIZE);
         this.getSites();
     }
 }

@@ -16,12 +16,14 @@
 </template>
 
 <script>
-import config from '../../public/config.js';
 export default {
     data() {
         return {
-            url: config.properties.HELP_DOWNLOAD_URL
+            url: ''
         };
+    },
+    created() {
+        this.url = this.$customConfig.HELP_DOWNLOAD_URL;
     }
 }
 </script>
