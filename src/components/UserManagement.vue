@@ -186,7 +186,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: process.env.VUE_APP_USERMANAGEMENT_PAGE_SIZE
+                pageSize: 0
             },
 
             totalCount: 10
@@ -278,6 +278,7 @@ export default {
         }
     },
     created() {
+        this.queryInfo.pageSize = Number(this.$customConfig.USERMANAGEMENT_PAGE_SIZE);
         this.getUsers();
     }
 }

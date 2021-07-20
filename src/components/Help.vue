@@ -19,8 +19,11 @@
 export default {
     data() {
         return {
-            url: process.env.VUE_APP_HELP_DOWNLOAD_URL
+            url: ''
         };
+    },
+    created() {
+        this.url = this.$customConfig.HELP_DOWNLOAD_URL;
     }
 }
 </script>

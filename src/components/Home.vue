@@ -42,6 +42,10 @@
                         <i class="el-icon-user"></i>
                         <span slot="title">用户管理</span>
                     </el-menu-item>
+                    <el-menu-item index="realtimeChart">
+                        <i class="el-icon-s-data"></i>
+                        <span slot="title">实时数据</span>
+                    </el-menu-item>
                     <el-menu-item index="help">
                         <i class="el-icon-document"></i>
                         <span slot="title">帮助手册</span>
@@ -70,9 +74,9 @@ export default {
 
             year: new Date().getFullYear(),
 
-            copyright: process.env.VUE_APP_HOME_COPYRIGHT,
+            copyright: '',
 
-            title: process.env.VUE_APP_HOME_TITLE
+            title: ''
         };
     },
     methods: {
@@ -85,6 +89,8 @@ export default {
         const user = JSON.parse(storageService.get(storageService.USER_INFO));
         this.userName = user.userName;
         this.userGroup = user.userGroup;
+        this.copyright = this.$customConfig.HOME_COPYRIGHT;
+        this.title = this.$customConfig.HOME_TITLE;
     },
     watch: {
         '$route.path': function(newVal, oldVal) {

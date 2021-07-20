@@ -63,7 +63,7 @@ export default {
 
             queryInfo: {
                 pageNum: 1,
-                pageSize: process.env.VUE_APP_LOGS_PAGE_SIZE
+                pageSize: 0
             },
 
             alertList: [],
@@ -150,6 +150,7 @@ export default {
         }
     },
     created() {
+        this.queryInfo.pageSize = Number(this.$customConfig.LOGS_PAGE_SIZE);
         this.getSites();
     }
 }

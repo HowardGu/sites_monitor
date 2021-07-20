@@ -23,11 +23,11 @@ import { mapActions } from 'vuex';
 export default {
     data() {
         return {
-            title: process.env.VUE_APP_LOGIN_TITLE,
+            title: '',
 
             loginForm: {
-                userName: 'root',
-                password: 'Password1'
+                userName: '',
+                password: ''
             },
 
             loginFormRules: {
@@ -72,6 +72,7 @@ export default {
         }
     },
     created() {
+        this.title = this.$customConfig.LOGIN_TITLE;
         this.keyupEnter();
     }
 }

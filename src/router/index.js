@@ -10,6 +10,7 @@ import SiteManagement from '../components/SiteManagement.vue'
 import History from '../components/History.vue'
 import Logs from '../components/Logs.vue'
 import UserManagement from '../components/UserManagement.vue'
+import RealtimeChart from '../components/RealtimeChart'
 import Help from '../components/Help.vue'
 
 Vue.use(VueRouter)
@@ -57,6 +58,10 @@ const routes = [
                 component: UserManagement
             },
             {
+                path: '/realtimeChart',
+                component: RealtimeChart
+            },
+            {
                 path: '/help',
                 component: Help
             }
@@ -65,6 +70,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+    base: '/monitor/',
     routes
 })
 

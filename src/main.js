@@ -8,12 +8,18 @@ import store from './store';
 import axios from 'axios'
 import VueAxios from 'vue-axios';
 
-Vue.config.productionTip = false
+fetch(process.env.BASE_URL + 'config.json').then((str) => {
+    str.json().then((customConfig) => {
+        Vue.prototype.$customConfig = customConfig;
 
-Vue.use(VueAxios, axios);
+        Vue.config.productionTip = false
 
-new Vue({
-    router,
-    store,
-    render: h => h(App)
-}).$mount('#app')
+        Vue.use(VueAxios, axios);
+
+        new Vue({
+            router,
+            store,
+            render: h => h(App)
+        }).$mount('#app');
+    })
+});

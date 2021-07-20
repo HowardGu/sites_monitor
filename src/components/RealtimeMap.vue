@@ -75,7 +75,7 @@ export default {
 
             ak: this.$baiduMapAK,
 
-            mapCenter: process.env.VUE_APP_REALTIMEMAP_MAP_CENTER,
+            mapCenter: '',
 
             map: {
                 width: '100%',
@@ -145,7 +145,7 @@ export default {
                         siteId: site.siteId,
                         siteName: site.siteName,
                         tunnel: site.tunnel,
-                        hasAlert: site.siteId === 1
+                        hasAlert: site.alertState
                     };
                 });
 
@@ -160,6 +160,9 @@ export default {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
         }
+    },
+    created() {
+        this.mapCenter = this.$customConfig.REALTIMEMAP_MAP_CENTER;
     }
 }
 </script>

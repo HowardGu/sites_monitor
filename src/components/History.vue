@@ -95,7 +95,7 @@ export default {
 
             logListQueryInfo: {
                 pageNum: 1,
-                pageSize: process.env.VUE_APP_HISTORY_PAGE_SIZE
+                pageSize: 0
             },
 
             siteList: [],
@@ -356,6 +356,7 @@ export default {
         this.resetCharts();
     },
     created() {
+        this.logListQueryInfo.pageSize = this.$customConfig.HISTORY_PAGE_SIZE;
         this.getSites();
     }
 }
