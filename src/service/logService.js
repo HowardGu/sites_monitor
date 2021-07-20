@@ -4,16 +4,16 @@ const show = (siteUUID, axiosParams) => {
     return request.get(`logs/sites/${siteUUID}`, { params: axiosParams });
 };
 
-const showCurrentInfo = (siteUUID) => {
-    return request.get(`logs/sites/${siteUUID}/last`);
+const showAll = (axiosParams) => {
+    return request.get('logs', { params: axiosParams });
+};
+
+const showRealtimeLog = (siteUUID) => {
+    return request.get(`realtime/sites/${siteUUID}`);
 };
 
 const showRealtimeData = (realtiemParams) => {
     return request.post('realtime', realtiemParams);
-};
-
-const showAll = (axiosParams) => {
-    return request.get('logs', { params: axiosParams });
 };
 
 const showHistory = (siteUUID, historyParams) => {
@@ -22,8 +22,8 @@ const showHistory = (siteUUID, historyParams) => {
 
 export default {
     show,
-    showCurrentInfo,
-    showRealtimeData,
     showAll,
+    showRealtimeLog,
+    showRealtimeData,
     showHistory
 }

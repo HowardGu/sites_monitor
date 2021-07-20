@@ -208,7 +208,7 @@ export default {
 
                 console.log(this.selectedSiteUUID);
 
-                logService.showCurrentInfo(this.selectedSiteUUID).then((res) => {
+                logService.showRealtimeLog(this.selectedSiteUUID).then((res) => {
                     console.log(res);
                     if (res.data.data && res.data.data.state) {
                         this.realtimeData = res.data.data.state;
