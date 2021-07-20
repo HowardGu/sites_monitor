@@ -28,6 +28,14 @@ const showAll = (axiosParams) => {
     return request.get('users', { params: axiosParams });
 };
 
+const updateConf = (userConfParams) => {
+    return request.put(`users/${userConfParams.userId}`, userConfParams);
+};
+
+const showConf = (userId) => {
+    return request.get(`users/${userId}/conf`);
+};
+
 export default {
     login,
     info,
@@ -35,5 +43,7 @@ export default {
     update,
     show,
     remove,
-    showAll
+    showAll,
+    updateConf,
+    showConf
 };
