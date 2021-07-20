@@ -1,0 +1,20 @@
+{
+    "totalChart": 2,
+
+    "barsPerChart": 10,
+
+    "charts": [
+        {
+            "id": 0,
+            "title": "chart1",
+            "bars": ["", "", "", "", "", "", "", "", "", ""],
+            "dataType": "IncidentPower"
+        },
+        {
+            "id": 1,
+            "title": "chart2",
+            "bars": ["", "", "", "", "", "", "", "", "", ""],
+            "dataType": "ReflectedPower"
+        }
+    ]
+}

@@ -9,7 +9,7 @@
             <div slot="header" class="realtimeChart-card-header">
                 <h2 align="center">实时数据</h2>
                 <div>
-                    <el-button type="primary" icon="el-icon-setting" @click="realtimeChartsConfigDialogVisible = true">图表设置</el-button>
+                    <el-button type="primary" icon="el-icon-setting" @click="realtimeChartsConfigDialog1Visible = true">图表设置</el-button>
                 </div>
             </div>
 
@@ -29,32 +29,73 @@
             </div>
         </el-card>
 
-        <el-dialog title="图表设置" :visible.sync="realtimeChartsConfigDialogVisible" width="50%" :close-on-click-modal="false">
+        <el-dialog title="图表数量" :visible.sync="realtimeChartsConfigDialog1Visible" width="50%" :close-on-click-modal="false">
+            <el-card class="realtimeChart-inner-card">
+                <el-row :gutter="10" class="realtimeChart-row">
+                    <el-col :span="6">
+                        <span>图表数量：</span>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-select v-model="realtimeChartsConfigTotalChart" placeholder="请选择图表数量">
+                            <el-option v-for="i of 10" :label="i" :value="i" :key="i"></el-option>
+                        </el-select>
+                    </el-col>
+                </el-row>
+
+                <el-divider></el-divider>
+
+                <el-row :gutter="10" class="realtimeChart-row">
+                    <el-col :span="6">
+                        <span>图表数据项数量：</span>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-select v-model="realtimeChartsConfigBarsPerChart" placeholder="请选择图表数据项数量">
+                            <el-option v-for="i of 10" :label="i" :value="i" :key="i"></el-option>
+                        </el-select>
+                    </el-col>
+                </el-row>
+            </el-card>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="onRealtimeChartsConfigDialog1OK()">确定</el-button>
+                <el-button @click="realtimeChartsConfigDialog1Visible = false">取消</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="图表设置" :visible.sync="realtimeChartsConfigDialog2Visible" width="50%" top="5vh" :close-on-click-modal="false">
             <el-card class="realtimeChart-inner-card">
                 <div class="realtimeChart-row">
-                    <el-select v-model="realtimeChartsConfigDialogData.id" placeholder="请选择图表" @change="switchRealtimeChartsConfigDialogChart()">
+                    <el-select v-model="realtimeChartsConfigChartId" placeholder="请选择图表">
                         <el-option v-for="i of realtimeChartsConfig.totalChart" :label="'图表' + i.toString()" :value="i - 1" :key="i - 1"></el-option>
                     </el-select>
                 </div>
 
                 <el-divider></el-divider>
 
-                <div v-show="realtimeChartsConfigDialogData.id !== null">
-                    <el-row :gutter="10" class="realtimeChart-row">
-                        <el-col :span="2">
-                            <span>图表标题：</span>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-input v-model="realtimeChartsConfigDialogData.title" placeholder="图表标题"></el-input>
-                        </el-col>
-                    </el-row>
+                <div class="realtimeChart-row">
+                    <el-select v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].dataType" placeholder="请选择数据类型">
+                        <el-option v-for="dataType of dataTypes" :label="dataType.name" :value="dataType.id" :key="dataType.id"></el-option>
+                    </el-select>
+                </div>
 
-                    <el-divider></el-divider>
+                <el-divider></el-divider>
 
+                <el-row :gutter="10" class="realtimeChart-row">
+                    <el-col :span="3">
+                        <span>图表标题：</span>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-input v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].title" placeholder="图表标题"></el-input>
+                    </el-col>
+                </el-row>
+
+                <el-divider></el-divider>
+
+                <div class="realtimeChart-dialog-select-container">
                     <span>请选择{{ realtimeChartsConfig.barsPerChart }}个数据项分别对应的站点：</span>
 
                     <div v-for="i of realtimeChartsConfig.barsPerChart" :key="i" class="realtimeChart-row">
-                        <el-select v-model="realtimeChartsConfigDialogData.bars[i - 1]" :placeholder="'第' + i.toString() + '个数据项'" @change="switchRealtimeChartsConfigDialogBar()">
+                        <el-select v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].bars[i - 1]" :placeholder="'第' + i.toString() + '个数据项'">
                             <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
                                 <span style="float: left">{{ site.siteFullName }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
@@ -65,8 +106,8 @@
             </el-card>
 
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="realtimeChartsConfigDialogVisible = false">确定</el-button>
-                <el-button @click="realtimeChartsConfigDialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="onRealtimeChartsConfigDialog2OK()">确定</el-button>
+                <el-button @click="realtimeChartsConfigDialog2Visible = false">取消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -92,8 +133,6 @@ export default {
 
             selectedSiteUUID: '',
 
-            realtimeChart: null,
-
             refreshInterval: null,
 
             chartOption: {
@@ -114,22 +153,34 @@ export default {
 
             chartLines: 0,
 
-            chartNameList: ['realtimeChart0', 'realtimeChart1', 'realtimeChart2'],
-
             realtimeCharts: [],
 
-            realtimeChartsConfigDialogVisible: false,
+            realtimeChartsConfigDialog1Visible: false,
+
+            realtimeChartsConfigDialog2Visible: false,
 
             realtimeChartsConfig: {
                 totalChart: 0,
-                barsPerChart: 0
+                barsPerChart: 0,
+                charts: [
+                    {
+                        id: null,
+                        title: '',
+                        bars: ['', '', '', '', '', '', '', '', '', ''],
+                        dataType: ''
+                    }
+                ]
             },
 
-            realtimeChartsConfigDialogData: {
-                id: null,
-                title: '',
-                bars: ['', '', '', '', '', '', '', '', '', '']
-            }
+            realtimeChartsInited: false,
+
+            realtimeChartsConfigChartId: 0,
+
+            realtimeChartsConfigTotalChart: 0,
+
+            realtimeChartsConfigBarsPerChart: 0,
+
+            dataTypes: []
         };
     },
     methods: {
@@ -138,19 +189,19 @@ export default {
                 this.initChart();
                 this.resetChart();
 
-                this.getSiteRealtimeChart();
+                this.getRealtimeData();
 
                 if (this.refreshInterval) {
                     window.clearInterval(this.refreshInterval);
-                } else {
-                    this.refreshInterval = window.setInterval(this.getSiteRealtimeChart, 5000);
                 }
+
+                this.refreshInterval = window.setInterval(this.getRealtimeData, 5000);
             } else {
                 this.$message.warning('请选择站点');
             }
         },
 
-        getSiteRealtimeChart() {
+        getRealtimeData() {
             if (this.selectedSiteUUID !== '') {
                 this.loading = true;
                 this.loadingText = '数据加载中';
@@ -212,38 +263,50 @@ export default {
         },
 
         initChart() {
-            this.chartNameList = [];
-            for (let i = 0; i < this.realtimeChartsConfig.totalChart; i++) {
-                this.chartNameList.push('realtimeChart' + i.toString());
+            if (!this.realtimeChartsInited) {
+                console.log('Init Charts...');
+                this.realtimeCharts = [];
+                for (let i = 0; i < this.realtimeChartsConfig.totalChart; i++) {
+                    this.realtimeCharts.push(echarts.init(document.getElementById('realtimeChart' + i.toString())));
+                }
+
+                this.realtimeChartsInited = true;
             }
-            this.realtimeCharts = [];
-            this.chartNameList.forEach((chartName) => {
-                this.realtimeCharts.push(echarts.init(document.getElementById(chartName)));
-            });
         },
 
-        getChartsConfig() {
-            fetch(process.env.BASE_URL + 'realtimeChartConfig.json').then((data) => {
+        getRealtimeChartsConfig() {
+            fetch(process.env.BASE_URL + 'realtimeChartsConfig.json').then((data) => {
                 data.json().then((customConfig) => {
                     console.log(customConfig);
                     this.realtimeChartsConfig = customConfig;
                     this.chartLines = Math.ceil(customConfig.totalChart / 2);
+                    this.realtimeChartsConfigTotalChart = customConfig.totalChart;
+                    this.realtimeChartsConfigBarsPerChart = customConfig.barsPerChart;
                     console.log('Chart Line: ' + this.chartLines);
                 })
             });
         },
 
-        switchRealtimeChartsConfigDialogChart() {
-            this.realtimeChartsConfigDialogData = this.realtimeChartsConfig.charts[this.realtimeChartsConfigDialogData.id];
+        onRealtimeChartsConfigDialog1OK() {
+            console.log('Local: ' + this.realtimeChartsConfigTotalChart + ' ' + this.realtimeChartsConfigBarsPerChart);
+            console.log('Server: ' + this.realtimeChartsConfig.totalChart + ' ' + this.realtimeChartsConfig.barsPerChart);
+            this.realtimeChartsConfigDialog1Visible = false;
+            this.realtimeChartsConfigDialog2Visible = true;
         },
 
-        switchRealtimeChartsConfigDialogBar() {
-            console.log(this.realtimeChartsConfigDialogData.bars);
+        onRealtimeChartsConfigDialog2OK() {
+            this.realtimeChartsConfigDialog2Visible = false;
+            this.updateRealtimeChartsConfig();
+        },
+
+        updateRealtimeChartsConfig() {
+            this.$message.success('图表配置更新成功');
         }
     },
     created() {
-        this.getChartsConfig();
+        this.getRealtimeChartsConfig();
         this.getSites();
+        this.dataTypes = this.$customConfig.COMMON_DATA_TYPES;
     },
     destroyed() {
         if (this.refreshInterval) {
@@ -303,5 +366,11 @@ export default {
     display: flex;
     align-items: center;
     margin-top: 20px;
+}
+
+.realtimeChart-dialog-select-container {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
 }
 </style>

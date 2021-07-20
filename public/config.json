@@ -1,4 +1,39 @@
 {
+    "COMMON_DATA_TYPES": [
+        {
+            "id": "IncidentPower",
+            "name": "入射功率"
+        },
+        {
+            "id": "ReflectedPower",
+            "name": "反射功率"
+        },
+        {
+            "id": "PushPower",
+            "name": "推动功率"
+        },
+        {
+            "id": "InputPower",
+            "name": "输入功率"
+        },
+        {
+            "id": "ElectricCurrent",
+            "name": "功放电流"
+        },
+        {
+            "id": "Temperature",
+            "name": "功放温度"
+        },
+        {
+            "id": "SupplyVoltage",
+            "name": "电源电压"
+        },
+        {
+            "id": "StandingWaveRatio",
+            "name": "驻波比"
+        }
+    ],
+
     "HELP_DOWNLOAD_URL": "https://www.baidu.com",
 
     "HISTORY_PAGE_SIZE": 10,

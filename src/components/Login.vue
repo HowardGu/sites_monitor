@@ -4,10 +4,10 @@
             <h2 align="center">{{ title }}</h2>
             <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
                 <el-form-item prop="userName">
-                    <el-input v-model="loginForm.userName" prefix-icon="el-icon-user" @keyup.enter.native="submitLoginForm"></el-input>
+                    <el-input v-model="loginForm.userName" prefix-icon="el-icon-user" @keyup.enter.native="submitLoginForm" placeholder="请输入用户名"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password" @keyup.enter.native="submitLoginForm"></el-input>
+                    <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password" @keyup.enter.native="submitLoginForm" placeholder="请输入密码"></el-input>
                 </el-form-item>
                 <el-form-item class="login_form_buttons">
                     <el-button type="primary" @click="submitLoginForm">登录</el-button>
