@@ -9,17 +9,11 @@
             <div slot="header" class="realtimeChart-card-header">
                 <h2 align="center">实时数据</h2>
                 <div>
-                    <el-button type="primary" icon="el-icon-setting" @click="realtimeChartsConfigDialog1Visible = true">图表设置</el-button>
+                    <el-button type="primary" icon="el-icon-setting" @click="showRealtimeChartsConfigDialog1()">图表设置</el-button>
                 </div>
             </div>
 
             <div class="realtimeChart-search-bar">
-                <el-select v-model="selectedSiteUUID" placeholder="请选择站点">
-                    <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
-                        <span style="float: left">{{ site.siteFullName }}</span>
-                        <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
-                    </el-option>
-                </el-select>
                 <el-button class="realtimeChart-search-bar-button" icon="el-icon-search" @click="startTimeIntervel()">刷新曲线</el-button>
             </div>
 
@@ -125,13 +119,9 @@ export default {
 
             loadingText: '',
 
-            siteId: 2,
-
-            realtimeData: null,
+            realtimeDataQueryInfos: [],
 
             siteList: [],
-
-            selectedSiteUUID: '',
 
             refreshInterval: null,
 
@@ -140,8 +130,7 @@ export default {
                     trigger: 'axis'
                 },
                 xAxis: {
-                    type: 'category',
-                    data: ['入射功率', '反射功率', '推动功率', '输入功率', '功放电流', '功放温度', '电源电压', '驻波比']
+                    type: 'category'
                 },
                 yAxis: {
                     type: 'value'
@@ -172,58 +161,57 @@ export default {
                 ]
             },
 
-            realtimeChartsInited: false,
-
             realtimeChartsConfigChartId: 0,
 
             realtimeChartsConfigTotalChart: 0,
 
             realtimeChartsConfigBarsPerChart: 0,
 
+            realtimeChartsConfigChartBlock: null,
+
             dataTypes: []
         };
     },
     methods: {
         startTimeIntervel() {
-            if (this.selectedSiteUUID !== '') {
-                this.initChart();
-                this.resetChart();
+            this.initCharts();
+            this.resetCharts();
 
-                this.getRealtimeData();
+            this.realtimeDataQueryInfos = [];
+            this.realtimeChartsConfig.charts.forEach((chart) => {
+                this.realtimeDataQueryInfos.push({
+                    siteIds: chart.bars,
+                    signalName: chart.dataType
+                })
+            });
 
-                if (this.refreshInterval) {
-                    window.clearInterval(this.refreshInterval);
-                }
+            this.getRealtimeData();
 
-                this.refreshInterval = window.setInterval(this.getRealtimeData, 5000);
-            } else {
-                this.$message.warning('请选择站点');
-            }
+            this.clearInterval();
+
+            this.refreshInterval = window.setInterval(this.getRealtimeData, 5000);
         },
 
         getRealtimeData() {
-            if (this.selectedSiteUUID !== '') {
-                this.loading = true;
-                this.loadingText = '数据加载中';
+            this.loading = true;
+            this.loadingText = '数据加载中';
 
-                console.log(this.selectedSiteUUID);
+            console.log('realtime query infos');
+            console.log(this.realtimeDataQueryInfos);
 
-                logService.showRealtimeLog(this.selectedSiteUUID).then((res) => {
+            this.realtimeDataQueryInfos.forEach((queryInfo, index) => {
+                logService.showRealtimeData(queryInfo).then((res) => {
                     console.log(res);
-                    if (res.data.data && res.data.data.state) {
-                        this.realtimeData = res.data.data.state;
-                        this.renderChart();
+                    if (res.data.data && res.data.data.realtimeData) {
+                        this.renderChart(index, res.data.data.realtimeData);
                     } else {
-                        this.resetChart();
-                        this.$message('站点' + this.siteId + '没有日志');
+                        this.resetCharts();
                     }
                     this.loading = false;
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
-            } else {
-                this.$message.warning('请选择站点');
-            }
+            });
         },
 
         getSites() {
@@ -241,36 +229,41 @@ export default {
             })
         },
 
-        renderChart() {
-            const xAxisData = [
-                this.realtimeData.incidentPower,
-                this.realtimeData.reflectedPower,
-                this.realtimeData.pushPower,
-                this.realtimeData.inputPower,
-                this.realtimeData.electricCurrent,
-                this.realtimeData.temperature,
-                this.realtimeData.supplyVoltage,
-                this.realtimeData.standingWaveRatio];
+        renderChart(index, realtimeData) {
+            const title = this.realtimeChartsConfig.charts[index].title;
+            const subTitle = this.dataTypes.find((dataType) => {
+                return dataType.id === this.realtimeChartsConfig.charts[index].dataType;
+            }).name;
+            const seriesData = realtimeData;
+            const xAxisData = []
+            for (let i = 1; i <= this.realtimeChartsConfig.barsPerChart; i++) {
+                xAxisData.push(i.toString());
+            }
 
-            this.realtimeCharts[0].setOption({ series: [{ data: xAxisData }] });
+            this.realtimeCharts[index].setOption({ title: { text: title, subtext: subTitle }, xAxis: { data: xAxisData }, series: [{ data: seriesData }] });
         },
 
-        resetChart() {
+        resetCharts() {
             this.realtimeCharts.forEach((realtimeChart) => {
                 realtimeChart.clear();
                 realtimeChart.setOption(this.chartOption);
             });
         },
 
-        initChart() {
-            if (!this.realtimeChartsInited) {
-                console.log('Init Charts...');
-                this.realtimeCharts = [];
-                for (let i = 0; i < this.realtimeChartsConfig.totalChart; i++) {
-                    this.realtimeCharts.push(echarts.init(document.getElementById('realtimeChart' + i.toString())));
+        initCharts() {
+            console.log('Init Charts...');
+            this.realtimeCharts = [];
+            for (let i = 0; i < this.realtimeChartsConfig.totalChart; i++) {
+                const chartDOMId = 'realtimeChart' + i.toString();
+                const chartDOM = echarts.getInstanceByDom(document.getElementById(chartDOMId));
+                if (chartDOM) {
+                    echarts.dispose(document.getElementById(chartDOMId));
                 }
+            }
 
-                this.realtimeChartsInited = true;
+            for (let i = 0; i < this.realtimeChartsConfig.totalChart; i++) {
+                const chartDOMId = 'realtimeChart' + i.toString();
+                this.realtimeCharts.push(echarts.init(document.getElementById(chartDOMId)));
             }
         },
 
@@ -287,9 +280,52 @@ export default {
             });
         },
 
+        showRealtimeChartsConfigDialog1() {
+            this.clearInterval();
+            this.realtimeChartsConfigChartId = 0;
+            this.realtimeChartsConfigDialog1Visible = true;
+        },
+
         onRealtimeChartsConfigDialog1OK() {
             console.log('Local: ' + this.realtimeChartsConfigTotalChart + ' ' + this.realtimeChartsConfigBarsPerChart);
             console.log('Server: ' + this.realtimeChartsConfig.totalChart + ' ' + this.realtimeChartsConfig.barsPerChart);
+
+            if (this.realtimeChartsConfigTotalChart !== this.realtimeChartsConfig.totalChart) {
+                const chartBarArray = [];
+                for (let i = 0; i < this.realtimeChartsConfigBarsPerChart; i++) {
+                    chartBarArray.push('');
+                }
+
+                this.realtimeChartsConfig.charts = [];
+
+                for (let i = 0; i < this.realtimeChartsConfigTotalChart; i++) {
+                    const chartBlock = JSON.parse(JSON.stringify(this.realtimeChartsConfigChartBlock));
+                    chartBlock.id = i;
+                    chartBlock.title = 'Chart' + (i + 1).toString();
+                    chartBlock.bars = JSON.parse(JSON.stringify(chartBarArray));
+                    chartBlock.dataType = this.dataTypes[0].id;
+
+                    this.realtimeChartsConfig.charts.push(chartBlock);
+                }
+
+                this.realtimeChartsConfig.totalChart = this.realtimeChartsConfigTotalChart;
+                this.realtimeChartsConfig.barsPerChart = this.realtimeChartsConfigBarsPerChart;
+                this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / 2);
+
+                console.log(this.realtimeChartsConfig);
+            } else if (this.realtimeChartsConfigBarsPerChart !== this.realtimeChartsConfig.barsPerChart) {
+                const chartBarArray = [];
+                for (let i = 0; i < this.realtimeChartsConfigBarsPerChart; i++) {
+                    chartBarArray.push('');
+                }
+
+                this.realtimeChartsConfig.charts.forEach((chart) => {
+                    chart.bars = JSON.parse(JSON.stringify(chartBarArray));
+                });
+
+                this.realtimeChartsConfig.barsPerChart = this.realtimeChartsConfigBarsPerChart;
+            }
+
             this.realtimeChartsConfigDialog1Visible = false;
             this.realtimeChartsConfigDialog2Visible = true;
         },
@@ -301,18 +337,23 @@ export default {
 
         updateRealtimeChartsConfig() {
             this.$message.success('图表配置更新成功');
+        },
+
+        clearInterval() {
+            if (this.refreshInterval) {
+                window.clearInterval(this.refreshInterval);
+                console.log('RealtimeChart time intervel destroyed');
+            }
         }
     },
     created() {
         this.getRealtimeChartsConfig();
         this.getSites();
         this.dataTypes = this.$customConfig.COMMON_DATA_TYPES;
+        this.realtimeChartsConfigChartBlock = this.$customConfig.REALTIMECHART_CONFIG_CHART_BLOCK;
     },
     destroyed() {
-        if (this.refreshInterval) {
-            window.clearInterval(this.refreshInterval);
-            console.log('RealtimeChart time intervel destroyed');
-        }
+        this.clearInterval();
     }
 }
 </script>

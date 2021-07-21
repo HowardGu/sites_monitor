@@ -49,5 +49,12 @@
 
     "USERMANAGEMENT_PAGE_SIZE": 10,
 
+    "REALTIMECHART_CONFIG_CHART_BLOCK": {
+        "id": 0,
+        "title": "",
+        "bars": [],
+        "dataType": ""
+    },
+
     "REALTIMEMAP_MAP_CENTER": "厦门"
 }

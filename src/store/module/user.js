@@ -28,6 +28,7 @@ const userModule = {
                     return userService.info();
                 }).then((res) => {
                     context.commit('SET_USERINFO', res.data.data.user);
+                    console.log(res.data.data.user.userId);
                     console.log(res.data.data.user.userName);
                     console.log(res.data.data.user.userGroup);
                     resolve(res);
