@@ -110,11 +110,15 @@
 <script>
 import logService from '@/service/logService';
 import siteService from '@/service/siteService';
+import userService from '@/service/userService';
+import storageService from '@/service/storageService';
 import * as echarts from 'echarts'
 
 export default {
     data() {
         return {
+            userId: 0,
+
             loading: false,
 
             loadingText: '',
@@ -268,16 +272,41 @@ export default {
         },
 
         getRealtimeChartsConfig() {
-            fetch(process.env.BASE_URL + 'realtimeChartsConfig.json').then((data) => {
-                data.json().then((customConfig) => {
-                    console.log(customConfig);
-                    this.realtimeChartsConfig = customConfig;
-                    this.chartLines = Math.ceil(customConfig.totalChart / 2);
-                    this.realtimeChartsConfigTotalChart = customConfig.totalChart;
-                    this.realtimeChartsConfigBarsPerChart = customConfig.barsPerChart;
-                    console.log('Chart Line: ' + this.chartLines);
-                })
-            });
+            console.log('User ' + this.userId);
+            userService.showConf(this.userId).then((res) => {
+                console.log(res);
+                if (res.data.data && res.data.data.conf.chartConf) {
+                    console.log('Use config from server');
+                    this.realtimeChartsConfig = JSON.parse(res.data.data.conf.chartConf);
+                } else {
+                    console.log('Use config from local');
+                    this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
+                }
+
+                console.log(this.realtimeChartsConfig);
+
+                this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / 2);
+                this.realtimeChartsConfigTotalChart = this.realtimeChartsConfig.totalChart;
+                this.realtimeChartsConfigBarsPerChart = this.realtimeChartsConfig.barsPerChart;
+            }).catch((err) => {
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+            })
+        },
+
+        updateRealtimeChartsConfig() {
+            const chartsConfig = {
+                userId: this.userId,
+                chartConf: JSON.stringify(this.realtimeChartsConfig)
+            }
+
+            console.log(chartsConfig);
+
+            userService.updateConf(chartsConfig).then((res) => {
+                console.log(res);
+                this.$message.success('图表配置更新成功');
+            }).catch((err) => {
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+            })
         },
 
         showRealtimeChartsConfigDialog1() {
@@ -301,7 +330,7 @@ export default {
                 for (let i = 0; i < this.realtimeChartsConfigTotalChart; i++) {
                     const chartBlock = JSON.parse(JSON.stringify(this.realtimeChartsConfigChartBlock));
                     chartBlock.id = i;
-                    chartBlock.title = 'Chart' + (i + 1).toString();
+                    chartBlock.title = '图表' + (i + 1).toString();
                     chartBlock.bars = JSON.parse(JSON.stringify(chartBarArray));
                     chartBlock.dataType = this.dataTypes[0].id;
 
@@ -335,10 +364,6 @@ export default {
             this.updateRealtimeChartsConfig();
         },
 
-        updateRealtimeChartsConfig() {
-            this.$message.success('图表配置更新成功');
-        },
-
         clearInterval() {
             if (this.refreshInterval) {
                 window.clearInterval(this.refreshInterval);
@@ -347,6 +372,8 @@ export default {
         }
     },
     created() {
+        const user = JSON.parse(storageService.get(storageService.USER_INFO));
+        this.userId = user.userId;
         this.getRealtimeChartsConfig();
         this.getSites();
         this.dataTypes = this.$customConfig.COMMON_DATA_TYPES;

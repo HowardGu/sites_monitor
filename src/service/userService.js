@@ -29,7 +29,7 @@ const showAll = (axiosParams) => {
 };
 
 const updateConf = (userConfParams) => {
-    return request.put(`users/${userConfParams.userId}`, userConfParams);
+    return request.put(`users/${userConfParams.userId}/conf`, userConfParams);
 };
 
 const showConf = (userId) => {
