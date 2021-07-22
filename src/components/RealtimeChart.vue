@@ -420,14 +420,7 @@ export default {
 }
 
 .realtimeChart-inner-card {
-    margin-top: 20px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
-}
-
-.realtimeChart-inner-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .realtimeChart-row {

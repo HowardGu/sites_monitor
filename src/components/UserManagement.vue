@@ -38,25 +38,27 @@
         </el-card>
 
         <el-dialog title="新增用户" :visible.sync="addUserDialogVisible" width="50%" @close="resetAddUserDialog" :close-on-click-modal="false">
-            <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef" label-width="80px" label-position="left">
-                <el-form-item label="用户名" prop="userName">
-                    <el-input v-model="addUserForm.userName"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="password">
-                    <el-input v-model="addUserForm.password" type="password"></el-input>
-                </el-form-item>
-                <el-form-item label="确认密码" prop="password2">
-                    <el-input v-model="addUserForm.password2" type="password"></el-input>
-                </el-form-item>
-                <el-form-item label="用户组" prop="userGroup">
-                    <el-select v-model="addUserForm.userGroup" placeholder="请选择用户组">
-                        <el-option label="admin" value="admin"></el-option>
-                        <el-option label="manager" value="manager"></el-option>
-                        <el-option label="user" value="user"></el-option>
-                        <el-option label="guest" value="guest"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
+            <el-card class="userManagement-inner-card">
+                <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef" label-width="80px" label-position="left">
+                    <el-form-item label="用户名" prop="userName">
+                        <el-input v-model="addUserForm.userName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password">
+                        <el-input v-model="addUserForm.password" type="password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" prop="password2">
+                        <el-input v-model="addUserForm.password2" type="password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="用户组" prop="userGroup">
+                        <el-select v-model="addUserForm.userGroup" placeholder="请选择用户组">
+                            <el-option label="admin" value="admin"></el-option>
+                            <el-option label="manager" value="manager"></el-option>
+                            <el-option label="user" value="user"></el-option>
+                            <el-option label="guest" value="guest"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+            </el-card>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="submitAddUserForm">确定</el-button>
                 <el-button @click="addUserDialogVisible = false">取消</el-button>
@@ -64,25 +66,27 @@
         </el-dialog>
 
         <el-dialog title="编辑用户" :visible.sync="editUserDialogVisible" width="50%" @close="resetEditUserDialog" :close-on-click-modal="false">
-            <el-form :model="editUserForm" :rules="editUserFormRules" ref="editUserFormRef" label-width="80px" label-position="left">
-                <el-form-item label="用户名" prop="userName">
-                    <el-input v-model="editUserForm.userName"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="password">
-                    <el-input v-model="editUserForm.password" type="password"></el-input>
-                </el-form-item>
-                <el-form-item label="确认密码" prop="password2">
-                    <el-input v-model="editUserForm.password2" type="password"></el-input>
-                </el-form-item>
-                <el-form-item label="用户组" prop="userGroup">
-                    <el-select v-model="editUserForm.userGroup" placeholder="请选择用户组">
-                        <el-option label="admin" value="admin"></el-option>
-                        <el-option label="manager" value="manager"></el-option>
-                        <el-option label="user" value="user"></el-option>
-                        <el-option label="guest" value="guest"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
+            <el-card class="userManagement-inner-card">
+                <el-form :model="editUserForm" :rules="editUserFormRules" ref="editUserFormRef" label-width="80px" label-position="left">
+                    <el-form-item label="用户名" prop="userName">
+                        <el-input v-model="editUserForm.userName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password">
+                        <el-input v-model="editUserForm.password" type="password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" prop="password2">
+                        <el-input v-model="editUserForm.password2" type="password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="用户组" prop="userGroup">
+                        <el-select v-model="editUserForm.userGroup" placeholder="请选择用户组">
+                            <el-option label="admin" value="admin"></el-option>
+                            <el-option label="manager" value="manager"></el-option>
+                            <el-option label="user" value="user"></el-option>
+                            <el-option label="guest" value="guest"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+            </el-card>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="submitEditUserForm">确定</el-button>
                 <el-button @click="editUserDialogVisible = false">取消</el-button>
@@ -293,5 +297,9 @@ export default {
 
 .userManagement-pagination {
     margin-top: 15px;
+}
+
+.userManagement-inner-card {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
 }
 </style>

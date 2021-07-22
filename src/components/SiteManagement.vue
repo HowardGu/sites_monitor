@@ -48,29 +48,31 @@
         </el-card>
 
         <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" @close="resetAddSiteDialog" :close-on-click-modal="false">
-            <el-form :model="addSiteForm" :rules="addEditSiteFormRules" ref="addSiteFormRef" label-width="70px" label-position="left">
-                <el-form-item label="站点号">
-                    <el-input-number v-model="addSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
-                </el-form-item>
-                <el-form-item label="经度" prop="longitude">
-                    <el-input v-model="addSiteForm.longitude"></el-input>
-                </el-form-item>
-                <el-form-item label="纬度" prop="latitude">
-                    <el-input v-model="addSiteForm.latitude"></el-input>
-                </el-form-item>
-                <el-form-item label="隧道" prop="tunnel">
-                    <el-input v-model="addSiteForm.tunnel"></el-input>
-                </el-form-item>
-                <el-form-item label="地段" prop="location">
-                    <el-input v-model="addSiteForm.location"></el-input>
-                </el-form-item>
-                <el-form-item label="站点" prop="siteName">
-                    <el-input v-model="addSiteForm.siteName"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <el-input v-model="addSiteForm.description"></el-input>
-                </el-form-item>
-            </el-form>
+            <el-card class="siteManagement-inner-card">
+                <el-form :model="addSiteForm" :rules="addEditSiteFormRules" ref="addSiteFormRef" label-width="70px" label-position="left">
+                    <el-form-item label="站点号">
+                        <el-input-number v-model="addSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="经度" prop="longitude">
+                        <el-input v-model="addSiteForm.longitude"></el-input>
+                    </el-form-item>
+                    <el-form-item label="纬度" prop="latitude">
+                        <el-input v-model="addSiteForm.latitude"></el-input>
+                    </el-form-item>
+                    <el-form-item label="隧道" prop="tunnel">
+                        <el-input v-model="addSiteForm.tunnel"></el-input>
+                    </el-form-item>
+                    <el-form-item label="地段" prop="location">
+                        <el-input v-model="addSiteForm.location"></el-input>
+                    </el-form-item>
+                    <el-form-item label="站点" prop="siteName">
+                        <el-input v-model="addSiteForm.siteName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="描述">
+                        <el-input v-model="addSiteForm.description"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-card>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="submitAddSiteForm">确定</el-button>
                 <el-button @click="addSiteDialogVisible = false">取消</el-button>
@@ -78,29 +80,31 @@
         </el-dialog>
 
         <el-dialog title="编辑站点" :visible.sync="editSiteDialogVisible" width="50%" @close="resetEditSiteDialog" :close-on-click-modal="false">
-            <el-form :model="editSiteForm" :rules="addEditSiteFormRules" ref="editSiteFormRef" label-width="70px" label-position="left">
-                <el-form-item label="站点号">
-                    <el-input-number v-model="editSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
-                </el-form-item>
-                <el-form-item label="经度" prop="longitude">
-                    <el-input v-model="editSiteForm.longitude"></el-input>
-                </el-form-item>
-                <el-form-item label="纬度" prop="latitude">
-                    <el-input v-model="editSiteForm.latitude"></el-input>
-                </el-form-item>
-                <el-form-item label="隧道" prop="tunnel">
-                    <el-input v-model="editSiteForm.tunnel"></el-input>
-                </el-form-item>
-                <el-form-item label="地段" prop="location">
-                    <el-input v-model="editSiteForm.location"></el-input>
-                </el-form-item>
-                <el-form-item label="站点" prop="siteName">
-                    <el-input v-model="editSiteForm.siteName"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <el-input v-model="editSiteForm.description"></el-input>
-                </el-form-item>
-            </el-form>
+            <el-card class="siteManagement-inner-card">
+                <el-form :model="editSiteForm" :rules="addEditSiteFormRules" ref="editSiteFormRef" label-width="70px" label-position="left">
+                    <el-form-item label="站点号">
+                        <el-input-number v-model="editSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="经度" prop="longitude">
+                        <el-input v-model="editSiteForm.longitude"></el-input>
+                    </el-form-item>
+                    <el-form-item label="纬度" prop="latitude">
+                        <el-input v-model="editSiteForm.latitude"></el-input>
+                    </el-form-item>
+                    <el-form-item label="隧道" prop="tunnel">
+                        <el-input v-model="editSiteForm.tunnel"></el-input>
+                    </el-form-item>
+                    <el-form-item label="地段" prop="location">
+                        <el-input v-model="editSiteForm.location"></el-input>
+                    </el-form-item>
+                    <el-form-item label="站点" prop="siteName">
+                        <el-input v-model="editSiteForm.siteName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="描述">
+                        <el-input v-model="editSiteForm.description"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-card>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="submitEditSiteForm">确定</el-button>
                 <el-button @click="editSiteDialogVisible = false">取消</el-button>
@@ -279,5 +283,9 @@ export default {
 
 .siteManagement-pagination {
     margin-top: 15px;
+}
+
+.siteManagement-inner-card {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
 }
 </style>
