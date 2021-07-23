@@ -17,6 +17,10 @@
             "name": "输入功率"
         },
         {
+            "id": "RatedPower",
+            "name": "额定功率"
+        },
+        {
             "id": "ElectricCurrent",
             "name": "功放电流"
         },
