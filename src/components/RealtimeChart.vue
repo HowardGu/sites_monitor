@@ -68,7 +68,7 @@
 
                 <div class="realtimeChart-row">
                     <el-select v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].dataType" placeholder="请选择数据类型">
-                        <el-option v-for="dataType of dataTypes" :label="dataType.name" :value="dataType.id" :key="dataType.id"></el-option>
+                        <el-option v-for="dataType of dataTypes" :label="dataType.text" :value="dataType.name" :key="dataType.name"></el-option>
                     </el-select>
                 </div>
 
@@ -236,8 +236,8 @@ export default {
         renderChart(index, realtimeData) {
             const title = this.realtimeChartsConfig.charts[index].title;
             const subTitle = this.dataTypes.find((dataType) => {
-                return dataType.id === this.realtimeChartsConfig.charts[index].dataType;
-            }).name;
+                return dataType.name === this.realtimeChartsConfig.charts[index].dataType;
+            }).text;
             const seriesData = realtimeData;
             const xAxisData = []
             for (let i = 1; i <= this.realtimeChartsConfig.barsPerChart; i++) {
@@ -332,7 +332,7 @@ export default {
                     chartBlock.id = i;
                     chartBlock.title = '图表' + (i + 1).toString();
                     chartBlock.bars = JSON.parse(JSON.stringify(chartBarArray));
-                    chartBlock.dataType = this.dataTypes[0].id;
+                    chartBlock.dataType = this.dataTypes[0].name;
 
                     this.realtimeChartsConfig.charts.push(chartBlock);
                 }

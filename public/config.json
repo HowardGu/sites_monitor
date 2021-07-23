@@ -1,40 +1,40 @@
 {
     "COMMON_DATA_TYPES": [
         {
-            "id": "IncidentPower",
-            "name": "入射功率"
+            "name": "IncidentPower",
+            "text": "入射功率"
         },
         {
-            "id": "ReflectedPower",
-            "name": "反射功率"
+            "name": "ReflectedPower",
+            "text": "反射功率"
         },
         {
-            "id": "PushPower",
-            "name": "推动功率"
+            "name": "PushPower",
+            "text": "推动功率"
         },
         {
-            "id": "InputPower",
-            "name": "输入功率"
+            "name": "InputPower",
+            "text": "输入功率"
         },
         {
-            "id": "RatedPower",
-            "name": "额定功率"
+            "name": "RatedPower",
+            "text": "额定功率"
         },
         {
-            "id": "ElectricCurrent",
-            "name": "功放电流"
+            "name": "ElectricCurrent",
+            "text": "功放电流"
         },
         {
-            "id": "Temperature",
-            "name": "功放温度"
+            "name": "Temperature",
+            "text": "功放温度"
         },
         {
-            "id": "SupplyVoltage",
-            "name": "电源电压"
+            "name": "SupplyVoltage",
+            "text": "电源电压"
         },
         {
-            "id": "StandingWaveRatio",
-            "name": "驻波比"
+            "name": "StandingWaveRatio",
+            "text": "驻波比"
         }
     ],
 

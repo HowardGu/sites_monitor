@@ -31,6 +31,7 @@
             <div id="reflectedPowerChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
             <div id="pushPowerChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
             <div id="inputPowerChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
+            <div id="ratedPowerChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
             <div id="electricCurrentChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
             <div id="temperatureChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
             <div id="supplyVoltageChart" style="margin-top: 50px; width: 100%; height:400px;"></div>
@@ -45,6 +46,7 @@
                 <el-table-column prop="reflectedPower" label="反射功率"></el-table-column>
                 <el-table-column prop="pushPower" label="推动功率"></el-table-column>
                 <el-table-column prop="inputPower" label="输入功率"></el-table-column>
+                <el-table-column prop="ratedPower" label="额定功率"></el-table-column>
                 <el-table-column prop="electricCurrent" label="功放电流"></el-table-column>
                 <el-table-column prop="temperature" label="功放温度"></el-table-column>
                 <el-table-column prop="supplyVoltage" label="电源电压"></el-table-column>
@@ -110,6 +112,8 @@ export default {
 
             inputPowerChart: null,
 
+            ratedPowerChart: null,
+
             electricCurrentChart: null,
 
             temperatureChart: null,
@@ -138,7 +142,7 @@ export default {
                         standingWaveRatio: log.standingWaveRatio
                     };
                 });
-                const header = ['时间', '入射功率', '反射功率', '推动功率', '输入功率', '功放电流', '功放温度', '电源电压', '驻波比'];
+                const header = ['时间', '入射功率', '反射功率', '推动功率', '输入功率', '额定功率', '功放电流', '功放温度', '电源电压', '驻波比'];
                 CsvExportor.downloadCsv(csvData, { header }, 'history.csv');
 
                 this.loading = false;
@@ -226,6 +230,10 @@ export default {
                 return item.inputPower;
             });
 
+            const ratedPowerValueList = this.logList.map((item) => {
+                return item.ratedPower;
+            });
+
             const electricCurrentList = this.logList.map((item) => {
                 return item.electricCurrent;
             });
@@ -273,6 +281,10 @@ export default {
             this.inputPowerChart.clear();
             this.inputPowerChart.setOption(commonChartOption);
             this.inputPowerChart.setOption({ title: { text: '输入功率' }, series: [{ data: inputPowerValueList }] });
+
+            this.ratedPowerChart.clear();
+            this.ratedPowerChart.setOption(commonChartOption);
+            this.ratedPowerChart.setOption({ title: { text: '额定功率' }, series: [{ data: ratedPowerValueList }] });
 
             this.electricCurrentChart.clear();
             this.electricCurrentChart.setOption(commonChartOption);
@@ -323,6 +335,10 @@ export default {
             this.inputPowerChart.setOption(commonChartOption);
             this.inputPowerChart.setOption({ title: { text: '输入功率' } });
 
+            this.ratedPowerChart.clear();
+            this.ratedPowerChart.setOption(commonChartOption);
+            this.ratedPowerChart.setOption({ title: { text: '额定功率' } });
+
             this.electricCurrentChart.clear();
             this.electricCurrentChart.setOption(commonChartOption);
             this.electricCurrentChart.setOption({ title: { text: '功放电流' } });
@@ -345,6 +361,7 @@ export default {
             this.reflectedPowerChart = echarts.init(document.getElementById('reflectedPowerChart'));
             this.pushPowerChart = echarts.init(document.getElementById('pushPowerChart'));
             this.inputPowerChart = echarts.init(document.getElementById('inputPowerChart'));
+            this.ratedPowerChart = echarts.init(document.getElementById('ratedPowerChart'));
             this.electricCurrentChart = echarts.init(document.getElementById('electricCurrentChart'));
             this.temperatureChart = echarts.init(document.getElementById('temperatureChart'));
             this.supplyVoltageChart = echarts.init(document.getElementById('supplyVoltageChart'));
