@@ -120,7 +120,9 @@ export default {
 
             supplyVoltageChart: null,
 
-            standingWaveRatioChart: null
+            standingWaveRatioChart: null,
+
+            dataTypes: []
         };
     },
     methods: {
@@ -142,7 +144,10 @@ export default {
                         standingWaveRatio: log.standingWaveRatio
                     };
                 });
-                const header = ['时间', '入射功率', '反射功率', '推动功率', '输入功率', '额定功率', '功放电流', '功放温度', '电源电压', '驻波比'];
+                const header = ['时间'];
+                this.dataTypes.forEach((dataType) => {
+                    header.push(dataType.text);
+                });
                 CsvExportor.downloadCsv(csvData, { header }, 'history.csv');
 
                 this.loading = false;
@@ -375,6 +380,7 @@ export default {
     created() {
         this.logListQueryInfo.pageSize = this.$customConfig.HISTORY_PAGE_SIZE;
         this.getSites();
+        this.dataTypes = this.$customConfig.COMMON_DATA_TYPES;
     }
 }
 </script>
