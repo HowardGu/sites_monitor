@@ -140,7 +140,11 @@ export default {
                     type: 'value'
                 },
                 series: [{
-                    type: 'bar'
+                    type: 'bar',
+                    label: {
+                        show: true,
+                        position: 'inside'
+                    }
                 }]
             },
 
