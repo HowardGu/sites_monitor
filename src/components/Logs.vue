@@ -18,8 +18,8 @@
                     </el-option>
                 </el-select>
 
-                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getSiteLogs()">查询</el-button>
-                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getLogs()">查询所有站点</el-button>
+                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getSiteAlerts()">查询</el-button>
+                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getAlerts()">查询所有站点</el-button>
             </div>
 
             <el-table :data="alertList" :border="true" style="width: 100%">
@@ -75,13 +75,12 @@ export default {
     },
     methods: {
         handleCurrentPageChange(newPage) {
-            console.log(newPage);
             this.queryInfo.pageNum = newPage;
+            this.getAlerts();
         },
 
-        getLogs() {
+        getAlerts() {
             alertService.showAll(this.queryInfo).then((res) => {
-                console.log(res);
                 this.alertList = res.data.data.alerts;
                 this.totalCount = res.data.data.totalCount;
             }).catch((err) => {
@@ -89,10 +88,9 @@ export default {
             })
         },
 
-        getSiteLogs() {
+        getSiteAlerts() {
             if (this.selectedSiteUUID !== '') {
                 alertService.show(this.selectedSiteUUID, this.queryInfo).then((res) => {
-                    console.log(res);
                     this.alertList = res.data.data.alerts;
                     this.totalCount = res.data.data.totalCount;
                 }).catch((err) => {
