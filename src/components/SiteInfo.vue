@@ -383,7 +383,7 @@
                         <el-input v-model="siteSettingData.supplyVoltageLowerLimit" placeholder="下限"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.supplyVoltageLowerLimit" placeholder="上限"></el-input>
+                        <el-input v-model="siteSettingData.supplyVoltageUpperLimit" placeholder="上限"></el-input>
                     </el-col>
                     <el-col :span="6">
                         <el-button @click="updateAlertLimit('SupplyVoltage',

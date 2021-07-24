@@ -76,7 +76,11 @@ export default {
     methods: {
         handleCurrentPageChange(newPage) {
             this.queryInfo.pageNum = newPage;
-            this.getAlerts();
+            if (this.selectedSiteUUID !== '') {
+                this.getSiteAlerts();
+            } else {
+                this.getAlerts();
+            }
         },
 
         getAlerts() {
