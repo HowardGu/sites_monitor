@@ -26,7 +26,7 @@
                     <el-col :span="6"><span>站点号： {{ siteData.siteId }}</span></el-col>
                     <el-col :span="6"><span>版本号：</span></el-col>
                     <el-col :span="6"><span>时钟： {{ siteData.dateTime }}</span></el-col>
-                    <el-col :span="6"><span>状态：</span></el-col>
+                    <el-col :span="6"><span>状态： {{ siteData.offlineAlert }}</span></el-col>
                 </el-row>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -71,9 +71,12 @@
                     <el-col :span="6"><span>反射功率(W)： {{ siteData.reflectedPower }}</span></el-col>
                     <el-col :span="6"><span>推动功率(mW)： {{ siteData.pushPower }}</span></el-col>
                     <el-col :span="6"><span>输入功率(W)： {{ siteData.inputPower }}</span></el-col>
+                </el-row>
+                <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="6"><span>额定功率(W)： {{ siteData.ratedPower }}</span></el-col>
                     <el-col :span="6"><span>功放电流(A)： {{ siteData.electricCurrent }}</span></el-col>
                     <el-col :span="6"><span>功放温度(℃)： {{ siteData.temperature }}</span></el-col>
+                    <el-col :span="6"><span>驻波比： {{ siteData.standingWaveRatio }}</span></el-col>
                 </el-row>
             </el-card>
 
@@ -84,7 +87,9 @@
 
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="6"><span>报警状态： {{ siteData.alertState }}</span></el-col>
-                    <el-col :span="6"><span>在线状态： {{ siteData.onlineState }}</span></el-col>
+                    <el-col :span="6"><span>在线状态： {{ siteData.powerOn }}</span></el-col>
+                    <el-col :span="6"><span>衰减值： {{ siteData.inputAttenuation }}</span></el-col>
+                    <el-col :span="6"><span>额定功率(W)： {{ siteData.supplyVoltage }}</span></el-col>
                 </el-row>
             </el-card>
         </el-card>
@@ -482,7 +487,7 @@ export default {
                 location: '',
                 siteName: '',
                 description: '',
-                alertState: '',
+                offlineAlert: '',
                 dateTime: '',
                 incidentAlerts: 0,
                 reflectedAlerts: 0,
@@ -494,9 +499,11 @@ export default {
                 ratedPower: 0.0,
                 electricCurrent: 0.0,
                 temperature: 0.0,
-                supplyVoltage: 0.0,
                 standingWaveRatio: 0.0,
-                onlineState: ''
+                alertState: '',
+                powerOn: '',
+                inputAttenuation: 0.0,
+                supplyVoltage: 0.0
             },
 
             siteList: [],
