@@ -30,18 +30,18 @@
                 <el-table-column prop="siteId" label="站点号"></el-table-column>
                 <el-table-column prop="alertState" label="报警状态" :formatter="formatAlertState"></el-table-column>
                 <el-table-column prop="dateTime" label="时间"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('incidentAlerts') === -1" prop="incidentAlerts" label="入射报警" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('reflectedAlerts') === -1" prop="reflectedAlerts" label="反射报警" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('pushAlerts') === -1" prop="pushAlerts" label="推动报警" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('incidentPower') === -1" prop="incidentPower" label="入射功率" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('reflectedPower') === -1" prop="reflectedPower" label="反射功率" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('pushPower') === -1" prop="pushPower" label="推动功率" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('electricCurrent') === -1" prop="electricCurrent" label="功放电流" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('temperature') === -1" prop="temperature" label="功放温度" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('supplyVoltage') === -1" prop="supplyVoltage" label="电源电压" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('inputPower') === -1" prop="inputPower" label="输入功率" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('standingWaveRatio') === -1" prop="standingWaveRatio" label="驻波比" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('offlineAlert') === -1" prop="offlineAlert" label="在线状态" :formatter="formatOfflineState"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('IncidentAlerts') === -1" prop="incidentAlerts" label="入射报警" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('ReflectedAlerts') === -1" prop="reflectedAlerts" label="反射报警" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('PushAlerts') === -1" prop="pushAlerts" label="推动报警" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('IncidentPower') === -1" prop="incidentPower" label="入射功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('ReflectedPower') === -1" prop="reflectedPower" label="反射功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('PushPower') === -1" prop="pushPower" label="推动功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('ElectricCurrent') === -1" prop="electricCurrent" label="功放电流" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('Temperature') === -1" prop="temperature" label="功放温度" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('SupplyVoltage') === -1" prop="supplyVoltage" label="电源电压" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('InputPower') === -1" prop="inputPower" label="输入功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('StandingWaveRatio') === -1" prop="standingWaveRatio" label="驻波比" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('OfflineAlert') === -1" prop="offlineAlert" label="在线状态" :formatter="formatOfflineState"></el-table-column>
             </el-table>
 
             <el-pagination
@@ -89,73 +89,7 @@ export default {
 
             logsConfigDialogVisible: false,
 
-            logsConfigData: [
-                {
-                    key: 'incidentAlerts',
-                    label: '入射报警',
-                    disabled: false
-                },
-                {
-                    key: 'reflectedAlerts',
-                    label: '反射报警',
-                    disabled: false
-                },
-                {
-                    key: 'pushAlerts',
-                    label: '推动报警',
-                    disabled: false
-                },
-                {
-                    key: 'IncidentPower',
-                    label: '入射功率',
-                    disabled: false
-                },
-                {
-                    key: 'ReflectedPower',
-                    label: '反射功率',
-                    disabled: false
-                },
-                {
-                    key: 'PushPower',
-                    label: '推动功率',
-                    disabled: false
-                },
-                {
-                    key: 'InputPower',
-                    label: '输入功率',
-                    disabled: false
-                },
-                {
-                    key: 'RatedPower',
-                    label: '额定功率',
-                    disabled: false
-                },
-                {
-                    key: 'ElectricCurrent',
-                    label: '功放电流',
-                    disabled: false
-                },
-                {
-                    key: 'Temperature',
-                    label: '功放温度',
-                    disabled: false
-                },
-                {
-                    key: 'SupplyVoltage',
-                    label: '电源电压',
-                    disabled: false
-                },
-                {
-                    key: 'StandingWaveRatio',
-                    label: '驻波比',
-                    disabled: false
-                },
-                {
-                    key: 'offlineAlert',
-                    label: '在线状态',
-                    disabled: false
-                }
-            ],
+            logsConfigData: [],
 
             logsConfigIngoreData: []
         };
@@ -240,6 +174,29 @@ export default {
     created() {
         this.queryInfo.pageSize = Number(this.$customConfig.LOGS_PAGE_SIZE);
         this.getSites();
+
+        const digitalTypes = this.$customConfig.COMMON_DATA_TYPES.digital;
+        const analogTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
+        const stateTypes = this.$customConfig.COMMON_DATA_TYPES.state;
+
+        this.logsConfigData = [];
+
+        digitalTypes.forEach((item) => {
+            item.disabled = false;
+            this.logsConfigData.push(item);
+        });
+
+        analogTypes.forEach((item) => {
+            item.disabled = false;
+            this.logsConfigData.push(item);
+        });
+
+        stateTypes.forEach((item) => {
+            item.disabled = false;
+            this.logsConfigData.push(item);
+        });
+
+        console.log(this.logsConfigData);
     }
 }
 </script>

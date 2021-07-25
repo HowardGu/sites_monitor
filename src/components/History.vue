@@ -146,7 +146,7 @@ export default {
                 });
                 const header = ['时间'];
                 this.dataTypes.forEach((dataType) => {
-                    header.push(dataType.text);
+                    header.push(dataType.label);
                 });
                 CsvExportor.downloadCsv(csvData, { header }, 'history.csv');
 
@@ -380,7 +380,7 @@ export default {
     created() {
         this.logListQueryInfo.pageSize = this.$customConfig.HISTORY_PAGE_SIZE;
         this.getSites();
-        this.dataTypes = this.$customConfig.COMMON_DATA_TYPES;
+        this.dataTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
     }
 }
 </script>

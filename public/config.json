@@ -1,42 +1,64 @@
 {
-    "COMMON_DATA_TYPES": [
-        {
-            "name": "IncidentPower",
-            "text": "入射功率"
-        },
-        {
-            "name": "ReflectedPower",
-            "text": "反射功率"
-        },
-        {
-            "name": "PushPower",
-            "text": "推动功率"
-        },
-        {
-            "name": "InputPower",
-            "text": "输入功率"
-        },
-        {
-            "name": "RatedPower",
-            "text": "额定功率"
-        },
-        {
-            "name": "ElectricCurrent",
-            "text": "功放电流"
-        },
-        {
-            "name": "Temperature",
-            "text": "功放温度"
-        },
-        {
-            "name": "SupplyVoltage",
-            "text": "电源电压"
-        },
-        {
-            "name": "StandingWaveRatio",
-            "text": "驻波比"
-        }
-    ],
+    "COMMON_DATA_TYPES": {
+        "digital": [
+            {
+                "key": "IncidentAlerts",
+                "label": "入射报警"
+            },
+            {
+                "key": "ReflectedAlerts",
+                "label": "反射报警"
+            },
+            {
+                "key": "PushAlerts",
+                "label": "推动报警"
+            }
+        ],
+        "analog": [
+            {
+                "key": "IncidentPower",
+                "label": "入射功率"
+            },
+            {
+                "key": "ReflectedPower",
+                "label": "反射功率"
+            },
+            {
+                "key": "PushPower",
+                "label": "推动功率"
+            },
+            {
+                "key": "InputPower",
+                "label": "输入功率"
+            },
+            {
+                "key": "RatedPower",
+                "label": "额定功率"
+            },
+            {
+                "key": "ElectricCurrent",
+                "label": "功放电流"
+            },
+            {
+                "key": "Temperature",
+                "label": "功放温度"
+            },
+            {
+                "key": "SupplyVoltage",
+                "label": "电源电压"
+            },
+            {
+                "key": "StandingWaveRatio",
+                "label": "驻波比"
+            }
+        ],
+        "state": [
+            {
+                "key": "OfflineAlert",
+                "label": "在线状态"
+            }
+        ]
+    },
 
     "HELP_DOWNLOAD_URL": "https://www.baidu.com",
 

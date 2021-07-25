@@ -68,7 +68,7 @@
 
                 <div class="realtimeChart-row">
                     <el-select v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].dataType" placeholder="请选择数据类型">
-                        <el-option v-for="dataType of dataTypes" :label="dataType.text" :value="dataType.name" :key="dataType.name"></el-option>
+                        <el-option v-for="dataType of dataTypes" :label="dataType.label" :value="dataType.key" :key="dataType.key"></el-option>
                     </el-select>
                 </div>
 
@@ -240,8 +240,8 @@ export default {
         renderChart(index, realtimeData) {
             const title = this.realtimeChartsConfig.charts[index].title;
             const subTitle = this.dataTypes.find((dataType) => {
-                return dataType.name === this.realtimeChartsConfig.charts[index].dataType;
-            }).text;
+                return dataType.key === this.realtimeChartsConfig.charts[index].dataType;
+            }).label;
             const seriesData = realtimeData;
             const xAxisData = []
 
@@ -345,7 +345,7 @@ export default {
                     chartBlock.id = i;
                     chartBlock.title = '图表' + (i + 1).toString();
                     chartBlock.bars = JSON.parse(JSON.stringify(chartBarArray));
-                    chartBlock.dataType = this.dataTypes[0].name;
+                    chartBlock.dataType = this.dataTypes[0].key;
 
                     this.realtimeChartsConfig.charts.push(chartBlock);
                 }
@@ -389,7 +389,7 @@ export default {
         this.userId = user.userId;
         this.getRealtimeChartsConfig();
         this.getSites();
-        this.dataTypes = this.$customConfig.COMMON_DATA_TYPES;
+        this.dataTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
         this.realtimeChartsConfigChartBlock = this.$customConfig.REALTIMECHART_CONFIG_CHART_BLOCK;
     },
     destroyed() {
