@@ -244,9 +244,18 @@ export default {
             }).text;
             const seriesData = realtimeData;
             const xAxisData = []
-            for (let i = 1; i <= this.realtimeChartsConfig.barsPerChart; i++) {
-                xAxisData.push(i.toString());
-            }
+
+            this.realtimeChartsConfig.charts[index].bars.forEach((bar) => {
+                const site = this.siteList.find((site) => {
+                    return site.siteUUID === bar;
+                });
+
+                if (site) {
+                    xAxisData.push(site.siteId + '号站点');
+                } else {
+                    xAxisData.push('-');
+                }
+            });
 
             this.realtimeCharts[index].setOption({ title: { text: title, subtext: subTitle }, xAxis: { data: xAxisData }, series: [{ data: seriesData }] });
         },
