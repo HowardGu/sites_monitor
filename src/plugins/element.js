@@ -36,7 +36,8 @@ import {
     Table,
     TableColumn,
     Tooltip,
-    Tree
+    Tree,
+    Transfer
 } from 'element-ui'
 
 Vue.use(Button)
@@ -74,5 +75,6 @@ Vue.use(Switch)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
 Vue.use(Divider)
+Vue.use(Transfer)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
