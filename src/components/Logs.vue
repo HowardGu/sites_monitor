@@ -9,7 +9,7 @@
             <div slot="header" class="logs-card-header">
                 <h2 align="center">报警日志</h2>
                 <div>
-                    <el-button type="primary" icon="el-icon-setting" @click="logsConfigDialogVisible = true">日志筛选</el-button>
+                    <el-button type="primary" icon="el-icon-setting" @click="showLogsConfigDialog()">日志筛选</el-button>
                 </div>
             </div>
 
@@ -61,8 +61,8 @@
             </el-card>
 
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="logsConfigDialogVisible = false">确定</el-button>
-                <el-button @click="logsConfigDialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="onLogsConfigDialogOK()">确定</el-button>
+                <el-button @click="onLogsConfigDialogCancel()">取消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -91,7 +91,9 @@ export default {
 
             logsConfigData: [],
 
-            logsConfigIngoreData: []
+            logsConfigIngoreData: [],
+
+            originalLogsConfigIngoreData: []
         };
     },
     methods: {
@@ -169,6 +171,21 @@ export default {
                 ret = '在线'
             }
             return ret;
+        },
+
+        showLogsConfigDialog() {
+            this.logsConfigDialogVisible = true;
+            this.originalLogsConfigIngoreData = JSON.parse(JSON.stringify(this.logsConfigIngoreData));
+        },
+
+        onLogsConfigDialogOK() {
+            this.logsConfigDialogVisible = false;
+            this.originalLogsConfigIngoreData = JSON.parse(JSON.stringify(this.logsConfigIngoreData));
+        },
+
+        onLogsConfigDialogCancel() {
+            this.logsConfigDialogVisible = false;
+            this.logsConfigIngoreData = JSON.parse(JSON.stringify(this.originalLogsConfigIngoreData));
         }
     },
     created() {
