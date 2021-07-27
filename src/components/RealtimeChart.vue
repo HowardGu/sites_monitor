@@ -9,7 +9,7 @@
             <div slot="header" class="realtimeChart-card-header">
                 <h2 align="center">实时数据</h2>
                 <div>
-                    <el-button type="primary" icon="el-icon-setting" @click="showRealtimeChartsConfigDialog1()">图表设置</el-button>
+                    <el-button type="primary" icon="el-icon-setting" @click="showRealtimeChartsConfigDialog1()">图表配置</el-button>
                 </div>
             </div>
 
@@ -56,7 +56,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="图表设置" :visible.sync="realtimeChartsConfigDialog2Visible" width="50%" top="5vh" :close-on-click-modal="false">
+        <el-dialog title="图表内容" :visible.sync="realtimeChartsConfigDialog2Visible" width="50%" top="5vh" :close-on-click-modal="false">
             <el-card class="realtimeChart-inner-card">
                 <div class="realtimeChart-row">
                     <el-select v-model="realtimeChartsConfigChartId" placeholder="请选择图表">
