@@ -31,7 +31,7 @@
                     </el-col>
                     <el-col :span="8">
                         <el-select v-model="realtimeChartsConfigTotalChart" placeholder="请选择图表数量">
-                            <el-option v-for="i of 10" :label="i" :value="i" :key="i"></el-option>
+                            <el-option v-for="i of maxCharts" :label="i" :value="i" :key="i"></el-option>
                         </el-select>
                     </el-col>
                 </el-row>
@@ -44,7 +44,7 @@
                     </el-col>
                     <el-col :span="8">
                         <el-select v-model="realtimeChartsConfigBarsPerChart" placeholder="请选择图表数据项数量">
-                            <el-option v-for="i of 10" :label="i" :value="i" :key="i"></el-option>
+                            <el-option v-for="i of maxBarsPerChart" :label="i" :value="i" :key="i"></el-option>
                         </el-select>
                     </el-col>
                 </el-row>
@@ -177,7 +177,11 @@ export default {
 
             realtimeChartsConfigChartBlock: null,
 
-            dataTypes: []
+            dataTypes: [],
+
+            maxCharts: 0,
+
+            maxBarsPerChart: 0
         };
     },
     methods: {
@@ -391,6 +395,16 @@ export default {
         this.getSites();
         this.dataTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
         this.realtimeChartsConfigChartBlock = this.$customConfig.REALTIMECHART_CONFIG_CHART_BLOCK;
+
+        this.maxCharts = this.$customConfig.REALTIMECHART_MAX_CHARTS;
+        if (this.maxCharts > 20 || this.maxCharts < 1) {
+            this.maxCharts = 20;
+        }
+
+        this.maxBarsPerChart = this.$customConfig.REALTIMECHART_MAX_BARS_PER_CHART;
+        if (this.maxBarsPerChart > 20 || this.maxBarsPerChart < 1) {
+            this.maxBarsPerChart = 20;
+        }
     },
     destroyed() {
         this.clearInterval();

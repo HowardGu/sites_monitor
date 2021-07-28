@@ -103,5 +103,9 @@
         ]
     },
 
+    "REALTIMECHART_MAX_CHARTS": 20,
+
+    "REALTIMECHART_MAX_BARS_PER_CHART": 10,
+
     "REALTIMEMAP_MAP_CENTER": "厦门"
 }
