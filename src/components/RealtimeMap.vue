@@ -34,7 +34,7 @@
             </el-collapse>
 
             <baidu-map :style="{width:map.width,height:map.height}" :scroll-wheel-zoom="true"
-                :center="mapCenter" @ready="mapHandler" @load="loading = false" ak="ak">
+                :center="mapCenter" :zoom="mapZoom" @ready="mapHandler" @load="loading = false" ak="ak">
                 <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
 
                 <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" ></bm-navigation>
@@ -75,7 +75,12 @@ export default {
 
             ak: this.$baiduMapAK,
 
-            mapCenter: '',
+            mapCenter: {
+                lng: 118.144064,
+                lat: 24.498119
+            },
+
+            mapZoom: 14,
 
             map: {
                 width: '100%',
@@ -163,6 +168,7 @@ export default {
     },
     created() {
         this.mapCenter = this.$customConfig.REALTIMEMAP_MAP_CENTER;
+        this.mapZoom = this.$customConfig.REALTIMEMAP_MAP_ZOOM;
     }
 }
 </script>

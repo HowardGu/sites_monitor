@@ -107,5 +107,10 @@
 
     "REALTIMECHART_MAX_BARS_PER_CHART": 10,
 
-    "REALTIMEMAP_MAP_CENTER": "厦门"
+    "REALTIMEMAP_MAP_CENTER": {
+        "lng": 118.144064,
+        "lat": 24.498119
+    },
+
+    "REALTIMEMAP_MAP_ZOOM": 14
 }
