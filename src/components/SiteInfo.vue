@@ -219,12 +219,12 @@
                         </el-select>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.incidentPowerLowerLimit" placeholder="下限"></el-input>
+                        <el-input-number v-model="siteSettingData.incidentPowerLowerLimit" style="width: 100%;" placeholder="下限" :controls=false></el-input-number>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.incidentPowerUpperLimit" placeholder="上限"></el-input>
+                        <el-input-number v-model="siteSettingData.incidentPowerUpperLimit" style="width: 100%;" placeholder="上限" :controls=false></el-input-number>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-button @click="updateAlertLimit('IncidentPower',
                             siteSettingData.incidentPowerLowerLimit,
                             siteSettingData.incidentPowerUpperLimit)">设置</el-button>
@@ -242,12 +242,12 @@
                         </el-select>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.reflectedPowerLowerLimit" placeholder="下限"></el-input>
+                        <el-input-number v-model="siteSettingData.reflectedPowerLowerLimit" style="width: 100%;" placeholder="下限" :controls=false></el-input-number>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.reflectedPowerUpperLimit" placeholder="上限"></el-input>
+                        <el-input-number v-model="siteSettingData.reflectedPowerUpperLimit" style="width: 100%;" placeholder="上限" :controls=false></el-input-number>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-button @click="updateAlertLimit('ReflectedPower',
                             siteSettingData.reflectedPowerLowerLimit,
                             siteSettingData.reflectedPowerUpperLimit)">设置</el-button>
@@ -265,12 +265,12 @@
                         </el-select>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.pushPowerLowerLimit" placeholder="下限"></el-input>
+                        <el-input-number v-model="siteSettingData.pushPowerLowerLimit" style="width: 100%;" placeholder="下限" :controls=false></el-input-number>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.pushPowerUpperLimit" placeholder="上限"></el-input>
+                        <el-input-number v-model="siteSettingData.pushPowerUpperLimit" style="width: 100%;" placeholder="上限" :controls=false></el-input-number>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-button @click="updateAlertLimit('PushPower',
                             siteSettingData.pushPowerLowerLimit,
                             siteSettingData.pushPowerUpperLimit)">设置</el-button>
@@ -288,12 +288,12 @@
                         </el-select>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.inputPowerLowerLimit" placeholder="下限"></el-input>
+                        <el-input-number v-model="siteSettingData.inputPowerLowerLimit" style="width: 100%;" placeholder="下限" :controls=false></el-input-number>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.inputPowerUpperLimit" placeholder="上限"></el-input>
+                        <el-input-number v-model="siteSettingData.inputPowerUpperLimit" style="width: 100%;" placeholder="上限" :controls=false></el-input-number>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-button @click="updateAlertLimit('InputPower',
                             siteSettingData.inputPowerLowerLimit,
                             siteSettingData.inputPowerUpperLimit)">设置</el-button>
@@ -311,12 +311,12 @@
                         </el-select>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.ratedPowerLowerLimit" placeholder="下限"></el-input>
+                        <el-input-number v-model="siteSettingData.ratedPowerLowerLimit" style="width: 100%;" placeholder="下限" :controls=false></el-input-number>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.ratedPowerUpperLimit" placeholder="上限"></el-input>
+                        <el-input-number v-model="siteSettingData.ratedPowerUpperLimit" style="width: 100%;" placeholder="上限" :controls=false></el-input-number>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-button @click="updateAlertLimit('RatedPower',
                             siteSettingData.ratedPowerLowerLimit,
                             siteSettingData.ratedPowerUpperLimit)">设置</el-button>
@@ -334,12 +334,12 @@
                         </el-select>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.electricCurrentLowerLimit" placeholder="下限"></el-input>
+                        <el-input-number v-model="siteSettingData.electricCurrentLowerLimit" style="width: 100%;" placeholder="下限" :controls=false></el-input-number>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.electricCurrentUpperLimit" placeholder="上限"></el-input>
+                        <el-input-number v-model="siteSettingData.electricCurrentUpperLimit" style="width: 100%;" placeholder="上限" :controls=false></el-input-number>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-button @click="updateAlertLimit('ElectricCurrent',
                             siteSettingData.electricCurrentLowerLimit,
                             siteSettingData.electricCurrentUpperLimit)">设置</el-button>
@@ -357,12 +357,12 @@
                         </el-select>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.temperatureLowerLimit" placeholder="下限"></el-input>
+                        <el-input-number v-model="siteSettingData.temperatureLowerLimit" style="width: 100%;" placeholder="下限" :controls=false></el-input-number>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.temperatureUpperLimit" placeholder="上限"></el-input>
+                        <el-input-number v-model="siteSettingData.temperatureUpperLimit" style="width: 100%;" placeholder="上限" :controls=false></el-input-number>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-button @click="updateAlertLimit('Temperature',
                             siteSettingData.temperatureLowerLimit,
                             siteSettingData.temperatureUpperLimit)">设置</el-button>
@@ -380,12 +380,12 @@
                         </el-select>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.supplyVoltageLowerLimit" placeholder="下限"></el-input>
+                        <el-input-number v-model="siteSettingData.supplyVoltageLowerLimit" style="width: 100%;" placeholder="下限" :controls=false></el-input-number>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.supplyVoltageUpperLimit" placeholder="上限"></el-input>
+                        <el-input-number v-model="siteSettingData.supplyVoltageUpperLimit" style="width: 100%;" placeholder="上限" :controls=false></el-input-number>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-button @click="updateAlertLimit('SupplyVoltage',
                             siteSettingData.supplyVoltageLowerLimit,
                             siteSettingData.supplyVoltageUpperLimit)">设置</el-button>
@@ -403,12 +403,12 @@
                         </el-select>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.standingWaveRatioLowerLimit" placeholder="下限"></el-input>
+                        <el-input-number v-model="siteSettingData.standingWaveRatioLowerLimit" style="width: 100%;" placeholder="下限" :controls=false></el-input-number>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="siteSettingData.standingWaveRatioUpperLimit" placeholder="上限"></el-input>
+                        <el-input-number v-model="siteSettingData.standingWaveRatioUpperLimit" style="width: 100%;" placeholder="上限" :controls=false></el-input-number>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-button @click="updateAlertLimit('StandingWaveRatio',
                             siteSettingData.standingWaveRatioLowerLimit,
                             siteSettingData.standingWaveRatioUpperLimit)">设置</el-button>
@@ -451,32 +451,32 @@ export default {
                 reflectedAlertState: true,
                 pushAlertState: true,
                 incidentPowerState: false,
-                incidentPowerLowerLimit: 0.0,
-                incidentPowerUpperLimit: 0.0,
+                incidentPowerLowerLimit: undefined,
+                incidentPowerUpperLimit: undefined,
                 reflectedPowerState: false,
-                reflectedPowerLowerLimit: 0.0,
-                reflectedPowerUpperLimit: 0.0,
+                reflectedPowerLowerLimit: undefined,
+                reflectedPowerUpperLimit: undefined,
                 pushPowerState: false,
-                pushPowerLowerLimit: 0.0,
-                pushPowerUpperLimit: 0.0,
+                pushPowerLowerLimit: undefined,
+                pushPowerUpperLimit: undefined,
                 inputPowerState: false,
-                inputPowerLowerLimit: 0.0,
-                inputPowerUpperLimit: 0.0,
+                inputPowerLowerLimit: undefined,
+                inputPowerUpperLimit: undefined,
                 ratedPowerState: false,
-                ratedPowerLowerLimit: 0.0,
-                ratedPowerUpperLimit: 0.0,
+                ratedPowerLowerLimit: undefined,
+                ratedPowerUpperLimit: undefined,
                 electricCurrentState: false,
-                electricCurrentLowerLimit: 0.0,
-                electricCurrentUpperLimit: 0.0,
+                electricCurrentLowerLimit: undefined,
+                electricCurrentUpperLimit: undefined,
                 temperatureState: false,
-                temperatureLowerLimit: 0.0,
-                temperatureUpperLimit: 0.0,
+                temperatureLowerLimit: undefined,
+                temperatureUpperLimit: undefined,
                 supplyVoltageState: false,
-                supplyVoltageLowerLimit: 0.0,
-                supplyVoltageUpperLimit: 0.0,
+                supplyVoltageLowerLimit: undefined,
+                supplyVoltageUpperLimit: undefined,
                 standingWaveRatioState: false,
-                standingWaveRatioLowerLimit: 0.0,
-                standingWaveRatioUpperLimit: 0.0
+                standingWaveRatioLowerLimit: undefined,
+                standingWaveRatioUpperLimit: undefined
             },
 
             siteData: {
@@ -553,6 +553,43 @@ export default {
                     console.log(res);
                     if (res.data.data && res.data.data.alertConf) {
                         this.siteSettingData = res.data.data.alertConf;
+                        // TODO: to show placeholder, have to set the default value as undefined
+                        if (this.siteSettingData.incidentPowerLowerLimit === 0 && this.siteSettingData.incidentPowerUpperLimit === 0) {
+                            this.siteSettingData.incidentPowerLowerLimit = undefined;
+                            this.siteSettingData.incidentPowerUpperLimit = undefined;
+                        }
+                        if (this.siteSettingData.reflectedPowerLowerLimit === 0 && this.siteSettingData.reflectedPowerUpperLimit === 0) {
+                            this.siteSettingData.reflectedPowerLowerLimit = undefined;
+                            this.siteSettingData.reflectedPowerUpperLimit = undefined;
+                        }
+                        if (this.siteSettingData.pushPowerLowerLimit === 0 && this.siteSettingData.pushPowerUpperLimit === 0) {
+                            this.siteSettingData.pushPowerLowerLimit = undefined;
+                            this.siteSettingData.pushPowerUpperLimit = undefined;
+                        }
+                        if (this.siteSettingData.inputPowerLowerLimit === 0 && this.siteSettingData.inputPowerUpperLimit === 0) {
+                            this.siteSettingData.inputPowerLowerLimit = undefined;
+                            this.siteSettingData.inputPowerUpperLimit = undefined;
+                        }
+                        if (this.siteSettingData.ratedPowerLowerLimit === 0 && this.siteSettingData.ratedPowerUpperLimit === 0) {
+                            this.siteSettingData.ratedPowerLowerLimit = undefined;
+                            this.siteSettingData.ratedPowerUpperLimit = undefined;
+                        }
+                        if (this.siteSettingData.electricCurrentLowerLimit === 0 && this.siteSettingData.electricCurrentUpperLimit === 0) {
+                            this.siteSettingData.electricCurrentLowerLimit = undefined;
+                            this.siteSettingData.electricCurrentUpperLimit = undefined;
+                        }
+                        if (this.siteSettingData.temperatureLowerLimit === 0 && this.siteSettingData.temperatureUpperLimit === 0) {
+                            this.siteSettingData.temperatureLowerLimit = undefined;
+                            this.siteSettingData.temperatureUpperLimit = undefined;
+                        }
+                        if (this.siteSettingData.standingWaveRatioLowerLimit === 0 && this.siteSettingData.standingWaveRatioUpperLimit === 0) {
+                            this.siteSettingData.standingWaveRatioLowerLimit = undefined;
+                            this.siteSettingData.standingWaveRatioUpperLimit = undefined;
+                        }
+                        if (this.siteSettingData.supplyVoltageLowerLimit === 0 && this.siteSettingData.supplyVoltageUpperLimit === 0) {
+                            this.siteSettingData.supplyVoltageLowerLimit = undefined;
+                            this.siteSettingData.supplyVoltageUpperLimit = undefined;
+                        }
                     }
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
