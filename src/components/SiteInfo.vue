@@ -70,7 +70,7 @@
                     <el-col :span="6"><span>入射功率(W)： {{ siteData.incidentPower }}</span></el-col>
                     <el-col :span="6"><span>反射功率(W)： {{ siteData.reflectedPower }}</span></el-col>
                     <el-col :span="6"><span>推动功率(mW)： {{ siteData.pushPower }}</span></el-col>
-                    <el-col :span="6"><span>输入功率(W)： {{ siteData.inputPower }}</span></el-col>
+                    <el-col :span="6"><span>输入功率(mW)： {{ siteData.inputPower }}</span></el-col>
                 </el-row>
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="6"><span>额定功率(W)： {{ siteData.ratedPower }}</span></el-col>
