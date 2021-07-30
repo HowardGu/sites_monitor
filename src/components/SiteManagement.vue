@@ -22,7 +22,7 @@
                 <el-table-column prop="description" label="描述"></el-table-column>
                 <el-table-column label="屏蔽报警">
                     <template slot-scope="scope">
-                        <el-switch v-model="scope.row.ignoreAlert" @change="updateIgnoreAlertState(scope.row)"></el-switch>
+                        <el-switch v-model="scope.row.ignoreAlert" active-color="#FF0000" @change="updateIgnoreAlertState(scope.row)"></el-switch>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
