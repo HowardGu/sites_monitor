@@ -112,7 +112,6 @@ export default {
         },
 
         mapHandler({ BMap, map }) {
-            this.map.height = document.body.clientHeight - 160 + 'px';
             this.getSites();
             this.loading = false;
         },
@@ -178,6 +177,9 @@ export default {
         this.mapCenter = this.$customConfig.REALTIMEMAP_MAP_CENTER;
         this.mapZoom = this.$customConfig.REALTIMEMAP_MAP_ZOOM;
         this.mapAK = this.$customConfig.REALTIMEMAP_MAP_AK;
+    },
+    mounted() {
+        this.map.height = document.body.clientHeight - 160 + 'px';
     }
 }
 </script>
