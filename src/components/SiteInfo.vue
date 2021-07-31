@@ -541,6 +541,10 @@ export default {
                         siteUUID: site.id
                     }
                 });
+                if (this.selectedSiteUUID === '' && this.siteList.length > 0) {
+                    this.selectedSiteUUID = this.siteList[0].siteUUID;
+                    this.getSiteInfo();
+                }
                 console.log(this.siteList);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err); ;
