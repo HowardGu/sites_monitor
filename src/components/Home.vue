@@ -12,8 +12,9 @@
             </el-dropdown>
         </el-header>
         <el-container>
-            <el-aside width="200px">
-                <el-menu background-color="#333744" text-color="#FFF" active-text-color="#409EFF" :router="true" :default-active="activePath.substring(1)">
+            <el-aside :width="isCollapse ? 'auto' : '180px'">
+                <div class="home-toggle-button" @click="toggleCollapse()">|||</div>
+                <el-menu background-color="#333744" text-color="#FFF" active-text-color="#409EFF" :collapse="isCollapse" :collapse-transition="false" :router="true" :default-active="activePath.substring(1)">
                     <el-menu-item index="realtimeMap">
                         <i class="el-icon-map-location"></i>
                         <span slot="title">实时地图</span>
@@ -76,13 +77,19 @@ export default {
 
             copyright: '',
 
-            title: ''
+            title: '',
+
+            isCollapse: false
         };
     },
     methods: {
         ...mapActions('userModule', { userlogout: 'logout' }),
         logout() {
             this.userlogout();
+        },
+
+        toggleCollapse() {
+            this.isCollapse = !this.isCollapse;
         }
     },
     created() {
@@ -132,5 +139,14 @@ export default {
     align-items: center;
     color: #FFF;
     font-size: 12px;
+}
+
+.home-toggle-button {
+    background-color: #333744;
+    line-height: 24px;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 0.2rem;
+    cursor: pointer;
 }
 </style>
