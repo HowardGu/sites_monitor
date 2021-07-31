@@ -108,9 +108,11 @@
     "REALTIMECHART_MAX_BARS_PER_CHART": 10,
 
     "REALTIMEMAP_MAP_CENTER": {
-        "lng": 118.144064,
-        "lat": 24.498119
+        "lng": 118.142362,
+        "lat": 24.523785
     },
 
-    "REALTIMEMAP_MAP_ZOOM": 14
+    "REALTIMEMAP_MAP_ZOOM": 14,
+
+    "REALTIMEMAP_MAP_AK": "xoDANekNHo3GGDppi8GfPd08hkuNSnCb"
 }
