@@ -42,7 +42,7 @@
                 <bm-point-collection :points="badPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="red" size="BMAP_POINT_SIZE_BIG" @click="showMarkerInfo"></bm-point-collection>
                 <bm-point-collection :points="goodPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="green" size="BMAP_POINT_SIZE_SMALL" @click="showMarkerInfo"></bm-point-collection>
 
-                <bm-info-window :show="infoWindow.show" @close="infoWindowClose" @open="infoWindowOpen" :width="400" :height="140" :autoPan="true" :position="{lng: infoWindow.longitude, lat: infoWindow.latitude}">
+                <bm-info-window :show="infoWindow.show" @close="infoWindowClose" @open="infoWindowOpen" :width="400" :height="140" :autoPan="true" :position="{lng: infoWindow.lng, lat: infoWindow.lat}">
                     <div class="infoWindow-content">
                         <h3>站点号：{{ infoWindow.data.siteId }}</h3>
                         <span>{{ infoWindow.data.tunnel + ' - ' + infoWindow.data.location + ' - ' + infoWindow.data.siteName}}</span>
@@ -93,8 +93,8 @@ export default {
 
             infoWindow: {
                 show: false,
-                longitude: 0,
-                latitude: 0,
+                lng: 0,
+                lat: 0,
                 data: {}
             }
         };
@@ -117,17 +117,16 @@ export default {
         },
 
         showMarkerInfo(e) {
-            this.infoWindow.data = e.point;
-            this.infoWindow.longitude = e.point.lng;
-            this.infoWindow.latitude = e.point.lat;
-            this.infoWindow.show = true;
+            this.showMarkerInfo2(e.point);
         },
 
         showMarkerInfo2(point) {
             this.infoWindow.data = point;
-            this.infoWindow.longitude = point.lng;
-            this.infoWindow.latitude = point.lat;
+            this.infoWindow.lng = point.lng;
+            this.infoWindow.lat = point.lat;
             this.infoWindow.show = true;
+            this.mapCenter.lng = point.lng;
+            this.mapCenter.lat = point.lat;
         },
 
         infoWindowClose(e) {
