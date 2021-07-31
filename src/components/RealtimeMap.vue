@@ -39,8 +39,8 @@
 
                 <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" ></bm-navigation>
 
-                <bm-point-collection :points="badPoints" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_HUGE" @click="showMarkerInfo"></bm-point-collection>
-                <bm-point-collection :points="goodPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="green" size="BMAP_POINT_SIZE_BIG" @click="showMarkerInfo"></bm-point-collection>
+                <bm-point-collection :points="badPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="red" size="BMAP_POINT_SIZE_BIG" @click="showMarkerInfo"></bm-point-collection>
+                <bm-point-collection :points="goodPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="green" size="BMAP_POINT_SIZE_SMALL" @click="showMarkerInfo"></bm-point-collection>
 
                 <bm-info-window :show="infoWindow.show" @close="infoWindowClose" @open="infoWindowOpen" :width="400" :height="140" :autoPan="true" :position="{lng: infoWindow.longitude, lat: infoWindow.latitude}">
                     <div class="infoWindow-content">
@@ -55,11 +55,11 @@
 </template>
 
 <script>
-import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-import BmScale from 'vue-baidu-map/components/controls/Scale'
-import BmNavigation from 'vue-baidu-map/components/controls/Navigation'
-import BmInfoWindow from 'vue-baidu-map/components/overlays/InfoWindow'
-import BmPointCollection from 'vue-baidu-map/components/overlays/PointCollection'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue';
+import BmScale from 'vue-baidu-map/components/controls/Scale';
+import BmNavigation from 'vue-baidu-map/components/controls/Navigation';
+import BmInfoWindow from 'vue-baidu-map/components/overlays/InfoWindow';
+import BmPointCollection from 'vue-baidu-map/components/overlays/PointCollection';
 import siteService from '@/service/siteService';
 export default {
     components: {
