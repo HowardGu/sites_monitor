@@ -232,7 +232,8 @@ export default {
                     return {
                         siteFullName: site.tunnel + ' - ' + site.location + ' - ' + site.siteName,
                         siteId: site.siteId,
-                        siteUUID: site.id
+                        siteUUID: site.id,
+                        tunnelName: site.tunnel
                     }
                 });
                 console.log(this.siteList);
@@ -255,7 +256,7 @@ export default {
                 });
 
                 if (site) {
-                    xAxisData.push(site.siteId + '号站点');
+                    xAxisData.push(site.tunnelName + '\n' + site.siteId + '号站点');
                 } else {
                     xAxisData.push('-');
                 }
