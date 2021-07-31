@@ -21,6 +21,8 @@
                     </el-option>
                 </el-select>
 
+                <el-date-picker v-model="dateTimeRange" type="datetimerange"  class="logs-search-bar-datepicker" :unlink-panels="true"
+                    start-placeholder="开始时间" end-placeholder="结束时间" :default-time="['12:00:00']"></el-date-picker>
                 <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getSiteAlerts()">查询</el-button>
                 <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getAlerts()">查询所有站点</el-button>
             </div>
@@ -76,9 +78,16 @@ export default {
         return {
             selectedSiteUUID: '',
 
+            dateTimeRange: '',
+
             queryInfo: {
                 pageNum: 1,
                 pageSize: 0
+            },
+
+            historyQueryInfo: {
+                startTime: '',
+                endTime: ''
             },
 
             alertList: [],
@@ -107,7 +116,15 @@ export default {
         },
 
         getAlerts() {
-            alertService.showAll(this.queryInfo).then((res) => {
+            if (this.dateTimeRange) {
+                const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+                this.historyQueryInfo.startTime = (new Date(this.dateTimeRange[0] - tzoffset)).toISOString();
+                this.historyQueryInfo.endTime = (new Date(this.dateTimeRange[1] - tzoffset)).toISOString();
+            } else {
+                this.historyQueryInfo.startTime = '';
+                this.historyQueryInfo.endTime = '';
+            }
+            alertService.showAll(this.queryInfo, this.historyQueryInfo).then((res) => {
                 this.alertList = res.data.data.alerts;
                 this.totalCount = res.data.data.totalCount;
             }).catch((err) => {
@@ -117,7 +134,16 @@ export default {
 
         getSiteAlerts() {
             if (this.selectedSiteUUID !== '') {
-                alertService.show(this.selectedSiteUUID, this.queryInfo).then((res) => {
+                if (this.dateTimeRange) {
+                    const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+                    this.historyQueryInfo.startTime = (new Date(this.dateTimeRange[0] - tzoffset)).toISOString();
+                    this.historyQueryInfo.endTime = (new Date(this.dateTimeRange[1] - tzoffset)).toISOString();
+                } else {
+                    this.historyQueryInfo.startTime = '';
+                    this.historyQueryInfo.endTime = '';
+                }
+
+                alertService.show(this.selectedSiteUUID, this.queryInfo, this.historyQueryInfo).then((res) => {
                     this.alertList = res.data.data.alerts;
                     this.totalCount = res.data.data.totalCount;
                 }).catch((err) => {
@@ -228,6 +254,10 @@ export default {
 .logs-search-bar {
     display: flex;
     align-items: center;
+}
+
+.logs-search-bar-datepicker {
+    margin-left: 10px;
 }
 
 .logs-search-bar-button {
