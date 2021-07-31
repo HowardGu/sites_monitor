@@ -18,6 +18,7 @@
                             <el-divider></el-divider>
                             <h3>站点号：{{ badPoint.siteId }}</h3>
                             <span>{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</span>
+                            <span class="sites-item-alert">{{ badPoint.alertState }}</span>
                         </div>
                     </div>
                 </el-collapse-item>
@@ -45,7 +46,7 @@
                 <bm-info-window :show="infoWindow.show" @close="infoWindowClose" @open="infoWindowOpen" :width="400" :height="140" :autoPan="true" :position="{lng: infoWindow.lng, lat: infoWindow.lat}">
                     <div class="infoWindow-content">
                         <h3>站点号：{{ infoWindow.data.siteId }}</h3>
-                        <span>{{ infoWindow.data.tunnel + ' - ' + infoWindow.data.location + ' - ' + infoWindow.data.siteName}}</span>
+                        <span>{{ infoWindow.data.tunnel + ' - ' + infoWindow.data.location + ' - ' + infoWindow.data.siteName}}<span class="sites-item-alert">{{ infoWindow.data.alertState }}</span></span>
                         <el-link type="primary" @click="showSiteInfo">查看详细信息</el-link>
                     </div>
                 </bm-info-window>
@@ -141,6 +142,13 @@ export default {
             siteService.showAll(this.queryInfo).then((res) => {
                 console.log(res);
                 const points = res.data.data.sites.map((site) => {
+                    var alertStr;
+                    if (site.alertState) {
+                        alertStr = ' - ' + site.alertState.slice(0, 2).join(' - ')
+                        if (site.alertState.length > 2) {
+                            alertStr += '...'
+                        }
+                    }
                     return {
                         description: site.description,
                         siteUUID: site.id,
@@ -150,16 +158,16 @@ export default {
                         siteId: site.siteId,
                         siteName: site.siteName,
                         tunnel: site.tunnel,
-                        hasAlert: site.alertState
+                        alertState: alertStr
                     };
                 });
 
                 this.goodPoints = points.filter((point) => {
-                    return !point.hasAlert;
+                    return !point.alertState;
                 });
 
                 this.badPoints = points.filter((point) => {
-                    return point.hasAlert;
+                    return point.alertState;
                 });
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
@@ -227,6 +235,10 @@ export default {
 .sites-collapse-item-container {
     max-height: 800px;
     overflow-y: auto;
+}
+
+.sites-item-alert {
+    color: #FF4136;
 }
 
 .el-divider {
