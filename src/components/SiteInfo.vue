@@ -26,7 +26,7 @@
                     <el-col :span="6"><span>站点号： {{ siteData.siteId }}</span></el-col>
                     <el-col :span="6"><span>版本号：</span></el-col>
                     <el-col :span="6"><span>时钟： {{ siteData.dateTime }}</span></el-col>
-                    <el-col :span="6"><span>状态： {{ siteData.offlineAlert }}</span></el-col>
+                    <el-col :span="6" id='offlineAlert'><span>状态： {{ siteData.offlineAlert }}</span></el-col>
                 </el-row>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -55,9 +55,9 @@
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6"><span>入射报警： {{ siteData.incidentAlerts }}</span></el-col>
-                    <el-col :span="6"><span>反射报警： {{ siteData.reflectedAlerts }}</span></el-col>
-                    <el-col :span="6"><span>推动报警： {{ siteData.pushAlerts }}</span></el-col>
+                    <el-col :span="6" id="incidentAlerts"><span>入射报警： {{ siteData.incidentAlerts }}</span></el-col>
+                    <el-col :span="6" id="reflectedAlerts"><span>反射报警： {{ siteData.reflectedAlerts }}</span></el-col>
+                    <el-col :span="6" id="pushAlerts"><span>推动报警： {{ siteData.pushAlerts }}</span></el-col>
                 </el-row>
             </el-card>
 
@@ -67,16 +67,16 @@
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6"><span>入射功率(W)： {{ siteData.incidentPower }}</span></el-col>
-                    <el-col :span="6"><span>反射功率(W)： {{ siteData.reflectedPower }}</span></el-col>
-                    <el-col :span="6"><span>推动功率(mW)： {{ siteData.pushPower }}</span></el-col>
-                    <el-col :span="6"><span>输入功率(mW)： {{ siteData.inputPower }}</span></el-col>
+                    <el-col :span="6" id="incidentPower"><span>入射功率(W)： {{ siteData.incidentPower }}</span></el-col>
+                    <el-col :span="6" id="reflectedPower"><span>反射功率(W)： {{ siteData.reflectedPower }}</span></el-col>
+                    <el-col :span="6" id="pushPower"><span>推动功率(mW)： {{ siteData.pushPower }}</span></el-col>
+                    <el-col :span="6" id="inputPower"><span>输入功率(mW)： {{ siteData.inputPower }}</span></el-col>
                 </el-row>
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6"><span>额定功率(W)： {{ siteData.ratedPower }}</span></el-col>
-                    <el-col :span="6"><span>功放电流(A)： {{ siteData.electricCurrent }}</span></el-col>
-                    <el-col :span="6"><span>功放温度(℃)： {{ siteData.temperature }}</span></el-col>
-                    <el-col :span="6"><span>驻波比： {{ siteData.standingWaveRatio }}</span></el-col>
+                    <el-col :span="6" id="supplyVoltage"><span>电源电压(V)： {{ siteData.supplyVoltage }}</span></el-col>
+                    <el-col :span="6" id="electricCurrent"><span>功放电流(A)： {{ siteData.electricCurrent }}</span></el-col>
+                    <el-col :span="6" id="temperature"><span>功放温度(℃)： {{ siteData.temperature }}</span></el-col>
+                    <el-col :span="6" id="standingWaveRatio"><span>驻波比： {{ siteData.standingWaveRatio }}</span></el-col>
                 </el-row>
             </el-card>
 
@@ -86,10 +86,10 @@
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6"><span>报警状态： {{ siteData.alertState }}</span></el-col>
-                    <el-col :span="6"><span>在线状态： {{ siteData.powerOn }}</span></el-col>
+                    <el-col :span="6" id="alertState"><span>报警状态： {{ siteData.alertState }}</span></el-col>
+                    <el-col :span="6" id="powerOn"><span>在线状态： {{ siteData.powerOn }}</span></el-col>
                     <el-col :span="6"><span>衰减值： {{ siteData.inputAttenuation }}</span></el-col>
-                    <el-col :span="6"><span>额定功率(W)： {{ siteData.supplyVoltage }}</span></el-col>
+                    <el-col :span="6" id="ratedPower"><span>额定功率(W)： {{ siteData.ratedPower }}</span></el-col>
                 </el-row>
             </el-card>
         </el-card>
@@ -503,7 +503,21 @@ export default {
                 alertState: '',
                 powerOn: '',
                 inputAttenuation: 0.0,
-                supplyVoltage: 0.0
+                supplyVoltage: 0.0,
+                incidentPowerAlert: false,
+                reflectedPowerAlert: false,
+                pushPowerAlert: false,
+                electricCurrentAlert: false,
+                temperatureAlert: false,
+                supplyVoltageAlert: false,
+                inputPowerAlert: false,
+                standingWaveRatioAlert: false,
+                inputAttenuationAlert: false,
+                ratedPowerAlert: false
+            },
+
+            siteAlert: {
+
             },
 
             siteList: [],
@@ -518,6 +532,7 @@ export default {
                     console.log(res);
                     if (res.data.data && res.data.data.state) {
                         this.siteData = res.data.data.state;
+                        this.highlightAlert();
                     } else {
                         const targetSite = this.siteList.find((site) => {
                             return site.siteUUID === this.selectedSiteUUID;
@@ -557,43 +572,7 @@ export default {
                     console.log(res);
                     if (res.data.data && res.data.data.alertConf) {
                         this.siteSettingData = res.data.data.alertConf;
-                        // TODO: to show placeholder, have to set the default value as undefined
-                        if (this.siteSettingData.incidentPowerLowerLimit === 0 && this.siteSettingData.incidentPowerUpperLimit === 0) {
-                            this.siteSettingData.incidentPowerLowerLimit = undefined;
-                            this.siteSettingData.incidentPowerUpperLimit = undefined;
-                        }
-                        if (this.siteSettingData.reflectedPowerLowerLimit === 0 && this.siteSettingData.reflectedPowerUpperLimit === 0) {
-                            this.siteSettingData.reflectedPowerLowerLimit = undefined;
-                            this.siteSettingData.reflectedPowerUpperLimit = undefined;
-                        }
-                        if (this.siteSettingData.pushPowerLowerLimit === 0 && this.siteSettingData.pushPowerUpperLimit === 0) {
-                            this.siteSettingData.pushPowerLowerLimit = undefined;
-                            this.siteSettingData.pushPowerUpperLimit = undefined;
-                        }
-                        if (this.siteSettingData.inputPowerLowerLimit === 0 && this.siteSettingData.inputPowerUpperLimit === 0) {
-                            this.siteSettingData.inputPowerLowerLimit = undefined;
-                            this.siteSettingData.inputPowerUpperLimit = undefined;
-                        }
-                        if (this.siteSettingData.ratedPowerLowerLimit === 0 && this.siteSettingData.ratedPowerUpperLimit === 0) {
-                            this.siteSettingData.ratedPowerLowerLimit = undefined;
-                            this.siteSettingData.ratedPowerUpperLimit = undefined;
-                        }
-                        if (this.siteSettingData.electricCurrentLowerLimit === 0 && this.siteSettingData.electricCurrentUpperLimit === 0) {
-                            this.siteSettingData.electricCurrentLowerLimit = undefined;
-                            this.siteSettingData.electricCurrentUpperLimit = undefined;
-                        }
-                        if (this.siteSettingData.temperatureLowerLimit === 0 && this.siteSettingData.temperatureUpperLimit === 0) {
-                            this.siteSettingData.temperatureLowerLimit = undefined;
-                            this.siteSettingData.temperatureUpperLimit = undefined;
-                        }
-                        if (this.siteSettingData.standingWaveRatioLowerLimit === 0 && this.siteSettingData.standingWaveRatioUpperLimit === 0) {
-                            this.siteSettingData.standingWaveRatioLowerLimit = undefined;
-                            this.siteSettingData.standingWaveRatioUpperLimit = undefined;
-                        }
-                        if (this.siteSettingData.supplyVoltageLowerLimit === 0 && this.siteSettingData.supplyVoltageUpperLimit === 0) {
-                            this.siteSettingData.supplyVoltageLowerLimit = undefined;
-                            this.siteSettingData.supplyVoltageUpperLimit = undefined;
-                        }
+                        this.hideZero();
                     }
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
@@ -620,6 +599,72 @@ export default {
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
+            }
+        },
+
+        highlightAlert() {
+            this.modifyFontColor('incidentAlerts', this.siteData.incidentAlerts);
+            this.modifyFontColor('reflectedAlerts', this.siteData.reflectedAlerts);
+            this.modifyFontColor('pushAlerts', this.siteData.pushAlerts);
+            this.modifyFontColor('incidentPower', this.siteData.incidentPowerAlert);
+            this.modifyFontColor('reflectedPower', this.siteData.reflectedPowerAlert);
+            this.modifyFontColor('pushPower', this.siteData.pushPowerAlert);
+            this.modifyFontColor('electricCurrent', this.siteData.electricCurrentAlert);
+            this.modifyFontColor('temperature', this.siteData.temperatureAlert);
+            this.modifyFontColor('supplyVoltage', this.siteData.supplyVoltageAlert);
+            this.modifyFontColor('inputPower', this.siteData.inputPowerAlert);
+            this.modifyFontColor('standingWaveRatio', this.siteData.standingWaveRatioAlert);
+            this.modifyFontColor('ratedPower', this.siteData.ratedPowerAlert);
+            this.modifyFontColor('offlineAlert', this.siteData.offlineAlert === '离线');
+            this.modifyFontColor('alertState', this.siteData.alertState === '开始报警');
+            this.modifyFontColor('powerOn', this.siteData.powerOn === '关机');
+        },
+
+        modifyFontColor(item, highlight) {
+            if (highlight) {
+                document.getElementById(item).classList.add('siteInfo-col-alert');
+            } else {
+                document.getElementById(item).classList.remove('siteInfo-col-alert');
+            }
+        },
+
+        hideZero() {
+            // TODO: to show placeholder, have to set the default value as undefined
+            if (this.siteSettingData.incidentPowerLowerLimit === 0 && this.siteSettingData.incidentPowerUpperLimit === 0) {
+                this.siteSettingData.incidentPowerLowerLimit = undefined;
+                this.siteSettingData.incidentPowerUpperLimit = undefined;
+            }
+            if (this.siteSettingData.reflectedPowerLowerLimit === 0 && this.siteSettingData.reflectedPowerUpperLimit === 0) {
+                this.siteSettingData.reflectedPowerLowerLimit = undefined;
+                this.siteSettingData.reflectedPowerUpperLimit = undefined;
+            }
+            if (this.siteSettingData.pushPowerLowerLimit === 0 && this.siteSettingData.pushPowerUpperLimit === 0) {
+                this.siteSettingData.pushPowerLowerLimit = undefined;
+                this.siteSettingData.pushPowerUpperLimit = undefined;
+            }
+            if (this.siteSettingData.inputPowerLowerLimit === 0 && this.siteSettingData.inputPowerUpperLimit === 0) {
+                this.siteSettingData.inputPowerLowerLimit = undefined;
+                this.siteSettingData.inputPowerUpperLimit = undefined;
+            }
+            if (this.siteSettingData.ratedPowerLowerLimit === 0 && this.siteSettingData.ratedPowerUpperLimit === 0) {
+                this.siteSettingData.ratedPowerLowerLimit = undefined;
+                this.siteSettingData.ratedPowerUpperLimit = undefined;
+            }
+            if (this.siteSettingData.electricCurrentLowerLimit === 0 && this.siteSettingData.electricCurrentUpperLimit === 0) {
+                this.siteSettingData.electricCurrentLowerLimit = undefined;
+                this.siteSettingData.electricCurrentUpperLimit = undefined;
+            }
+            if (this.siteSettingData.temperatureLowerLimit === 0 && this.siteSettingData.temperatureUpperLimit === 0) {
+                this.siteSettingData.temperatureLowerLimit = undefined;
+                this.siteSettingData.temperatureUpperLimit = undefined;
+            }
+            if (this.siteSettingData.standingWaveRatioLowerLimit === 0 && this.siteSettingData.standingWaveRatioUpperLimit === 0) {
+                this.siteSettingData.standingWaveRatioLowerLimit = undefined;
+                this.siteSettingData.standingWaveRatioUpperLimit = undefined;
+            }
+            if (this.siteSettingData.supplyVoltageLowerLimit === 0 && this.siteSettingData.supplyVoltageUpperLimit === 0) {
+                this.siteSettingData.supplyVoltageLowerLimit = undefined;
+                this.siteSettingData.supplyVoltageUpperLimit = undefined;
             }
         }
     },
@@ -661,6 +706,10 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.siteInfo-col-alert {
+    color: #FF4136
 }
 
 .el-select {
