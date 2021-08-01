@@ -27,7 +27,7 @@
                 <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getAlerts()">查询所有站点</el-button>
             </div>
 
-            <el-table :data="alertList" :border="true" style="width: 100%">
+            <el-table :data="alertList" :border="true" :cell-class-name="rowClass" style="width: 100%">
                 <el-table-column type="index"></el-table-column>
                 <el-table-column prop="siteId" label="站点号"></el-table-column>
                 <el-table-column prop="alertState" label="报警状态" :formatter="formatAlertState"></el-table-column>
@@ -199,6 +199,15 @@ export default {
             return ret;
         },
 
+        rowClass: function({ row, column, rowIndex, columnIndex }) {
+            const columnProperty = this.alertList[rowIndex][column.property];
+            if (column.property !== 'siteId' && column.property !== 'dateTime') {
+                if (columnProperty) {
+                    return 'logs-cell-warning';
+                }
+            }
+        },
+
         showLogsConfigDialog() {
             this.logsConfigDialogVisible = true;
             this.originalLogsConfigIngoreData = JSON.parse(JSON.stringify(this.logsConfigIngoreData));
@@ -278,5 +287,11 @@ export default {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
     display: flex;
     justify-content: center;
+}
+</style>
+
+<style lang="less">
+.logs-cell-warning {
+    color: #FF4136;
 }
 </style>
