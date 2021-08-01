@@ -56,7 +56,7 @@
             </el-pagination>
         </el-card>
 
-        <el-dialog title="日志筛选" :visible.sync="logsConfigDialogVisible" width="30%" :close-on-click-modal="false">
+        <el-dialog title="日志筛选" :visible.sync="logsConfigDialogVisible" width="800px" :close-on-click-modal="false">
             <el-card class="logs-inner-card">
                 <el-transfer v-model="logsConfigIngoreData" :data="logsConfigData"
                 :titles="['显示', '隐藏']" :button-texts="['显示', '隐藏']"></el-transfer>
