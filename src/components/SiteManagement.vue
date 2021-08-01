@@ -47,7 +47,7 @@
             </el-pagination>
         </el-card>
 
-        <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" @close="resetAddSiteDialog" :close-on-click-modal="false">
+        <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" :close-on-click-modal="false">
             <el-card class="siteManagement-inner-card">
                 <el-form :model="addSiteForm" :rules="addEditSiteFormRules" ref="addSiteFormRef" label-width="70px" label-position="left">
                     <el-form-item label="站点号">
