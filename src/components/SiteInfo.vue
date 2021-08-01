@@ -67,16 +67,16 @@
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6" id="incidentPower"><span>入射功率(W)： {{ siteData.incidentPower }}</span></el-col>
-                    <el-col :span="6" id="reflectedPower"><span>反射功率(W)： {{ siteData.reflectedPower }}</span></el-col>
-                    <el-col :span="6" id="pushPower"><span>推动功率(mW)： {{ siteData.pushPower }}</span></el-col>
-                    <el-col :span="6" id="inputPower"><span>输入功率(mW)： {{ siteData.inputPower }}</span></el-col>
+                    <el-col :span="6" id="incidentPower"><span>入射功率(W)： {{ siteData.incidentPower.toFixed(2) }}</span></el-col>
+                    <el-col :span="6" id="reflectedPower"><span>反射功率(W)： {{ siteData.reflectedPower.toFixed(2) }}</span></el-col>
+                    <el-col :span="6" id="pushPower"><span>推动功率(mW)： {{ siteData.pushPower.toFixed(2) }}</span></el-col>
+                    <el-col :span="6" id="inputPower"><span>输入功率(mW)： {{ siteData.inputPower.toFixed(2) }}</span></el-col>
                 </el-row>
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6" id="supplyVoltage"><span>电源电压(V)： {{ siteData.supplyVoltage }}</span></el-col>
-                    <el-col :span="6" id="electricCurrent"><span>功放电流(A)： {{ siteData.electricCurrent }}</span></el-col>
-                    <el-col :span="6" id="temperature"><span>功放温度(℃)： {{ siteData.temperature }}</span></el-col>
-                    <el-col :span="6" id="standingWaveRatio"><span>驻波比： {{ siteData.standingWaveRatio }}</span></el-col>
+                    <el-col :span="6" id="supplyVoltage"><span>电源电压(V)： {{ siteData.supplyVoltage.toFixed(2) }}</span></el-col>
+                    <el-col :span="6" id="electricCurrent"><span>功放电流(A)： {{ siteData.electricCurrent.toFixed(2) }}</span></el-col>
+                    <el-col :span="6" id="temperature"><span>功放温度(℃)： {{ siteData.temperature.toFixed(2) }}</span></el-col>
+                    <el-col :span="6" id="standingWaveRatio"><span>驻波比： {{ siteData.standingWaveRatio.toFixed(2) }}</span></el-col>
                 </el-row>
             </el-card>
 
