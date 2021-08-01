@@ -22,7 +22,7 @@
                     </el-option>
                 </el-select>
 
-                <el-date-picker v-model="dateTimeRange" type="datetimerange"  class="history-search-bar-datepicker" :unlink-panels="true"
+                <el-date-picker v-model="dateTimeRange" type="datetimerange" :picker-options="pickerOptions" class="history-search-bar-datepicker" :unlink-panels="true"
                     start-placeholder="开始时间" end-placeholder="结束时间" :default-time="['12:00:00']"></el-date-picker>
                 <el-button class="history-search-bar-button" icon="el-icon-search" @click="getSiteHistory()">刷新曲线</el-button>
             </div>
@@ -87,6 +87,34 @@ export default {
             siteId: 2,
 
             dateTimeRange: '',
+
+            pickerOptions: {
+                shortcuts: [{
+                    text: '24小时',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '一周',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '一月',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }]
+            },
 
             queryInfo: {
                 startTime: '',
@@ -188,7 +216,7 @@ export default {
                         this.renderCharts();
                     } else {
                         this.resetCharts();
-                        this.$message('站点' + this.siteId + '在此时间段内没有日志');
+                        this.$message('该站点在此时间段内没有日志');
                     }
                     this.loading = false;
                 }).catch((err) => {

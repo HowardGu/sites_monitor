@@ -21,7 +21,7 @@
                     </el-option>
                 </el-select>
 
-                <el-date-picker v-model="dateTimeRange" type="datetimerange"  class="logs-search-bar-datepicker" :unlink-panels="true"
+                <el-date-picker v-model="dateTimeRange" type="datetimerange" :picker-options="pickerOptions" class="logs-search-bar-datepicker" :unlink-panels="true"
                     start-placeholder="开始时间" end-placeholder="结束时间" :default-time="['12:00:00']"></el-date-picker>
                 <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getSiteAlerts()">查询</el-button>
                 <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getAlerts()">查询所有站点</el-button>
@@ -79,6 +79,34 @@ export default {
             selectedSiteUUID: '',
 
             dateTimeRange: '',
+
+            pickerOptions: {
+                shortcuts: [{
+                    text: '24小时',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '一周',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '一月',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }]
+            },
 
             queryInfo: {
                 pageNum: 1,
