@@ -10,7 +10,7 @@
                 <h2 align="center">站点详情</h2>
             </div>
 
-            <el-select v-model="selectedSiteUUID" placeholder="请选择站点" @change="getSiteInfo()">
+            <el-select v-model="selectedSiteUUID" placeholder="请选择站点" @change="startTimeIntervel()">
                 <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
                     <span style="float: left">{{ site.siteFullName }}</span>
                     <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
@@ -516,9 +516,9 @@ export default {
                 ratedPowerAlert: false
             },
 
-            siteAlert: {
+            refreshInterval: null,
 
-            },
+            refreshPaused: false,
 
             siteList: [],
 
@@ -526,6 +526,14 @@ export default {
         };
     },
     methods: {
+        startTimeIntervel() {
+            this.getSiteInfo();
+
+            this.clearInterval();
+
+            this.refreshInterval = window.setInterval(this.getSiteInfo, 5000);
+        },
+
         getSiteInfo() {
             if (this.selectedSiteUUID !== '') {
                 logService.showRealtimeLog(this.selectedSiteUUID).then((res) => {
@@ -558,7 +566,7 @@ export default {
                 });
                 if (this.selectedSiteUUID === '' && this.siteList.length > 0) {
                     this.selectedSiteUUID = this.siteList[0].siteUUID;
-                    this.getSiteInfo();
+                    this.startTimeIntervel();
                 }
                 console.log(this.siteList);
             }).catch((err) => {
@@ -666,20 +674,41 @@ export default {
                 this.siteSettingData.supplyVoltageLowerLimit = undefined;
                 this.siteSettingData.supplyVoltageUpperLimit = undefined;
             }
+        },
+
+        clearInterval() {
+            if (this.refreshInterval) {
+                window.clearInterval(this.refreshInterval);
+                console.log('SiteInfo time intervel destroyed');
+            }
         }
     },
     created() {
+        const user = JSON.parse(storageService.get(storageService.USER_INFO));
+        this.userGroup = user.userGroup;
+    },
+    activated() {
         if (this.$route.query.siteId) {
             console.log(this.$route.query.siteId + this.$route.query.siteUUID);
             this.siteId = this.$route.query.siteId;
             this.selectedSiteUUID = this.$route.query.siteUUID;
-            this.getSiteInfo();
+            this.startTimeIntervel();
+        } else {
+            if (this.refreshPaused) {
+                this.startTimeIntervel();
+            }
         }
 
         this.getSites();
-
-        const user = JSON.parse(storageService.get(storageService.USER_INFO));
-        this.userGroup = user.userGroup;
+    },
+    deactivated() {
+        if (this.refreshInterval) {
+            this.refreshPaused = true;
+        }
+        this.clearInterval();
+    },
+    beforeDestroy() {
+        this.clearInterval();
     }
 }
 </script>

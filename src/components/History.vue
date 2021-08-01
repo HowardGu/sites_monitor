@@ -379,8 +379,10 @@ export default {
     },
     created() {
         this.logListQueryInfo.pageSize = this.$customConfig.HISTORY_PAGE_SIZE;
-        this.getSites();
         this.dataTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
+    },
+    activated() {
+        this.getSites();
     }
 }
 </script>

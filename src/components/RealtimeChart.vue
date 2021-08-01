@@ -129,6 +129,8 @@ export default {
 
             refreshInterval: null,
 
+            refreshPaused: false,
+
             chartOption: {
                 tooltip: {
                     trigger: 'axis'
@@ -393,7 +395,7 @@ export default {
         const user = JSON.parse(storageService.get(storageService.USER_INFO));
         this.userId = user.userId;
         this.getRealtimeChartsConfig();
-        this.getSites();
+
         this.dataTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
         this.realtimeChartsConfigChartBlock = this.$customConfig.REALTIMECHART_CONFIG_CHART_BLOCK;
 
@@ -406,6 +408,18 @@ export default {
         if (this.maxBarsPerChart > 20 || this.maxBarsPerChart < 1) {
             this.maxBarsPerChart = 20;
         }
+    },
+    activated() {
+        this.getSites();
+        if (this.refreshPaused) {
+            this.startTimeIntervel();
+        }
+    },
+    deactivated() {
+        if (this.refreshInterval) {
+            this.refreshPaused = true;
+        }
+        this.clearInterval();
     },
     destroyed() {
         this.clearInterval();

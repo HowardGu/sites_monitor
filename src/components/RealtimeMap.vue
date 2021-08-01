@@ -88,6 +88,10 @@ export default {
                 height: '600px'
             },
 
+            refreshInterval: null,
+
+            refreshPaused: false,
+
             goodPoints: [],
 
             badPoints: [],
@@ -101,6 +105,14 @@ export default {
         };
     },
     methods: {
+        startTimeIntervel() {
+            this.getSites();
+
+            this.clearInterval();
+
+            this.refreshInterval = window.setInterval(this.getSites, 5000);
+        },
+
         showSiteInfo() {
             this.$router.push({
                 path: '/siteInfo',
@@ -112,7 +124,7 @@ export default {
         },
 
         mapHandler({ BMap, map }) {
-            this.getSites();
+            this.startTimeIntervel();
             this.loading = false;
         },
 
@@ -145,8 +157,11 @@ export default {
                     if (site.alertState) {
                         alertStr = ' - ' + site.alertState.slice(0, 2).join(' - ')
                         if (site.alertState.length > 2) {
-                            alertStr += '...'
+                            alertStr += ' ...'
                         }
+                    }
+                    if (this.infoWindow.data && this.infoWindow.data.siteId === site.siteId) {
+                        this.infoWindow.data.alertState = alertStr;
                     }
                     return {
                         description: site.description,
@@ -171,6 +186,13 @@ export default {
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
+        },
+
+        clearInterval() {
+            if (this.refreshInterval) {
+                window.clearInterval(this.refreshInterval);
+                console.log('SiteInfo time intervel destroyed');
+            }
         }
     },
     created() {
@@ -180,6 +202,20 @@ export default {
     },
     mounted() {
         this.map.height = document.body.clientHeight - 160 + 'px';
+    },
+    activated() {
+        if (this.refreshPaused) {
+            this.startTimeIntervel();
+        }
+    },
+    deactivated() {
+        if (this.refreshInterval) {
+            this.refreshPaused = true;
+        }
+        this.clearInterval();
+    },
+    beforeDestroy() {
+        this.clearInterval();
     }
 }
 </script>

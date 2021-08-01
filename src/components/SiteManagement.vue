@@ -269,6 +269,8 @@ export default {
     },
     created() {
         this.queryInfo.pageSize = Number(this.$customConfig.SITEMANAGEMENT_PAGE_SIZE);
+    },
+    activated() {
         this.getSites();
     }
 }

@@ -216,7 +216,6 @@ export default {
     },
     created() {
         this.queryInfo.pageSize = Number(this.$customConfig.LOGS_PAGE_SIZE);
-        this.getSites();
 
         const digitalTypes = this.$customConfig.COMMON_DATA_TYPES.digital;
         const analogTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
@@ -240,6 +239,9 @@ export default {
         });
 
         console.log(this.logsConfigData);
+    },
+    activated() {
+        this.getSites();
     }
 }
 </script>
