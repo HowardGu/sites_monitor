@@ -210,12 +210,11 @@ export default {
             this.loading = true;
             this.loadingText = '数据加载中';
 
-            console.log('realtime query infos');
+            console.log('realtimechart query infos');
             console.log(this.realtimeDataQueryInfos);
 
             this.realtimeDataQueryInfos.forEach((queryInfo, index) => {
                 logService.showRealtimeData(queryInfo).then((res) => {
-                    console.log(res);
                     if (res.data.data && res.data.data.realtimeData) {
                         this.renderChart(index, res.data.data.realtimeData);
                     } else {
@@ -340,28 +339,28 @@ export default {
             console.log('Server: ' + this.realtimeChartsConfig.totalChart + ' ' + this.realtimeChartsConfig.barsPerChart);
 
             if (this.realtimeChartsConfigTotalChart !== this.realtimeChartsConfig.totalChart) {
-                const chartBarArray = [];
-                for (let i = 0; i < this.realtimeChartsConfigBarsPerChart; i++) {
-                    chartBarArray.push('');
-                }
+                if (this.realtimeChartsConfigTotalChart < this.realtimeChartsConfig.totalChart) {
+                    this.realtimeChartsConfig.charts.splice(this.realtimeChartsConfigTotalChart, this.realtimeChartsConfig.totalChart - this.realtimeChartsConfigTotalChart);
+                } else {
+                    const chartBarArray = [];
+                    for (let i = 0; i < this.realtimeChartsConfigBarsPerChart; i++) {
+                        chartBarArray.push('');
+                    }
 
-                this.realtimeChartsConfig.charts = [];
+                    for (let i = this.realtimeChartsConfig.totalChart; i < this.realtimeChartsConfigTotalChart; i++) {
+                        const chartBlock = JSON.parse(JSON.stringify(this.realtimeChartsConfigChartBlock));
+                        chartBlock.id = i;
+                        chartBlock.title = '图表' + (i + 1).toString();
+                        chartBlock.bars = JSON.parse(JSON.stringify(chartBarArray));
+                        chartBlock.dataType = this.dataTypes[0].key;
 
-                for (let i = 0; i < this.realtimeChartsConfigTotalChart; i++) {
-                    const chartBlock = JSON.parse(JSON.stringify(this.realtimeChartsConfigChartBlock));
-                    chartBlock.id = i;
-                    chartBlock.title = '图表' + (i + 1).toString();
-                    chartBlock.bars = JSON.parse(JSON.stringify(chartBarArray));
-                    chartBlock.dataType = this.dataTypes[0].key;
-
-                    this.realtimeChartsConfig.charts.push(chartBlock);
+                        this.realtimeChartsConfig.charts.push(chartBlock);
+                    }
                 }
 
                 this.realtimeChartsConfig.totalChart = this.realtimeChartsConfigTotalChart;
                 this.realtimeChartsConfig.barsPerChart = this.realtimeChartsConfigBarsPerChart;
                 this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / 2);
-
-                console.log(this.realtimeChartsConfig);
             } else if (this.realtimeChartsConfigBarsPerChart !== this.realtimeChartsConfig.barsPerChart) {
                 const chartBarArray = [];
                 for (let i = 0; i < this.realtimeChartsConfigBarsPerChart; i++) {
