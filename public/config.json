@@ -90,13 +90,13 @@
         "charts": [
             {
                 "id": 0,
-                "title": "chart1",
+                "title": "图表1",
                 "bars": ["", "", "", "", "", "", "", "", "", ""],
                 "dataType": "IncidentPower"
             },
             {
                 "id": 1,
-                "title": "chart2",
+                "title": "图表2",
                 "bars": ["", "", "", "", "", "", "", "", "", ""],
                 "dataType": "IncidentPower"
             }
