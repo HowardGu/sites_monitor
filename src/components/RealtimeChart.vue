@@ -301,10 +301,10 @@ export default {
             userService.showConf(chartsConfigQuertInfo).then((res) => {
                 console.log(res);
                 if (res.data.data && res.data.data.conf.conf) {
-                    console.log('Use config from server');
+                    console.log('Use RealtimeCharts config from server');
                     this.realtimeChartsConfig = JSON.parse(res.data.data.conf.conf);
                 } else {
-                    console.log('Use config from local');
+                    console.log('Use RealtimeCharts config from local');
                     this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
                 }
 

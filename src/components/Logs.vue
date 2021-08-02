@@ -58,7 +58,7 @@
 
         <el-dialog title="日志筛选" :visible.sync="logsConfigDialogVisible" width="800px" :close-on-click-modal="false">
             <el-card class="logs-inner-card">
-                <el-transfer v-model="logsConfigIngoreData" :data="logsConfigData"
+                <el-transfer v-model="logsConfigIngoreData" :data="logsConfigItems"
                 :titles="['显示', '隐藏']" :button-texts="['显示', '隐藏']"></el-transfer>
             </el-card>
 
@@ -73,9 +73,13 @@
 <script>
 import alertService from '@/service/alertService';
 import siteService from '@/service/siteService';
+import userService from '@/service/userService';
+import storageService from '@/service/storageService';
 export default {
     data() {
         return {
+            userId: 0,
+
             selectedSiteUUID: '',
 
             dateTimeRange: '',
@@ -126,7 +130,7 @@ export default {
 
             logsConfigDialogVisible: false,
 
-            logsConfigData: [],
+            logsConfigItems: [],
 
             logsConfigIngoreData: [],
 
@@ -244,38 +248,82 @@ export default {
         onLogsConfigDialogOK() {
             this.logsConfigDialogVisible = false;
             this.originalLogsConfigIngoreData = JSON.parse(JSON.stringify(this.logsConfigIngoreData));
+            this.updateLogsConfig();
         },
 
         onLogsConfigDialogCancel() {
             this.logsConfigDialogVisible = false;
             this.logsConfigIngoreData = JSON.parse(JSON.stringify(this.originalLogsConfigIngoreData));
+        },
+
+        updateLogsConfig() {
+            const logsConfig = {
+                userId: this.userId,
+                name: 'logsConfig',
+                conf: JSON.stringify(this.logsConfigIngoreData)
+            }
+
+            console.log(logsConfig);
+
+            userService.updateConf(logsConfig).then((res) => {
+                console.log(res);
+                this.$message.success('日志筛选更新成功');
+            }).catch((err) => {
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+            })
+        },
+
+        getLogsConfig() {
+            const logsConfigQuertInfo = {
+                userId: this.userId,
+                name: 'logsConfig'
+            }
+
+            console.log(logsConfigQuertInfo);
+
+            userService.showConf(logsConfigQuertInfo).then((res) => {
+                console.log(res);
+                if (res.data.data && res.data.data.conf.conf) {
+                    console.log('Use logs config from server');
+                    this.logsConfigIngoreData = JSON.parse(res.data.data.conf.conf);
+                }
+
+                console.log(this.logsConfigIngoreData);
+            }).catch((err) => {
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+            })
         }
     },
     created() {
+        const user = JSON.parse(storageService.get(storageService.USER_INFO));
+        this.userId = user.userId;
+
         this.queryInfo.pageSize = Number(this.$customConfig.LOGS_PAGE_SIZE);
 
         const digitalTypes = this.$customConfig.COMMON_DATA_TYPES.digital;
         const analogTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
         const stateTypes = this.$customConfig.COMMON_DATA_TYPES.state;
 
-        this.logsConfigData = [];
+        this.logsConfigItems = [];
 
         digitalTypes.forEach((item) => {
             item.disabled = false;
-            this.logsConfigData.push(item);
+            this.logsConfigItems.push(item);
         });
 
         analogTypes.forEach((item) => {
             item.disabled = false;
-            this.logsConfigData.push(item);
+            this.logsConfigItems.push(item);
         });
 
         stateTypes.forEach((item) => {
             item.disabled = false;
-            this.logsConfigData.push(item);
+            this.logsConfigItems.push(item);
         });
 
-        console.log(this.logsConfigData);
+        console.log(this.logsConfigItems);
+
+        this.getLogsConfig();
     },
     activated() {
         this.getSites();
