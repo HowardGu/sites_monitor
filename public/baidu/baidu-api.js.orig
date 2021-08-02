@@ -2,55 +2,55 @@ window.TILE_VERSION = {
     "ditu": {
         "normal": {
             "version": "088",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         },
         "satellite": {
             "version": "009",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         },
         "normalTraffic": {
             "version": "081",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         },
         "satelliteTraffic": {
             "version": "083",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         },
         "mapJS": {
             "version": "104",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         },
         "satelliteStreet": {
             "version": "083",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         },
         "earthVector": {
             "version": "001",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         }
     },
     "webapp": {
         "high_normal": {
             "version": "001",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         },
         "lower_normal": {
             "version": "002",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         }
     },
     "api_for_mobile": {
         "vector": {
             "version": "002",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         },
         "vectorIcon": {
             "version": "002",
-            "updateDate": "20210726"
+            "updateDate": "20210730"
         }
     }
 };
-window.BMAP_AUTHENTIC_KEY = "xoDANekNHo3GGDppi8GfPd08hkuNSnCb"; (function() {
+window.BMAP_AUTHENTIC_KEY = "O4HdqiaR1Z0ACK1yrBlSsKcsXIhBKwWm"; (function() {
     function ba(a) {
         throw a;
     }
