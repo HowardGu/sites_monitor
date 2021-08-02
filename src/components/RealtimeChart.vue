@@ -210,7 +210,7 @@ export default {
             this.loading = true;
             this.loadingText = '数据加载中';
 
-            console.log('realtimechart query infos');
+            console.log('RealtimeChart query infos');
             console.log(this.realtimeDataQueryInfos);
 
             this.realtimeDataQueryInfos.forEach((queryInfo, index) => {
@@ -291,12 +291,18 @@ export default {
         },
 
         getRealtimeChartsConfig() {
-            console.log('User ' + this.userId);
-            userService.showConf(this.userId).then((res) => {
+            const chartsConfigQuertInfo = {
+                userId: this.userId,
+                name: 'realtimeChartsConfig'
+            }
+
+            console.log(chartsConfigQuertInfo);
+
+            userService.showConf(chartsConfigQuertInfo).then((res) => {
                 console.log(res);
-                if (res.data.data && res.data.data.conf.chartConf) {
+                if (res.data.data && res.data.data.conf.conf) {
                     console.log('Use config from server');
-                    this.realtimeChartsConfig = JSON.parse(res.data.data.conf.chartConf);
+                    this.realtimeChartsConfig = JSON.parse(res.data.data.conf.conf);
                 } else {
                     console.log('Use config from local');
                     this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
@@ -315,7 +321,8 @@ export default {
         updateRealtimeChartsConfig() {
             const chartsConfig = {
                 userId: this.userId,
-                chartConf: JSON.stringify(this.realtimeChartsConfig)
+                name: 'realtimeChartsConfig',
+                conf: JSON.stringify(this.realtimeChartsConfig)
             }
 
             console.log(chartsConfig);

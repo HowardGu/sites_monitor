@@ -32,8 +32,8 @@ const updateConf = (userConfParams) => {
     return request.put(`users/${userConfParams.userId}/conf`, userConfParams);
 };
 
-const showConf = (userId) => {
-    return request.get(`users/${userId}/conf`);
+const showConf = (userConfParams) => {
+    return request.post(`users/${userConfParams.userId}/conf`, userConfParams);
 };
 
 export default {
