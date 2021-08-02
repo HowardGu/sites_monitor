@@ -38,10 +38,11 @@
                 <el-table-column v-if="logsConfigIngoreData.indexOf('IncidentPower') === -1" prop="incidentPower" label="入射功率" :formatter="formatAlert"></el-table-column>
                 <el-table-column v-if="logsConfigIngoreData.indexOf('ReflectedPower') === -1" prop="reflectedPower" label="反射功率" :formatter="formatAlert"></el-table-column>
                 <el-table-column v-if="logsConfigIngoreData.indexOf('PushPower') === -1" prop="pushPower" label="推动功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('InputPower') === -1" prop="inputPower" label="输入功率" :formatter="formatAlert"></el-table-column>
+                <el-table-column v-if="logsConfigIngoreData.indexOf('RatedPower') === -1" prop="ratedPower" label="额定功率" :formatter="formatAlert"></el-table-column>
                 <el-table-column v-if="logsConfigIngoreData.indexOf('ElectricCurrent') === -1" prop="electricCurrent" label="功放电流" :formatter="formatAlert"></el-table-column>
                 <el-table-column v-if="logsConfigIngoreData.indexOf('Temperature') === -1" prop="temperature" label="功放温度" :formatter="formatAlert"></el-table-column>
                 <el-table-column v-if="logsConfigIngoreData.indexOf('SupplyVoltage') === -1" prop="supplyVoltage" label="电源电压" :formatter="formatAlert"></el-table-column>
-                <el-table-column v-if="logsConfigIngoreData.indexOf('InputPower') === -1" prop="inputPower" label="输入功率" :formatter="formatAlert"></el-table-column>
                 <el-table-column v-if="logsConfigIngoreData.indexOf('StandingWaveRatio') === -1" prop="standingWaveRatio" label="驻波比" :formatter="formatAlert"></el-table-column>
                 <el-table-column v-if="logsConfigIngoreData.indexOf('OfflineAlert') === -1" prop="offlineAlert" label="在线状态" :formatter="formatOfflineState"></el-table-column>
             </el-table>
