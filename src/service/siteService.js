@@ -20,6 +20,10 @@ const showAll = (axiosParams) => {
     return request.get('sites', { params: axiosParams });
 };
 
+const showAllWithAlert = () => {
+    return request.get('realtime/sites');
+};
+
 const showTunnels = () => {
     return request.get('sites/tunnels');
 };
@@ -58,6 +62,7 @@ export default {
     show,
     remove,
     showAll,
+    showAllWithAlert,
     showTunnels,
     showLocations,
     showSites,

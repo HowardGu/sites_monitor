@@ -106,11 +106,11 @@ export default {
     },
     methods: {
         startTimeIntervel() {
-            this.getSites();
+            this.getSitesWithAlert();
 
             this.clearInterval();
 
-            this.refreshInterval = window.setInterval(this.getSites, 5000);
+            this.refreshInterval = window.setInterval(this.getSitesWithAlert, 5000);
         },
 
         showSiteInfo() {
@@ -149,8 +149,8 @@ export default {
             this.infoWindow.show = true
         },
 
-        getSites() {
-            siteService.showAll(this.queryInfo).then((res) => {
+        getSitesWithAlert() {
+            siteService.showAllWithAlert().then((res) => {
                 console.log(res);
                 const points = res.data.data.sites.map((site) => {
                     var alertStr;
