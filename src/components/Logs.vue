@@ -23,8 +23,8 @@
 
                 <el-date-picker v-model="dateTimeRange" type="datetimerange" :picker-options="pickerOptions" class="logs-search-bar-datepicker" :unlink-panels="true"
                     start-placeholder="开始时间" end-placeholder="结束时间" :default-time="['12:00:00']"></el-date-picker>
-                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getSiteAlerts()">查询</el-button>
-                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getAlerts()">查询所有站点</el-button>
+                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getSiteAlerts(1)">查询</el-button>
+                <el-button class="logs-search-bar-button" icon="el-icon-search" @click="getAlerts(1)">查询所有站点</el-button>
             </div>
 
             <el-table :data="alertList" :border="true" :cell-class-name="rowClass" style="width: 100%">
@@ -140,15 +140,16 @@ export default {
     },
     methods: {
         handleCurrentPageChange(newPage) {
-            this.queryInfo.pageNum = newPage;
             if (this.selectedSiteUUID !== '') {
-                this.getSiteAlerts();
+                this.getSiteAlerts(newPage);
             } else {
-                this.getAlerts();
+                this.getAlerts(newPage);
             }
         },
 
-        getAlerts() {
+        getAlerts(pageNum) {
+            this.queryInfo.pageNum = pageNum;
+            this.selectedSiteUUID = '';
             if (this.dateTimeRange) {
                 const tzoffset = (new Date()).getTimezoneOffset() * 60000;
                 this.historyQueryInfo.startTime = (new Date(this.dateTimeRange[0] - tzoffset)).toISOString();
@@ -165,7 +166,8 @@ export default {
             })
         },
 
-        getSiteAlerts() {
+        getSiteAlerts(pageNum) {
+            this.queryInfo.pageNum = pageNum;
             if (this.selectedSiteUUID !== '') {
                 if (this.dateTimeRange) {
                     const tzoffset = (new Date()).getTimezoneOffset() * 60000;
