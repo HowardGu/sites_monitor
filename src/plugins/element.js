@@ -5,6 +5,8 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     Card,
+    Carousel,
+    CarouselItem,
     Col,
     Container,
     DatePicker,
@@ -76,5 +78,7 @@ Vue.use(Collapse)
 Vue.use(CollapseItem)
 Vue.use(Divider)
 Vue.use(Transfer)
+Vue.use(Carousel)
+Vue.use(CarouselItem)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

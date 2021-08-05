@@ -17,10 +17,18 @@
                 <el-button class="realtimeChart-search-bar-button" icon="el-icon-search" @click="startTimeIntervel()">刷新曲线</el-button>
             </div>
 
-            <div v-for="line of chartLines" :key="line" class="realtimeChart-chart-container">
-                <div :id="'realtimeChart' + ((line - 1) * 2).toString()" style="margin-top: 50px; width: 50%; height:400px;"></div>
-                <div :id="'realtimeChart' + ((line - 1) * 2 + 1).toString()" style="margin-top: 50px; width: 50%; height:400px;"></div>
-            </div>
+            <el-carousel height="820px" :autoplay="false" arrow="always" indicator-position="outside">
+                <el-carousel-item v-for="line of chartLines" :key="line">
+                    <div class="realtimeChart-chart-container">
+                        <div :id="'realtimeChart' + ((line - 1) * chartsPerPage).toString()" style="margin-top: 20px; width: 50%; height:400px;"></div>
+                        <div :id="'realtimeChart' + ((line - 1) * chartsPerPage + 1).toString()" style="margin-top: 20px; width: 50%; height:400px;"></div>
+                    </div>
+                    <div class="realtimeChart-chart-container">
+                        <div :id="'realtimeChart' + ((line - 1) * chartsPerPage + 2).toString()" style="width: 50%; height:400px;"></div>
+                        <div :id="'realtimeChart' + ((line - 1) * chartsPerPage + 3).toString()" style="width: 50%; height:400px;"></div>
+                    </div>
+                </el-carousel-item>
+            </el-carousel>
         </el-card>
 
         <el-dialog title="图表数量" :visible.sync="realtimeChartsConfigDialog1Visible" width="50%" :close-on-click-modal="false">
@@ -183,7 +191,9 @@ export default {
 
             maxCharts: 0,
 
-            maxBarsPerChart: 0
+            maxBarsPerChart: 0,
+
+            chartsPerPage: 0
         };
     },
     methods: {
@@ -310,7 +320,7 @@ export default {
 
                 console.log(this.realtimeChartsConfig);
 
-                this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / 2);
+                this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / this.chartsPerPage);
                 this.realtimeChartsConfigTotalChart = this.realtimeChartsConfig.totalChart;
                 this.realtimeChartsConfigBarsPerChart = this.realtimeChartsConfig.barsPerChart;
             }).catch((err) => {
@@ -367,7 +377,7 @@ export default {
 
                 this.realtimeChartsConfig.totalChart = this.realtimeChartsConfigTotalChart;
                 this.realtimeChartsConfig.barsPerChart = this.realtimeChartsConfigBarsPerChart;
-                this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / 2);
+                this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / this.chartsPerPage);
             } else if (this.realtimeChartsConfigBarsPerChart !== this.realtimeChartsConfig.barsPerChart) {
                 const chartBarArray = [];
                 for (let i = 0; i < this.realtimeChartsConfigBarsPerChart; i++) {
@@ -414,6 +424,8 @@ export default {
         if (this.maxBarsPerChart > 20 || this.maxBarsPerChart < 1) {
             this.maxBarsPerChart = 20;
         }
+
+        this.chartsPerPage = this.$customConfig.REALTIMECHART_CHARTS_PER_PAGE;
     },
     activated() {
         this.getSites();
