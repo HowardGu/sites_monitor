@@ -56,6 +56,10 @@ const alertConf = (siteUUID) => {
     return request.get(`sites/${siteUUID}/alertConf`);
 };
 
+const sendCtrlMsg = (ctrlMsgParams) => {
+    return request.post(`/ctrlmsg/sites/${ctrlMsgParams.id}`, ctrlMsgParams);
+}
+
 export default {
     create,
     update,
@@ -70,5 +74,6 @@ export default {
     ignoreAlert,
     updateAlertState,
     updateAlertLimit,
-    alertConf
+    alertConf,
+    sendCtrlMsg
 };

@@ -24,7 +24,7 @@
 
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="6"><span>站点号： {{ siteData.siteId }}</span></el-col>
-                    <el-col :span="6"><span>版本号：</span></el-col>
+                    <el-col :span="6"><span>版本号： {{ siteData.version }}</span></el-col>
                     <el-col :span="6"><span>时钟： {{ siteData.dateTime }}</span></el-col>
                     <el-col :span="6" id='offlineAlert'><span>状态： {{ siteData.offlineAlert }}</span></el-col>
                 </el-row>
@@ -44,7 +44,7 @@
 
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="6"><el-button @click="getSiteInfo()" icon="el-icon-search">读取信息</el-button></el-col>
-                    <el-col :span="6" v-if="userGroup !=='guest'"><el-button @click="siteControllingDialogVisible = true" icon="el-icon-setting">站点控制</el-button></el-col>
+                    <el-col :span="6" v-if="userGroup !=='guest'"><el-button @click="beforeSiteControllingDialogOpen()" icon="el-icon-setting">站点控制</el-button></el-col>
                     <el-col :span="6" v-if="userGroup !=='guest'"><el-button @click="siteSettingDialogVisible = true" icon="el-icon-setting">站点设置</el-button></el-col>
                 </el-row>
             </el-card>
@@ -98,36 +98,26 @@
             <el-card class="siteInfo-inner-card">
                 <div slot="header" class="siteInfo-inner-card-header">
                     <h3 align="center">设备信息</h3>
-                    <el-button type="primary">重启设备</el-button>
+                    <el-button type="danger" @click="sendCtrlMsg('Reset', '')">复位设备</el-button>
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4"><span>站点号(1 ~ 99999)：</span></el-col>
-                    <el-col :span="12"><el-input-number v-model="siteId" controls-position="right" :min="1" :max="99999"></el-input-number></el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
-                </el-row>
-
-                <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="4">
-                        <span>时钟：</span>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-date-picker v-model="siteControllingData.dateTime" type="datetime" placeholder="选择日期时间" :default-time="['12:00:00']"></el-date-picker>
-                    </el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                    <el-col :span="14"><el-input-number v-model="siteControllingData.siteId" :controls=false :min="1" :max="99999"></el-input-number></el-col>
+                    <el-col :span="6"><el-button @click="sendCtrlMsg('SetId', siteControllingData.siteId.toString())">设置</el-button></el-col>
                 </el-row>
 
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4">
                         <span>服务器：</span>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="10">
                         <el-input v-model="siteControllingData.serverAddress" placeholder="服务器地址"></el-input>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                         <el-input v-model="siteControllingData.serverPort" placeholder="服务器端口"></el-input>
                     </el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                    <el-col :span="6"><el-button @click="sendCtrlMsg('SetHost', siteControllingData.serverAddress + ':' + siteControllingData.serverPort)">设置</el-button></el-col>
                 </el-row>
             </el-card>
 
@@ -139,12 +129,22 @@
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4"><span>开关状态：</span></el-col>
                     <el-col :span="6">
-                        <el-select v-model="siteControllingData.onOffState" placeholder="请选择开关状态">
+                        <el-select style="width:100%" v-model="siteControllingData.onOffState" placeholder="请选择开关状态">
                             <el-option label="关机" :value="false"></el-option>
                             <el-option label="开机" :value="true"></el-option>
                         </el-select>
                     </el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                    <el-col :span="6"><el-button @click="sendCtrlMsg('PowerOn', siteControllingData.onOffState ? '1' : '0')">设置</el-button></el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="4">
+                        <span>输入衰减：</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="siteControllingData.inputAttenuation"></el-input>
+                    </el-col>
+                    <el-col :span="6"><el-button @click="sendCtrlMsg('SetInputAttenuation', siteControllingData.inputAttenuation.toString())">设置</el-button></el-col>
                 </el-row>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -154,7 +154,7 @@
                     <el-col :span="6">
                         <el-input v-model="siteControllingData.ratedPower"></el-input>
                     </el-col>
-                    <el-col :span="6"><el-button>设置</el-button></el-col>
+                    <el-col :span="6"><el-button @click="sendCtrlMsg('SetRatedPower', siteControllingData.ratedPower.toString())">设置</el-button></el-col>
                 </el-row>
             </el-card>
 
@@ -213,7 +213,7 @@
                         <span>入射功率：</span>
                     </el-col>
                     <el-col :span="4">
-                        <el-select style="width:100%"  @change="updateAlertState('IncidentPower')" v-model="siteSettingData.incidentPowerState" placeholder="请选择是否报警">
+                        <el-select style="width:100%" @change="updateAlertState('IncidentPower')" v-model="siteSettingData.incidentPowerState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -236,7 +236,7 @@
                         <span>反射功率：</span>
                     </el-col>
                     <el-col :span="4">
-                        <el-select style="width:100%"  @change="updateAlertState('ReflectedPower')" v-model="siteSettingData.reflectedPowerState" placeholder="请选择是否报警">
+                        <el-select style="width:100%" @change="updateAlertState('ReflectedPower')" v-model="siteSettingData.reflectedPowerState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -259,7 +259,7 @@
                         <span>推动功率：</span>
                     </el-col>
                     <el-col :span="4">
-                        <el-select style="width:100%"  @change="updateAlertState('PushPower')" v-model="siteSettingData.pushPowerState" placeholder="请选择是否报警">
+                        <el-select style="width:100%" @change="updateAlertState('PushPower')" v-model="siteSettingData.pushPowerState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -282,7 +282,7 @@
                         <span>输入功率：</span>
                     </el-col>
                     <el-col :span="4">
-                        <el-select style="width:100%"  @change="updateAlertState('InputPower')" v-model="siteSettingData.inputPowerState" placeholder="请选择是否报警">
+                        <el-select style="width:100%" @change="updateAlertState('InputPower')" v-model="siteSettingData.inputPowerState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -305,7 +305,7 @@
                         <span>额定功率</span>
                     </el-col>
                     <el-col :span="4">
-                        <el-select style="width:100%"  @change="updateAlertState('RatedPower')" v-model="siteSettingData.ratedPowerState" placeholder="请选择是否报警">
+                        <el-select style="width:100%" @change="updateAlertState('RatedPower')" v-model="siteSettingData.ratedPowerState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -328,7 +328,7 @@
                         <span>功放电流：</span>
                     </el-col>
                     <el-col :span="4">
-                        <el-select style="width:100%"  @change="updateAlertState('ElectricCurrent')" v-model="siteSettingData.electricCurrentState" placeholder="请选择是否报警">
+                        <el-select style="width:100%" @change="updateAlertState('ElectricCurrent')" v-model="siteSettingData.electricCurrentState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -351,7 +351,7 @@
                         <span>功放温度：</span>
                     </el-col>
                     <el-col :span="4">
-                        <el-select style="width:100%"  @change="updateAlertState('Temperature')" v-model="siteSettingData.temperatureState" placeholder="请选择是否报警">
+                        <el-select style="width:100%" @change="updateAlertState('Temperature')" v-model="siteSettingData.temperatureState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -374,7 +374,7 @@
                         <span>电源电压：</span>
                     </el-col>
                     <el-col :span="4">
-                        <el-select style="width:100%"  @change="updateAlertState('SupplyVoltage')" v-model="siteSettingData.supplyVoltageState" placeholder="请选择是否报警">
+                        <el-select style="width:100%" @change="updateAlertState('SupplyVoltage')" v-model="siteSettingData.supplyVoltageState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -397,7 +397,7 @@
                         <span>驻波比：</span>
                     </el-col>
                     <el-col :span="4">
-                        <el-select style="width:100%"  @change="updateAlertState('StandingWaveRatio')" v-model="siteSettingData.standingWaveRatioState" placeholder="请选择是否报警">
+                        <el-select style="width:100%" @change="updateAlertState('StandingWaveRatio')" v-model="siteSettingData.standingWaveRatioState" placeholder="请选择是否报警">
                             <el-option label="不报警" :value="false"></el-option>
                             <el-option label="报警" :value="true"></el-option>
                         </el-select>
@@ -437,10 +437,10 @@ export default {
             siteControllingDialogVisible: false,
 
             siteControllingData: {
-                dateTime: '',
                 serverAddress: '',
                 serverPort: '',
                 onOffState: false,
+                inputAttenuation: 0,
                 ratedPower: 0
             },
 
@@ -481,6 +481,7 @@ export default {
 
             siteData: {
                 siteId: 0,
+                version: '',
                 longitude: 0,
                 latitude: 0,
                 tunnel: '',
@@ -608,6 +609,58 @@ export default {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
             }
+        },
+
+        beforeSiteControllingDialogOpen() {
+            if (this.siteData.offlineAlert === '离线') {
+                this.showOfflineErrorMsg();
+                return;
+            }
+
+            this.siteControllingData.siteId = this.siteData.siteId;
+            this.siteControllingData.onOffState = (this.siteData.powerOn === '开机');
+            this.siteControllingData.inputAttenuation = this.siteData.inputAttenuation;
+            this.siteControllingData.ratedPower = this.siteData.ratedPower;
+
+            this.siteControllingDialogVisible = true;
+        },
+
+        async sendCtrlMsg(msgName, msgValue) {
+            if (this.siteData.offlineAlert === '离线') {
+                this.showOfflineErrorMsg();
+                return;
+            }
+
+            const confirmResult = await this.$confirm('此操作将发送控制消息, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).catch((err) => {
+                return err;
+            });
+
+            if (confirmResult !== 'confirm') {
+                this.$message.info('已取消发送')
+            } else {
+                if (this.selectedSiteUUID !== '') {
+                    siteService.sendCtrlMsg({ id: this.selectedSiteUUID, name: msgName, value: msgValue }).then((res) => {
+                        console.log(res);
+                        this.$message.success('发送成功');
+                    }).catch((err) => {
+                        err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                    });
+                }
+            }
+        },
+
+        showOfflineErrorMsg() {
+            this.$confirm('设备离线，无法发送控制消息', '错误', {
+                confirmButtonText: '确定',
+                showCancelButton: false,
+                type: 'error'
+            }).catch((err) => {
+                return err;
+            });
         },
 
         highlightAlert() {
