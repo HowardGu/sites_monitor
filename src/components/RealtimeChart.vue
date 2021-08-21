@@ -84,6 +84,17 @@
 
                 <el-row :gutter="10" class="realtimeChart-row">
                     <el-col :span="3">
+                        <span>功率上限：</span>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-input v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].yAxisMax" placeholder="功率上限"></el-input>
+                    </el-col>
+                </el-row>
+
+                <el-divider></el-divider>
+
+                <el-row :gutter="10" class="realtimeChart-row">
+                    <el-col :span="3">
                         <span>图表标题：</span>
                     </el-col>
                     <el-col :span="8">
@@ -174,7 +185,8 @@ export default {
                         id: null,
                         title: '',
                         bars: ['', '', '', '', '', '', '', '', '', ''],
-                        dataType: ''
+                        dataType: '',
+                        yAxisMax: null
                     }
                 ]
             },
@@ -193,7 +205,9 @@ export default {
 
             maxBarsPerChart: 0,
 
-            chartsPerPage: 0
+            chartsPerPage: 0,
+
+            siteMap: null
         };
     },
     methods: {
@@ -226,6 +240,7 @@ export default {
             this.realtimeDataQueryInfos.forEach((queryInfo, index) => {
                 logService.showRealtimeData(queryInfo).then((res) => {
                     if (res.data.data && res.data.data.realtimeData) {
+                        console.log(res.data.data.realtimeData);
                         this.renderChart(index, res.data.data.realtimeData);
                     } else {
                         this.resetCharts();
@@ -258,22 +273,45 @@ export default {
             const subTitle = this.dataTypes.find((dataType) => {
                 return dataType.key === this.realtimeChartsConfig.charts[index].dataType;
             }).label;
-            const seriesData = realtimeData;
+            const seriesData = realtimeData.map((obj) => {
+                return obj.alertState ? { value: obj.data, itemStyle: { color: 'red' } } : { value: obj.data };
+            });
             const xAxisData = []
 
-            this.realtimeChartsConfig.charts[index].bars.forEach((bar) => {
+            this.realtimeChartsConfig.charts[index].bars.forEach((bar, barIndex) => {
                 const site = this.siteList.find((site) => {
                     return site.siteUUID === bar;
                 });
 
                 if (site) {
-                    xAxisData.push(site.tunnelName + '\n' + site.siteId + '号站点');
+                    const barName = site.tunnelName + '\n' + site.siteId + '号站点';
+                    this.siteMap.set(barName, { siteUUID: site.siteUUID, siteId: site.siteId });
+                    xAxisData.push(realtimeData[barIndex].alertState ? { value: barName, textStyle: { color: 'red' } } : { value: barName });
                 } else {
                     xAxisData.push('-');
                 }
             });
 
-            this.realtimeCharts[index].setOption({ title: { text: title, subtext: subTitle }, xAxis: { data: xAxisData }, series: [{ data: seriesData }] });
+            const yAxisMax = this.realtimeChartsConfig.charts[index].yAxisMax ? this.realtimeChartsConfig.charts[index].yAxisMax : null;
+
+            this.realtimeCharts[index].setOption({ title: { text: title, subtext: subTitle }, xAxis: { data: xAxisData, triggerEvent: true }, yAxis: { max: yAxisMax }, series: [{ data: seriesData }] });
+
+            this.realtimeCharts[index].on('click', function(params) {
+                if (params.componentType === 'xAxis') {
+                    console.log(params.value);
+                    const siteInfo = this.siteMap.get(params.value);
+                    if (siteInfo) {
+                        console.log(siteInfo);
+                        this.$router.push({
+                            path: '/siteInfo',
+                            query: {
+                                siteId: siteInfo.siteId,
+                                siteUUID: siteInfo.siteUUID
+                            }
+                        });
+                    }
+                }
+            }.bind(this));
         },
 
         resetCharts() {
@@ -297,6 +335,12 @@ export default {
             for (let i = 0; i < this.realtimeChartsConfig.totalChart; i++) {
                 const chartDOMId = 'realtimeChart' + i.toString();
                 this.realtimeCharts.push(echarts.init(document.getElementById(chartDOMId)));
+            }
+
+            if (this.siteMap) {
+                this.siteMap.clear();
+            } else {
+                this.siteMap = new Map();
             }
         },
 

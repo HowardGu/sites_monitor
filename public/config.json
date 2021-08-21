@@ -92,13 +92,15 @@
                 "id": 0,
                 "title": "图表1",
                 "bars": ["", "", "", "", "", "", "", "", "", ""],
-                "dataType": "IncidentPower"
+                "dataType": "IncidentPower",
+                "yAxisMax": null
             },
             {
                 "id": 1,
                 "title": "图表2",
                 "bars": ["", "", "", "", "", "", "", "", "", ""],
-                "dataType": "IncidentPower"
+                "dataType": "IncidentPower",
+                "yAxisMax": null
             }
         ]
     },
