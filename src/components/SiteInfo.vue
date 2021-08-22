@@ -103,21 +103,8 @@
 
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="4"><span>站点号(1 ~ 99999)：</span></el-col>
-                    <el-col :span="14"><el-input-number v-model="siteControllingData.siteId" :controls=false :min="1" :max="99999"></el-input-number></el-col>
-                    <el-col :span="6"><el-button @click="sendCtrlMsg('SetId', siteControllingData.siteId.toString())">设置</el-button></el-col>
-                </el-row>
-
-                <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="4">
-                        <span>服务器：</span>
-                    </el-col>
-                    <el-col :span="10">
-                        <el-input v-model="siteControllingData.serverAddress" placeholder="服务器地址"></el-input>
-                    </el-col>
-                    <el-col :span="4">
-                        <el-input v-model="siteControllingData.serverPort" placeholder="服务器端口"></el-input>
-                    </el-col>
-                    <el-col :span="6"><el-button @click="sendCtrlMsg('SetHost', siteControllingData.serverAddress + ':' + siteControllingData.serverPort)">设置</el-button></el-col>
+                    <el-col :span="14"><el-input-number v-model="siteControllingData.siteId" :controls=false :min="1" :max="99999" :disabled="true"></el-input-number></el-col>
+                    <el-col :span="6"><el-button>读取</el-button></el-col>
                 </el-row>
             </el-card>
 
