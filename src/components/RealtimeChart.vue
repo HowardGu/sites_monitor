@@ -108,7 +108,7 @@
                     <span>请选择{{ realtimeChartsConfig.barsPerChart }}个数据项分别对应的站点：</span>
 
                     <div v-for="i of realtimeChartsConfig.barsPerChart" :key="i" class="realtimeChart-row">
-                        <el-select v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].bars[i - 1]" :placeholder="'第' + i.toString() + '个数据项'">
+                        <el-select v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].bars[i - 1]" :placeholder="'第' + i.toString() + '个数据项'" :clearable="true">
                             <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
                                 <span style="float: left">{{ site.siteFullName }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
