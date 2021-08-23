@@ -1,0 +1,3 @@
+Before run "npm run build"
+1.In baidu-init.js, update 'http://localhost:8080/baidu/baidu-api.js' to 'http://localhost:8080/monitor/baidu/baidu-api.js'
+2.In map.vue, update 'http://localhost:8080/baidu/baidu-init.js' to 'http://localhost:8080/monitor/baidu/baidu-init.js'
