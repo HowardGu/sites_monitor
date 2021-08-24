@@ -5,7 +5,7 @@
             <el-breadcrumb-item>实时数据</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card v-loading="loading" :element-loading-text="loadingText">
+        <el-card>
             <div slot="header" class="realtimeChart-card-header">
                 <h2 align="center">实时数据</h2>
                 <div>
@@ -138,10 +138,6 @@ export default {
         return {
             userId: 0,
 
-            loading: false,
-
-            loadingText: '',
-
             realtimeDataQueryInfos: [],
 
             siteList: [],
@@ -231,9 +227,6 @@ export default {
         },
 
         getRealtimeData() {
-            this.loading = true;
-            this.loadingText = '数据加载中';
-
             console.log('RealtimeChart query infos');
             console.log(this.realtimeDataQueryInfos);
 
@@ -245,7 +238,6 @@ export default {
                     } else {
                         this.resetCharts();
                     }
-                    this.loading = false;
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
                 });
