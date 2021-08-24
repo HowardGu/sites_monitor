@@ -43,7 +43,7 @@
                 </div>
 
                 <el-row :gutter="20" class="siteInfo-row">
-                    <el-col :span="6"><el-button @click="getSiteInfo()" icon="el-icon-search">读取信息</el-button></el-col>
+                    <el-col :span="6"><el-button @click="sendCtrlMsg('Version', '')" icon="el-icon-search">读取信息</el-button></el-col>
                     <el-col :span="6" v-if="userGroup !=='guest'"><el-button @click="beforeSiteControllingDialogOpen()" icon="el-icon-setting">站点控制</el-button></el-col>
                     <el-col :span="6" v-if="userGroup !=='guest'"><el-button @click="siteSettingDialogVisible = true" icon="el-icon-setting">站点设置</el-button></el-col>
                 </el-row>
