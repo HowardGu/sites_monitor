@@ -2,7 +2,7 @@ import axios from 'axios';
 import storageService from '../service/storageService';
 
 const service = axios.create({
-    baseURL: process.env.VUE_APP_SERVER_URL,
+    baseURL: 'http://' + location.hostname + ':1016/v1/',
     timeout: 1000 * 5
 });
 
