@@ -261,7 +261,9 @@ export default {
           const $script = document.createElement('script')
           global.document.body.appendChild($script)
           // $script.src = `https://api.map.baidu.com/api?v=2.0&ak=${ak}&callback=_initBaiduMap`
-          $script.src = `http://localhost:8080/baidu/baidu-init.js`
+          const hostname = self.location.hostname
+          console.log('Map.vue calls ' + hostname)
+          $script.src = `http://` + hostname + `:8080/baidu/baidu-init.js`
         })
         return global.BMap._preloader
       } else if (!global.BMap._preloader) {
