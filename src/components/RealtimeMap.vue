@@ -184,6 +184,15 @@ export default {
                 window.clearInterval(this.refreshInterval);
                 console.log('SiteInfo time intervel destroyed');
             }
+        },
+
+        getMapHeight() {
+            const homeHeader = document.getElementById('home-header');
+            const homeFooter = document.getElementById('home-footer');
+            // 80 is the sum of the paddings of el-main and el-card, currently I haven't find a way to eliminate them, so need to decreased by 80
+            // then decrease 5 more to eliminate the vertical scrollbar
+            this.map.height = document.body.clientHeight - homeHeader.clientHeight - homeFooter.clientHeight - 85 + 'px';
+            console.log('RealtimeMap height updated');
         }
     },
     created() {
@@ -192,7 +201,12 @@ export default {
         this.mapAK = this.$customConfig.REALTIMEMAP_MAP_AK;
     },
     mounted() {
-        this.map.height = document.body.clientHeight - 60 + 'px';
+        window.onresize = () => {
+            return (() => {
+                this.getMapHeight();
+            })()
+        }
+        this.getMapHeight();
     },
     activated() {
         if (this.refreshPaused) {

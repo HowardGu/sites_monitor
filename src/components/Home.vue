@@ -1,6 +1,6 @@
 <template>
     <el-container class="home-container">
-        <el-header>
+        <el-header id="home-header">
             <h3 class="home-header-title">{{ title }}</h3>
             <!-- <el-dropdown size="medium" :split-button="true" type="info" @command="logout">
                 你好，{{ userName }}
@@ -58,7 +58,7 @@
                 </keep-alive>
             </el-main>
         </el-container>
-        <el-footer>&copy; {{ year + copyright }}</el-footer>
+        <el-footer id="home-footer">&copy; {{ year + copyright }}</el-footer>
     </el-container>
 </template>
 
