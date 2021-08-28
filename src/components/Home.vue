@@ -76,7 +76,7 @@ export default {
 
             year: new Date().getFullYear(),
 
-            copyright: '',
+            copyright: '上海东方明珠信息技术有限公司',
 
             title: '',
 
@@ -110,7 +110,6 @@ export default {
         const user = JSON.parse(storageService.get(storageService.USER_INFO));
         this.userName = user.userName;
         this.userGroup = user.userGroup;
-        this.copyright = this.$customConfig.HOME_COPYRIGHT;
         this.title = this.$customConfig.HOME_TITLE;
 
         window.setInterval(this.setCurrentTime, 1000);
