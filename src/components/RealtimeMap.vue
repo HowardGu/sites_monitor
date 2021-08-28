@@ -1,15 +1,6 @@
 <template>
     <div>
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>实时地图</el-breadcrumb-item>
-        </el-breadcrumb>
-
         <el-card v-loading="loading" element-loading-text="地图加载中" class="realtimeMap-card">
-            <div slot="header" class="realtimeMap-card-header">
-                <h2 align="center">实时地图</h2>
-            </div>
-
             <el-collapse class="sites-collapse">
                 <el-collapse-item>
                     <template slot="title"><h3 align="center" class="sites-collapse-item-bad-title">报警站点({{ badPoints.length }})</h3></template>
@@ -201,7 +192,7 @@ export default {
         this.mapAK = this.$customConfig.REALTIMEMAP_MAP_AK;
     },
     mounted() {
-        this.map.height = document.body.clientHeight - 160 + 'px';
+        this.map.height = document.body.clientHeight - 60 + 'px';
     },
     activated() {
         if (this.refreshPaused) {
@@ -223,12 +214,6 @@ export default {
 <style lang="less" scoped>
 .realtimeMap-card {
     position: relative;
-}
-
-.realtimeMap-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .infoWindow-content {

@@ -1,15 +1,14 @@
 <template>
     <el-container class="home-container">
         <el-header>
-            <div>
-                <span>{{ title }}</span>
-            </div>
-            <el-dropdown size="medium" :split-button="true" type="info" @command="logout">
+            <h3 class="home-header-title">{{ title }}</h3>
+            <!-- <el-dropdown size="medium" :split-button="true" type="info" @command="logout">
                 你好，{{ userName }}
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item icon="el-icon-unlock">退出</el-dropdown-item>
                 </el-dropdown-menu>
-            </el-dropdown>
+            </el-dropdown> -->
+            <div>{{ currentTime }}</div>
         </el-header>
         <el-container>
             <el-aside :width="isCollapse ? 'auto' : '180px'">
@@ -81,7 +80,9 @@ export default {
 
             title: '',
 
-            isCollapse: false
+            isCollapse: true,
+
+            currentTime: ''
         };
     },
     methods: {
@@ -92,6 +93,17 @@ export default {
 
         toggleCollapse() {
             this.isCollapse = !this.isCollapse;
+        },
+
+        setCurrentTime() {
+            const curDate = new Date();
+            const year = curDate.getFullYear();
+            const month = curDate.getMonth() + 1 < 10 ? '0' + (curDate.getMonth() + 1) : curDate.getMonth() + 1;
+            const date = curDate.getDate() < 10 ? '0' + curDate.getDate() : curDate.getDate();
+            const hh = curDate.getHours() < 10 ? '0' + curDate.getHours() : curDate.getHours();
+            const mm = curDate.getMinutes() < 10 ? '0' + curDate.getMinutes() : curDate.getMinutes();
+            const ss = curDate.getSeconds() < 10 ? '0' + curDate.getSeconds() : curDate.getSeconds();
+            this.currentTime = year + '年' + month + '月' + date + '日' + ' ' + hh + ':' + mm + ':' + ss;
         }
     },
     created() {
@@ -100,6 +112,8 @@ export default {
         this.userGroup = user.userGroup;
         this.copyright = this.$customConfig.HOME_COPYRIGHT;
         this.title = this.$customConfig.HOME_TITLE;
+
+        window.setInterval(this.setCurrentTime, 1000);
     },
     watch: {
         '$route.path': function(newVal, oldVal) {
@@ -112,7 +126,7 @@ export default {
 
 <style lang="less" scoped>
 .el-header {
-    background-color: #373D41;
+    background-color: #333744;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -135,7 +149,7 @@ export default {
 }
 
 .el-footer {
-    background-color: #373D41;
+    background-color: #333744;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -150,5 +164,9 @@ export default {
     text-align: center;
     letter-spacing: 0.2rem;
     cursor: pointer;
+}
+
+.home-header-title {
+    padding-left: 50%;
 }
 </style>
