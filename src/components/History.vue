@@ -77,6 +77,10 @@ import CsvExportor from 'csv-exportor'
 
 export default {
     data() {
+        const end = new Date();
+        const start = new Date();
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+
         return {
             loading: false,
 
@@ -86,7 +90,7 @@ export default {
 
             siteId: 2,
 
-            dateTimeRange: '',
+            dateTimeRange: [start, end],
 
             pickerOptions: {
                 shortcuts: [{

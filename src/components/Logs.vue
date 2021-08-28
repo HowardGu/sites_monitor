@@ -78,12 +78,16 @@ import userService from '@/service/userService';
 import storageService from '@/service/storageService';
 export default {
     data() {
+        const end = new Date();
+        const start = new Date();
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+
         return {
             userId: 0,
 
             selectedSiteUUID: '',
 
-            dateTimeRange: '',
+            dateTimeRange: [start, end],
 
             pickerOptions: {
                 shortcuts: [{
