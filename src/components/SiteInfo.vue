@@ -25,8 +25,8 @@
                 <el-row :gutter="20" class="siteInfo-row">
                     <el-col :span="6"><span>站点号： {{ siteData.siteId }}</span></el-col>
                     <el-col :span="6"><span>版本号： {{ siteData.version }}</span></el-col>
+                    <el-col :span="6"><span>IP： {{ siteData.host }}</span></el-col>
                     <el-col :span="6"><span>时钟： {{ siteData.dateTime }}</span></el-col>
-                    <el-col :span="6" id='offlineAlert'><span>状态： {{ siteData.offlineAlert }}</span></el-col>
                 </el-row>
 
                 <el-row :gutter="20" class="siteInfo-row">
@@ -34,6 +34,10 @@
                     <el-col :span="6"><span>地段： {{ siteData.location }}</span></el-col>
                     <el-col :span="6"><span>站点： {{ siteData.siteName }}</span></el-col>
                     <el-col :span="6"><span>描述： {{ siteData.description }}</span></el-col>
+                </el-row>
+
+                <el-row :gutter="20" class="siteInfo-row">
+                    <el-col :span="6" id='offlineAlert'><span>状态： {{ siteData.offlineAlert }}</span></el-col>
                 </el-row>
             </el-card>
 
@@ -475,6 +479,7 @@ export default {
                 location: '',
                 siteName: '',
                 description: '',
+                host: '',
                 offlineAlert: '',
                 dateTime: '',
                 incidentAlerts: 0,
