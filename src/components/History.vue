@@ -166,6 +166,7 @@ export default {
                         reflectedPower: log.reflectedPower,
                         pushPower: log.pushPower,
                         inputPower: log.inputPower,
+                        ratedPower: log.ratedPower,
                         electricCurrent: log.electricCurrent,
                         temperature: log.temperature,
                         supplyVoltage: log.supplyVoltage,
