@@ -276,10 +276,14 @@ export default {
                 console.log(res);
                 this.siteList = res.data.data.sites;
                 this.siteList.forEach((site) => {
-                    const nextSite = this.siteList.find((targetSite) => {
-                        return targetSite.id === site.nextSiteUUID;
-                    });
-                    site.nextSiteId = nextSite ? nextSite.siteId : '无';
+                    if (site.nextSiteUUID) {
+                        const nextSite = this.siteList.find((targetSite) => {
+                            return targetSite.id === site.nextSiteUUID;
+                        });
+                        site.nextSiteId = nextSite.siteId;
+                    } else {
+                        site.nextSiteId = '无';
+                    }
                 }).bind(this);
                 this.totalCount = res.data.data.totalCount;
             }).catch((err) => {
