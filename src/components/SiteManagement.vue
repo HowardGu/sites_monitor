@@ -29,10 +29,10 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="dark" content="编辑" placement="top" :enterable="false">
-                            <el-button type="warning" icon="el-icon-edit" circle @click="editSite(scope.row.id)"></el-button>
+                            <el-button type="warning" icon="el-icon-edit" circle @click="editSite(scope.row.siteUUID)"></el-button>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="删除" placement="top" :enterable="false">
-                            <el-button type="danger" icon="el-icon-delete" circle @click="removeSite(scope.row.id)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" circle @click="removeSite(scope.row.siteUUID)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -56,7 +56,7 @@
                     </el-form-item>
                     <el-form-item label="下一站点" prop="nextSiteUUID">
                         <el-select v-model="addSiteForm.nextSiteUUID" placeholder="请选择下一站点" :clearable="true" style="width: 100%;">
-                            <el-option v-for="site in siteList" :key="site.id" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.id">
+                            <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.siteUUID">
                                 <span style="float: left">{{ site.tunnel + ' - ' + site.location + ' - ' + site.siteName }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
                             </el-option>
@@ -96,7 +96,7 @@
                     </el-form-item>
                     <el-form-item label="下一站点" prop="nextSiteUUID">
                         <el-select v-model="editSiteForm.nextSiteUUID" placeholder="请选择下一站点" :clearable="true" style="width: 100%;">
-                            <el-option v-for="site in siteList" :key="site.id" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.id">
+                            <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.siteUUID">
                                 <span style="float: left">{{ site.tunnel + ' - ' + site.location + ' - ' + site.siteName }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
                             </el-option>
@@ -242,7 +242,7 @@ export default {
 
         editSite(siteUUID) {
             this.editSiteDialogVisible = true;
-            this.editSiteForm = (this.siteList.filter((site) => { return site.id === siteUUID; }))[0];
+            this.editSiteForm = JSON.parse(JSON.stringify((this.siteList.find((site) => { return site.siteUUID === siteUUID; }))));
         },
 
         async removeSite(siteUUID) {
@@ -277,9 +277,10 @@ export default {
                 this.siteList = res.data.data.sites;
                 this.siteList.forEach((site) => {
                     const nextSite = this.siteList.find((targetSite) => {
-                        return targetSite.id === site.nextSiteUUID;
+                        return targetSite.siteUUID === site.nextSiteUUID;
                     });
                     site.nextSiteId = nextSite ? nextSite.siteId : '无';
+                    site.nextSiteUUID = site.nextSiteUUID === '00000000-0000-0000-0000-000000000000' ? '' : site.nextSiteUUID;
                 }).bind(this);
                 this.totalCount = res.data.data.totalCount;
             }).catch((err) => {
@@ -289,7 +290,6 @@ export default {
 
         updateIgnoreAlertState(siteInfo) {
             siteService.ignoreAlert(siteInfo)
-            console.log(siteInfo.id + ' ' + siteInfo.ignoreAlert);
         }
     },
     created() {

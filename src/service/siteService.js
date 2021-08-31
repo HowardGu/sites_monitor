@@ -5,7 +5,7 @@ const create = (siteParams) => {
 };
 
 const update = (siteParams) => {
-    return request.put(`sites/${siteParams.id}`, siteParams);
+    return request.put(`sites/${siteParams.siteUUID}`, siteParams);
 };
 
 const show = (siteUUID) => {
@@ -41,15 +41,15 @@ const getUUID = (siteId) => {
 };
 
 const ignoreAlert = (siteParams) => {
-    return request.put(`sites/${siteParams.id}/alert`, { ignore: siteParams.ignoreAlert });
+    return request.put(`sites/${siteParams.siteUUID}/alert`, { ignore: siteParams.ignoreAlert });
 };
 
 const updateAlertState = (alertParams) => {
-    return request.put(`sites/${alertParams.id}/alertEnable`, alertParams);
+    return request.put(`sites/${alertParams.siteUUID}/alertEnable`, alertParams);
 }
 
 const updateAlertLimit = (alertParams) => {
-    return request.put(`sites/${alertParams.id}/alertThreshold`, alertParams);
+    return request.put(`sites/${alertParams.siteUUID}/alertThreshold`, alertParams);
 }
 
 const alertConf = (siteUUID) => {
@@ -57,7 +57,7 @@ const alertConf = (siteUUID) => {
 };
 
 const sendCtrlMsg = (ctrlMsgParams) => {
-    return request.post(`/ctrlmsg/sites/${ctrlMsgParams.id}`, ctrlMsgParams);
+    return request.post(`/ctrlmsg/sites/${ctrlMsgParams.siteUUID}`, ctrlMsgParams);
 }
 
 export default {

@@ -199,7 +199,7 @@ export default {
                     return {
                         siteFullName: site.tunnel + ' - ' + site.location + ' - ' + site.siteName,
                         siteId: site.siteId,
-                        siteUUID: site.id
+                        siteUUID: site.siteUUID
                     }
                 });
                 console.log(this.siteList);

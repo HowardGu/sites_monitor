@@ -91,7 +91,7 @@ export default {
                 const sites = res.data.data.sites;
                 if (sites) {
                     const sitesData = sites.map((site) => {
-                        return { label: site.siteName, siteId: site.siteId, siteUUID: site.id, leaf: true };
+                        return { label: site.siteName, siteId: site.siteId, siteUUID: site.siteUUID, leaf: true };
                     });
 
                     resolve(sitesData);

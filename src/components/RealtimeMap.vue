@@ -163,7 +163,7 @@ export default {
                     }
                     return {
                         description: site.description,
-                        siteUUID: site.id,
+                        siteUUID: site.siteUUID,
                         lat: site.latitude,
                         lng: site.longitude,
                         location: site.location,
