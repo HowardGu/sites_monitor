@@ -14,6 +14,7 @@
             <el-table :data="siteList" :border="true" style="width: 100%">
                 <el-table-column type="index"></el-table-column>
                 <el-table-column prop="siteId" label="站点号"></el-table-column>
+                <el-table-column prop="nextSiteId" label="下一站点"></el-table-column>
                 <el-table-column prop="longitude" label="经度"></el-table-column>
                 <el-table-column prop="latitude" label="纬度"></el-table-column>
                 <el-table-column prop="tunnel" label="隧道"></el-table-column>
@@ -47,11 +48,19 @@
             </el-pagination>
         </el-card>
 
-        <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" :close-on-click-modal="false">
+        <el-dialog title="新增站点" :visible.sync="addSiteDialogVisible" width="50%" @close="resetAddSiteDialog" :close-on-click-modal="false">
             <el-card class="siteManagement-inner-card">
                 <el-form :model="addSiteForm" :rules="addEditSiteFormRules" ref="addSiteFormRef" label-width="70px" label-position="left">
-                    <el-form-item label="站点号">
+                    <el-form-item label="站点号" prop="siteId">
                         <el-input-number v-model="addSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="下一站点" prop="nextSiteUUID">
+                        <el-select v-model="addSiteForm.nextSiteUUID" placeholder="请选择下一站点" :clearable="true" style="width: 100%;">
+                            <el-option v-for="site in siteList" :key="site.id" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.id">
+                                <span style="float: left">{{ site.tunnel + ' - ' + site.location + ' - ' + site.siteName }}</span>
+                                <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="经度" prop="longitude">
                         <el-input v-model="addSiteForm.longitude"></el-input>
@@ -68,7 +77,7 @@
                     <el-form-item label="站点" prop="siteName">
                         <el-input v-model="addSiteForm.siteName"></el-input>
                     </el-form-item>
-                    <el-form-item label="描述">
+                    <el-form-item label="描述" prop="description">
                         <el-input v-model="addSiteForm.description"></el-input>
                     </el-form-item>
                 </el-form>
@@ -82,8 +91,16 @@
         <el-dialog title="编辑站点" :visible.sync="editSiteDialogVisible" width="50%" @close="resetEditSiteDialog" :close-on-click-modal="false">
             <el-card class="siteManagement-inner-card">
                 <el-form :model="editSiteForm" :rules="addEditSiteFormRules" ref="editSiteFormRef" label-width="70px" label-position="left">
-                    <el-form-item label="站点号">
+                    <el-form-item label="站点号" prop="siteId">
                         <el-input-number v-model="editSiteForm.siteId" controls-position="right" :min="1" :max="99999"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="下一站点" prop="nextSiteUUID">
+                        <el-select v-model="editSiteForm.nextSiteUUID" placeholder="请选择下一站点" :clearable="true" style="width: 100%;">
+                            <el-option v-for="site in siteList" :key="site.id" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.id">
+                                <span style="float: left">{{ site.tunnel + ' - ' + site.location + ' - ' + site.siteName }}</span>
+                                <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="经度" prop="longitude">
                         <el-input v-model="editSiteForm.longitude"></el-input>
@@ -100,7 +117,7 @@
                     <el-form-item label="站点" prop="siteName">
                         <el-input v-model="editSiteForm.siteName"></el-input>
                     </el-form-item>
-                    <el-form-item label="描述">
+                    <el-form-item label="描述" prop="description">
                         <el-input v-model="editSiteForm.description"></el-input>
                     </el-form-item>
                 </el-form>
@@ -124,6 +141,7 @@ export default {
 
             addSiteForm: {
                 siteId: 0,
+                nextSiteUUID: '',
                 longitude: 0,
                 latitude: 0,
                 tunnel: '',
@@ -154,6 +172,7 @@ export default {
 
             editSiteForm: {
                 siteId: 0,
+                nextSiteUUID: '',
                 longitude: 0,
                 latitude: 0,
                 tunnel: '',
@@ -256,6 +275,16 @@ export default {
             siteService.showAll(this.queryInfo).then((res) => {
                 console.log(res);
                 this.siteList = res.data.data.sites;
+                this.siteList.forEach((site) => {
+                    if (site.nextSiteUUID) {
+                        const nextSite = this.siteList.find((targetSite) => {
+                            return targetSite.id === site.nextSiteUUID;
+                        });
+                        site.nextSiteId = nextSite.siteId;
+                    } else {
+                        site.nextSiteId = '无';
+                    }
+                }).bind(this);
                 this.totalCount = res.data.data.totalCount;
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
