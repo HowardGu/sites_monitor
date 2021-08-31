@@ -41,6 +41,9 @@
                         <el-link type="primary" @click="showSiteInfo">查看详细信息</el-link>
                     </div>
                 </bm-info-window>
+
+                <!-- <bm-polyline :path="polylinePath" stroke-color="blue" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline> -->
+                <bm-polyline v-for="(path, index) in polylinePath" :key="index" :path="path" :stroke-color="index == 0 ? 'blue' : 'red'" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
             </baidu-map>
         </el-card>
     </div>
@@ -52,6 +55,7 @@ import BmScale from 'vue-baidu-map/components/controls/Scale';
 import BmNavigation from 'vue-baidu-map/components/controls/Navigation';
 import BmInfoWindow from 'vue-baidu-map/components/overlays/InfoWindow';
 import BmPointCollection from 'vue-baidu-map/components/overlays/PointCollection';
+import BmPolyline from 'vue-baidu-map/components/overlays/Polyline';
 import siteService from '@/service/siteService';
 export default {
     components: {
@@ -59,7 +63,8 @@ export default {
         BmScale,
         BmNavigation,
         BmInfoWindow,
-        BmPointCollection
+        BmPointCollection,
+        BmPolyline
     },
     data() {
         return {
@@ -92,7 +97,9 @@ export default {
                 lng: 0,
                 lat: 0,
                 data: {}
-            }
+            },
+
+            polylinePath: []
         };
     },
     methods: {
@@ -174,6 +181,19 @@ export default {
                 this.badPoints = points.filter((point) => {
                     return point.alertState;
                 });
+
+                const g1 = [];
+                this.goodPoints.forEach((point) => {
+                    g1.push({ lng: point.lng, lat: point.lat });
+                });
+
+                const g2 = [];
+                this.badPoints.forEach((point) => {
+                    g2.push({ lng: point.lng, lat: point.lat });
+                });
+
+                this.polylinePath.push(g1);
+                this.polylinePath.push(g2);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
