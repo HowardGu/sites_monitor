@@ -175,7 +175,9 @@ export default {
 
             for (let i = 0; i < this.chartsPerPage; i++) {
                 const chartDOMId = 'realtimeChart' + i.toString();
-                this.realtimeCharts.push(echarts.init(document.getElementById(chartDOMId)));
+                const chartDOM = document.getElementById(chartDOMId);
+                chartDOM.style.height = this.chartHeight;
+                this.realtimeCharts.push(echarts.init(chartDOM));
             }
 
             if (this.siteMap) {
@@ -230,7 +232,7 @@ export default {
             const homeFooter = document.getElementById('home-footer');
             // 80 is the sum of the paddings of el-main and el-card, currently I haven't find a way to eliminate them, so need to decreased by 80
             // then decrease 5 more to eliminate the vertical scrollbar
-            this.chartHeight = document.body.clientHeight - homeHeader.clientHeight - homeFooter.clientHeight - 85 + 'px';
+            this.chartHeight = (document.body.clientHeight - homeHeader.clientHeight - homeFooter.clientHeight - 85) / 2 + 'px';
             console.log('RealtimeMap1 chart height updated');
         },
 
@@ -274,27 +276,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.realtimeChart-search-bar {
-    display: flex;
-    align-items: center;
-}
-
-.realtimeChart-search-bar-button {
-    margin-left: 10px;
-}
-
-.realtimeChart-search-bar-datepicker {
-    margin-left: 10px;
-}
-
-.el-select {
-    width: 400px;
-}
-
-.realtimeChart-pagination {
-    margin-top: 15px;
 }
 
 .realtimeChart-chart-container {
