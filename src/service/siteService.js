@@ -29,11 +29,11 @@ const showTunnels = () => {
 };
 
 const showLocations = (tunnel) => {
-    return request.get(`sites/tunnels/${tunnel}/locations`);
+    return request.put('sites/locations', { tunnel: tunnel });
 };
 
 const showSites = (tunnel, location) => {
-    return request.get(`sites/tunnels/${tunnel}/locations/${location}`);
+    return request.put('sites', { tunnel: tunnel, location: location });
 };
 
 const getUUID = (siteId) => {
