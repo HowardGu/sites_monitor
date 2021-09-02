@@ -182,18 +182,18 @@ export default {
                     return point.alertState;
                 });
 
-                const g1 = [];
-                this.goodPoints.forEach((point) => {
-                    g1.push({ lng: point.lng, lat: point.lat });
-                });
+                // const g1 = [];
+                // this.goodPoints.forEach((point) => {
+                //     g1.push({ lng: point.lng, lat: point.lat });
+                // });
 
-                const g2 = [];
-                this.badPoints.forEach((point) => {
-                    g2.push({ lng: point.lng, lat: point.lat });
-                });
+                // const g2 = [];
+                // this.badPoints.forEach((point) => {
+                //     g2.push({ lng: point.lng, lat: point.lat });
+                // });
 
-                this.polylinePath.push(g1);
-                this.polylinePath.push(g2);
+                // this.polylinePath.push(g1);
+                // this.polylinePath.push(g2);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
