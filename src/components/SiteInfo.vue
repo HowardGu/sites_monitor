@@ -583,7 +583,7 @@ export default {
 
         updateAlertState(alertName) {
             if (this.selectedSiteUUID !== '') {
-                siteService.updateAlertState({ id: this.selectedSiteUUID, name: alertName }).then((res) => {
+                siteService.updateAlertState({ siteUUID: this.selectedSiteUUID, name: alertName }).then((res) => {
                     console.log(res);
                     this.$message.success('设置成功');
                 }).catch((err) => {
@@ -594,7 +594,7 @@ export default {
 
         updateAlertLimit(alertName, lowerLimit, upperLimit) {
             if (this.selectedSiteUUID !== '') {
-                siteService.updateAlertLimit({ id: this.selectedSiteUUID, name: alertName, min: Number(lowerLimit), max: Number(upperLimit) }).then((res) => {
+                siteService.updateAlertLimit({ siteUUID: this.selectedSiteUUID, name: alertName, min: Number(lowerLimit), max: Number(upperLimit) }).then((res) => {
                     console.log(res);
                     this.$message.success('设置成功');
                 }).catch((err) => {
@@ -635,7 +635,7 @@ export default {
                 this.$message.info('已取消发送')
             } else {
                 if (this.selectedSiteUUID !== '') {
-                    siteService.sendCtrlMsg({ id: this.selectedSiteUUID, name: msgName, value: msgValue }).then((res) => {
+                    siteService.sendCtrlMsg({ siteUUID: this.selectedSiteUUID, name: msgName, value: msgValue }).then((res) => {
                         console.log(res);
                         this.$message.success('发送成功');
                     }).catch((err) => {
