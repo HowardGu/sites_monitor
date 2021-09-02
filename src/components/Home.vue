@@ -19,15 +19,15 @@
                         <span slot="title">实时地图</span>
                     </el-menu-item>
                     <el-menu-item index="sites">
-                        <i class="el-icon-menu"></i>
+                        <i class="el-icon-notebook-1"></i>
                         <span slot="title">站点列表</span>
                     </el-menu-item>
                     <el-menu-item index="siteInfo">
-                        <i class="el-icon-document"></i>
+                        <i class="el-icon-zoom-in"></i>
                         <span slot="title">站点详情</span>
                     </el-menu-item>
                     <el-menu-item index="siteManagement" v-if="userGroup === 'admin' || userGroup === 'manager'">
-                        <i class="el-icon-setting"></i>
+                        <i class="el-icon-menu"></i>
                         <span slot="title">站点管理</span>
                     </el-menu-item>
                     <el-menu-item index="history">
@@ -47,7 +47,7 @@
                         <span slot="title">实时数据1</span>
                     </el-menu-item>
                     <el-menu-item index="realtimeChartConfig">
-                        <i class="el-icon-s-data"></i>
+                        <i class="el-icon-setting"></i>
                         <span slot="title">实时配置</span>
                     </el-menu-item>
                     <el-menu-item index="help">
