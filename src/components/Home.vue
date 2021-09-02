@@ -46,6 +46,14 @@
                         <i class="el-icon-s-data"></i>
                         <span slot="title">实时数据</span>
                     </el-menu-item>
+                    <el-menu-item index="realtimeChart1">
+                        <i class="el-icon-s-data"></i>
+                        <span slot="title">实时数据1</span>
+                    </el-menu-item>
+                    <el-menu-item index="realtimeChartConfig">
+                        <i class="el-icon-s-data"></i>
+                        <span slot="title">实时配置</span>
+                    </el-menu-item>
                     <el-menu-item index="help">
                         <i class="el-icon-document"></i>
                         <span slot="title">帮助手册</span>

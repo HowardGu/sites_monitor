@@ -11,6 +11,8 @@ import History from '../components/History.vue'
 import Logs from '../components/Logs.vue'
 import UserManagement from '../components/UserManagement.vue'
 import RealtimeChart from '../components/RealtimeChart'
+import RealtimeChart1 from '../components/RealtimeChart1'
+import RealtimeChartConfig from '../components/RealtimeChartConfig'
 import Help from '../components/Help.vue'
 
 Vue.use(VueRouter)
@@ -60,6 +62,14 @@ const routes = [
             {
                 path: '/realtimeChart',
                 component: RealtimeChart
+            },
+            {
+                path: '/realtimeChart1',
+                component: RealtimeChart1
+            },
+            {
+                path: '/realtimeChartConfig',
+                component: RealtimeChartConfig
             },
             {
                 path: '/help',

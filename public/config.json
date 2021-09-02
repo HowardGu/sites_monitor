@@ -74,14 +74,14 @@
 
     "USERMANAGEMENT_PAGE_SIZE": 10,
 
-    "REALTIMECHART_CONFIG_CHART_BLOCK": {
+    "REALTIMECHART_CONFIG_CHART_BLOCK_DEPRECATED": {
         "id": 0,
         "title": "",
         "bars": [],
         "dataType": ""
     },
 
-    "REALTIMECHART_DEFAULT_CONFIG": {
+    "REALTIMECHART_DEFAULT_CONFIG_DEPRECATED": {
         "totalChart": 2,
 
         "barsPerChart": 10,
@@ -104,11 +104,156 @@
         ]
     },
 
-    "REALTIMECHART_CHARTS_PER_PAGE": 4,
+    "REALTIMECHART_CHARTS_PER_PAGE_DEPRECATED": 4,
 
-    "REALTIMECHART_MAX_CHARTS": 20,
+    "REALTIMECHART_MAX_CHARTS_DEPRECATED": 20,
 
-    "REALTIMECHART_MAX_BARS_PER_CHART": 10,
+    "REALTIMECHART_MAX_BARS_PER_CHART_DEPRECATED": 10,
+
+    "REALTIMECHART_DEFAULT_CONFIG": {
+        "pageCount": 3,
+
+        "pages" : [
+            {
+                "charts": [
+                    {
+                        "id": 0,
+                        "title": "图表1",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 1,
+                        "title": "图表2",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 2,
+                        "title": "图表3",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 3,
+                        "title": "图表4",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 4,
+                        "title": "图表5",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 5,
+                        "title": "图表6",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    }
+                ]
+            },
+            {
+                "charts": [
+                    {
+                        "id": 0,
+                        "title": "图表1",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 1,
+                        "title": "图表2",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 2,
+                        "title": "图表3",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 3,
+                        "title": "图表4",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 4,
+                        "title": "图表5",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 5,
+                        "title": "图表6",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    }
+                ]
+            },
+            {
+                "charts": [
+                    {
+                        "id": 0,
+                        "title": "图表1",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 1,
+                        "title": "图表2",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 2,
+                        "title": "图表3",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 3,
+                        "title": "图表4",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 4,
+                        "title": "图表5",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    },
+                    {
+                        "id": 5,
+                        "title": "图表6",
+                        "bars": ["", "", "", "", "", "", "", "", "", ""],
+                        "dataType": "IncidentPower",
+                        "yAxisMax": null
+                    }
+                ]
+            }
+        ]
+    },
 
     "REALTIMEMAP_MAP_CENTER": {
         "lng": 118.142771,
