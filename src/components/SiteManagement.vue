@@ -274,6 +274,7 @@ export default {
         getSites() {
             siteService.showAll(this.queryInfo).then((res) => {
                 console.log(res);
+                this.totalCount = res.data.data.totalCount;
                 this.siteList = res.data.data.sites;
                 this.siteList.forEach((site) => {
                     const nextSite = this.siteList.find((targetSite) => {
@@ -282,7 +283,6 @@ export default {
                     site.nextSiteId = nextSite ? nextSite.siteId : '无';
                     site.nextSiteUUID = site.nextSiteUUID === '00000000-0000-0000-0000-000000000000' ? '' : site.nextSiteUUID;
                 }).bind(this);
-                this.totalCount = res.data.data.totalCount;
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
