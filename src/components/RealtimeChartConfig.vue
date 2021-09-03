@@ -6,13 +6,13 @@
         </el-breadcrumb>
 
         <el-card>
-            <div slot="header" class="realtimeChart-card-header">
+            <div slot="header" class="realtimeChartConfig-card-header">
                 <h2 align="center">实时配置</h2>
             </div>
 
             <div>
-                <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="2">
+                <el-row :gutter="5" class="realtimeChartConfig-row">
+                    <el-col :span="3">
                         <span>实时页面：</span>
                     </el-col>
                     <el-col :span="8">
@@ -24,8 +24,8 @@
 
                 <el-divider></el-divider>
 
-                <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="2">
+                <el-row :gutter="5" class="realtimeChartConfig-row">
+                    <el-col :span="3">
                         <span>选择图表：</span>
                     </el-col>
                     <el-col :span="8">
@@ -35,8 +35,8 @@
                     </el-col>
                 </el-row>
 
-                <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="2">
+                <el-row :gutter="5" class="realtimeChartConfig-row">
+                    <el-col :span="3">
                         <span>数据类型：</span>
                     </el-col>
                     <el-col :span="8">
@@ -48,8 +48,8 @@
 
                 <el-divider></el-divider>
 
-                <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="2">
+                <el-row :gutter="5" class="realtimeChartConfig-row">
+                    <el-col :span="3">
                         <span>功率上限：</span>
                     </el-col>
                     <el-col :span="8">
@@ -59,8 +59,8 @@
 
                 <el-divider></el-divider>
 
-                <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="2">
+                <el-row :gutter="5" class="realtimeChartConfig-row">
+                    <el-col :span="3">
                         <span>图表标题：</span>
                     </el-col>
                     <el-col :span="8">
@@ -70,21 +70,22 @@
 
                 <el-divider></el-divider>
 
-                <div class="realtimeChart-dialog-select-container">
-                    <span>请选择数据项分别对应的站点：</span>
-
-                    <div v-for="i of barsPerChart" :key="i" class="realtimeChart-row">
+                <el-row v-for="i of barsPerChart" :key="i" :gutter="5" class="realtimeChartConfig-row">
+                    <el-col :span="3">
+                        <span>{{ '数据项' + i + '：' }}</span>
+                    </el-col>
+                    <el-col :span="8">
                         <el-select v-model="realtimeChartsConfig.pages[pageId].charts[chartId].bars[i - 1]" :placeholder="'第' + i.toString() + '个数据项'" :clearable="true">
                             <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
                                 <span style="float: left">{{ site.siteFullName }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
                             </el-option>
                         </el-select>
-                    </div>
-                </div>
+                    </el-col>
+                </el-row>
 
-                <div class="realtimeChart-row">
-                    <el-button type="primary" icon="el-icon-setting" @click="updateRealtimeChartsConfig()">确定</el-button>
+                <div class="realtimeChartConfig-row">
+                    <el-button type="primary" @click="updateRealtimeChartsConfig()">确定</el-button>
                 </div>
             </div>
         </el-card>
@@ -205,7 +206,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.realtimeChart-card-header {
+.realtimeChartConfig-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -215,13 +216,13 @@ export default {
     width: 400px;
 }
 
-.realtimeChart-row {
+.realtimeChartConfig-row {
     display: flex;
     align-items: center;
     margin-top: 20px;
 }
 
-.realtimeChart-dialog-select-container {
+.realtimeChartConfig-dialog-container {
     width: 100%;
     max-height: 400px;
     overflow-y: auto;
