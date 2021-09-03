@@ -12,7 +12,7 @@
 
             <div>
                 <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="1">
+                    <el-col :span="2">
                         <span>实时页面：</span>
                     </el-col>
                     <el-col :span="8">
@@ -25,7 +25,7 @@
                 <el-divider></el-divider>
 
                 <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="1">
+                    <el-col :span="2">
                         <span>选择图表：</span>
                     </el-col>
                     <el-col :span="8">
@@ -36,7 +36,7 @@
                 </el-row>
 
                 <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="1">
+                    <el-col :span="2">
                         <span>数据类型：</span>
                     </el-col>
                     <el-col :span="8">
@@ -49,7 +49,7 @@
                 <el-divider></el-divider>
 
                 <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="1">
+                    <el-col :span="2">
                         <span>功率上限：</span>
                     </el-col>
                     <el-col :span="8">
@@ -60,7 +60,7 @@
                 <el-divider></el-divider>
 
                 <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="1">
+                    <el-col :span="2">
                         <span>图表标题：</span>
                     </el-col>
                     <el-col :span="8">

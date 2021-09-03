@@ -10,7 +10,9 @@ import SiteManagement from '../components/SiteManagement.vue'
 import History from '../components/History.vue'
 import Logs from '../components/Logs.vue'
 import UserManagement from '../components/UserManagement.vue'
-import RealtimeChart from '../components/RealtimeChart'
+import RealtimeChart1 from '../components/RealtimeChart1'
+import RealtimeChart2 from '../components/RealtimeChart2'
+import RealtimeChart3 from '../components/RealtimeChart3'
 import RealtimeChartConfig from '../components/RealtimeChartConfig'
 import Help from '../components/Help.vue'
 
@@ -59,8 +61,16 @@ const routes = [
                 component: UserManagement
             },
             {
-                path: '/realtimeChart',
-                component: RealtimeChart
+                path: '/realtimeChart1',
+                component: RealtimeChart1
+            },
+            {
+                path: '/realtimeChart2',
+                component: RealtimeChart2
+            },
+            {
+                path: '/realtimeChart3',
+                component: RealtimeChart3
             },
             {
                 path: '/realtimeChartConfig',
