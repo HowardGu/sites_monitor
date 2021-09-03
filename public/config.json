@@ -110,8 +110,12 @@
 
     "REALTIMECHART_MAX_BARS_PER_CHART_DEPRECATED": 10,
 
+    "REALTIMECHART_DEFAULT_CONFIG_VERSION": "20210903",
+
     "REALTIMECHART_DEFAULT_CONFIG": {
         "pageCount": 3,
+
+        "version": "20210903",
 
         "pages" : [
             {

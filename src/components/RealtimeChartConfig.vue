@@ -131,7 +131,9 @@ export default {
 
             barsPerChart: 10,
 
-            siteMap: null
+            siteMap: null,
+
+            realtimeChartsConfigVersion: ''
         };
     },
     methods: {
@@ -162,8 +164,13 @@ export default {
             userService.showConf(chartsConfigQuertInfo).then((res) => {
                 console.log(res);
                 if (res.data.data && res.data.data.conf.conf) {
-                    console.log('Use RealtimeCharts config from server');
                     this.realtimeChartsConfig = JSON.parse(res.data.data.conf.conf);
+                    if (this.realtimeChartsConfig.version && this.realtimeChartsConfig.version === this.realtimeChartsConfigVersion) {
+                        console.log('Use RealtimeCharts config from server');
+                    } else {
+                        console.log('Use RealtimeCharts config from local as bad version');
+                        this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
+                    }
                 } else {
                     console.log('Use RealtimeCharts config from local');
                     this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
@@ -198,6 +205,7 @@ export default {
         this.getRealtimeChartsConfig();
 
         this.dataTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
+        this.realtimeChartsConfigVersion = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG_VERSION;
     },
     activated() {
         this.getSites();
