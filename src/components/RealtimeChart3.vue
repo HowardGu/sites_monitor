@@ -39,7 +39,15 @@ export default {
 
             chartOption: {
                 tooltip: {
-                    trigger: 'axis'
+                    trigger: 'axis',
+                    formatter: function(params) {
+                        const siteInfo = this.siteMap.get(params[0].name);
+                        if (siteInfo) {
+                            return siteInfo.briefInfo;
+                        } else {
+                            return '-';
+                        }
+                    }.bind(this)
                 },
                 xAxis: {
                     type: 'category'
@@ -115,7 +123,7 @@ export default {
             const seriesData = realtimeData.map((obj) => {
                 return obj.alertState ? { value: obj.data, itemStyle: { color: 'red' } } : { value: obj.data };
             });
-            const xAxisData = []
+            const xAxisData = [];
 
             this.realtimeChartsConfig.pages[this.pageId].charts[index].bars.forEach((bar, barIndex) => {
                 const site = this.siteList.find((site) => {
@@ -123,9 +131,8 @@ export default {
                 });
 
                 if (site) {
-                    // const barName = site.tunnelName + '\n' + site.siteId + '号站点';
                     const barName = site.siteId + '号';
-                    this.siteMap.set(barName, { siteUUID: site.siteUUID, siteId: site.siteId });
+                    this.siteMap.set(barName, { siteUUID: site.siteUUID, siteId: site.siteId, briefInfo: site.tunnelName + '</br>' + site.siteId + '号站点' });
                     xAxisData.push(realtimeData[barIndex].alertState ? { value: barName, textStyle: { color: 'red' } } : { value: barName });
                 } else {
                     xAxisData.push('-');
