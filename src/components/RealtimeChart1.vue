@@ -1,18 +1,15 @@
 <template>
     <div>
-        <el-card>
-            <div>
-                <el-button type="primary" icon="el-icon-setting" @click="startTimeIntervel()">确定</el-button>
+        <el-card v-loading="loading" element-loading-text="数据加载中">
+            <div class="realtimeChart-chart-container">
+                <div id='realtimeChart0' style="width: 33%;"></div>
+                <div id='realtimeChart1' style="width: 33%;"></div>
+                <div id='realtimeChart2' style="width: 33%;"></div>
             </div>
             <div class="realtimeChart-chart-container">
-                <div id='realtimeChart0' style="width: 50%; height:400px;"></div>
-                <div id='realtimeChart1' style="width: 50%; height:400px;"></div>
-                <div id='realtimeChart2' style="width: 50%; height:400px;"></div>
-            </div>
-            <div class="realtimeChart-chart-container">
-                <div id='realtimeChart3' style="width: 50%; height:400px;"></div>
-                <div id='realtimeChart4' style="width: 50%; height:400px;"></div>
-                <div id='realtimeChart5' style="width: 50%; height:400px;"></div>
+                <div id='realtimeChart3' style="width: 33%;"></div>
+                <div id='realtimeChart4' style="width: 33%;"></div>
+                <div id='realtimeChart5' style="width: 33%;"></div>
             </div>
         </el-card>
     </div>
@@ -28,6 +25,8 @@ import * as echarts from 'echarts'
 export default {
     data() {
         return {
+            loading: true,
+
             pageId: 0,
 
             userId: 0,
@@ -125,7 +124,7 @@ export default {
 
                 if (site) {
                     // const barName = site.tunnelName + '\n' + site.siteId + '号站点';
-                    const barName = site.siteId + '号站点';
+                    const barName = site.siteId + '号';
                     this.siteMap.set(barName, { siteUUID: site.siteUUID, siteId: site.siteId });
                     xAxisData.push(realtimeData[barIndex].alertState ? { value: barName, textStyle: { color: 'red' } } : { value: barName });
                 } else {
@@ -187,46 +186,6 @@ export default {
             }
         },
 
-        getRealtimeChartsConfig() {
-            const chartsConfigQuertInfo = {
-                userId: this.userId,
-                name: 'realtimeChartsConfig'
-            }
-
-            console.log(chartsConfigQuertInfo);
-
-            userService.showConf(chartsConfigQuertInfo).then((res) => {
-                console.log(res);
-                if (res.data.data && res.data.data.conf.conf) {
-                    console.log('Use RealtimeCharts config from server');
-                    this.realtimeChartsConfig = JSON.parse(res.data.data.conf.conf);
-                } else {
-                    console.log('Use RealtimeCharts config from local');
-                    this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
-                }
-
-                console.log(this.realtimeChartsConfig);
-            }).catch((err) => {
-                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
-            })
-        },
-
-        getSites() {
-            siteService.showAll().then((res) => {
-                this.siteList = res.data.data.sites.map((site) => {
-                    return {
-                        siteFullName: site.tunnel + ' - ' + site.location + ' - ' + site.siteName,
-                        siteId: site.siteId,
-                        siteUUID: site.siteUUID,
-                        tunnelName: site.tunnel
-                    }
-                });
-                console.log(this.siteList);
-            }).catch((err) => {
-                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
-            })
-        },
-
         getChartHeight() {
             const homeHeader = document.getElementById('home-header');
             const homeFooter = document.getElementById('home-footer');
@@ -241,6 +200,51 @@ export default {
                 window.clearInterval(this.refreshInterval);
                 console.log('RealtimeChart time intervel destroyed');
             }
+        },
+
+        init() {
+            // 1.getSites
+            siteService.showAll().then((res) => {
+                this.siteList = res.data.data.sites.map((site) => {
+                    return {
+                        siteFullName: site.tunnel + ' - ' + site.location + ' - ' + site.siteName,
+                        siteId: site.siteId,
+                        siteUUID: site.siteUUID,
+                        tunnelName: site.tunnel
+                    }
+                });
+                console.log(this.siteList);
+
+                // 2.getRealtimeChartsConfig
+                const chartsConfigQuertInfo = {
+                    userId: this.userId,
+                    name: 'realtimeChartsConfig'
+                }
+
+                console.log(chartsConfigQuertInfo);
+
+                userService.showConf(chartsConfigQuertInfo).then((res) => {
+                    console.log(res);
+                    if (res.data.data && res.data.data.conf.conf) {
+                        console.log('Use RealtimeCharts config from server');
+                        this.realtimeChartsConfig = JSON.parse(res.data.data.conf.conf);
+                    } else {
+                        console.log('Use RealtimeCharts config from local');
+                        this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
+                    }
+
+                    console.log(this.realtimeChartsConfig);
+
+                    // 3.startTimeIntervel
+                    this.startTimeIntervel();
+
+                    this.loading = false;
+                }).catch((err) => {
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                })
+            }).catch((err) => {
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+            })
         }
     },
     mounted() {
@@ -258,9 +262,7 @@ export default {
         this.dataTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
     },
     activated() {
-        this.getSites();
-        this.getRealtimeChartsConfig();
-        // this.startTimeIntervel();
+        this.init();
     },
     deactivated() {
         this.clearInterval();
@@ -272,31 +274,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.realtimeChart-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .realtimeChart-chart-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.realtimeChart-inner-card {
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
-}
-
-.realtimeChart-row {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.realtimeChart-dialog-select-container {
-    width: 100%;
-    max-height: 400px;
-    overflow-y: auto;
 }
 </style>
