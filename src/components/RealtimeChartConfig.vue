@@ -8,6 +8,9 @@
         <el-card>
             <div slot="header" class="realtimeChartConfig-card-header">
                 <h2 align="center">实时配置</h2>
+                <div>
+                    <el-button type="primary" icon="el-icon-setting" @click="updateRealtimeChartsConfig()">更新</el-button>
+                </div>
             </div>
 
             <div>
@@ -83,10 +86,6 @@
                         </el-select>
                     </el-col>
                 </el-row>
-
-                <div class="realtimeChartConfig-row">
-                    <el-button type="primary" @click="updateRealtimeChartsConfig()">确定</el-button>
-                </div>
             </div>
         </el-card>
     </div>
