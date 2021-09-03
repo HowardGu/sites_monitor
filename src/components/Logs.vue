@@ -1,10 +1,5 @@
 <template>
     <div>
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>报警日志</el-breadcrumb-item>
-        </el-breadcrumb>
-
         <el-card>
             <div slot="header" class="logs-card-header">
                 <h2 align="center">报警日志</h2>

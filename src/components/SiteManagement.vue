@@ -1,10 +1,5 @@
 <template>
     <div>
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>站点管理</el-breadcrumb-item>
-        </el-breadcrumb>
-
         <el-card>
             <div slot="header" class="siteManagement-card-header">
                 <h2 align="center">站点管理</h2>

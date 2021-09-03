@@ -1,10 +1,5 @@
 <template>
     <div>
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>历史记录</el-breadcrumb-item>
-        </el-breadcrumb>
-
         <el-card v-loading="loading" :element-loading-text="loadingText">
             <div slot="header" class="history-card-header">
                 <h2 align="center">历史记录</h2>

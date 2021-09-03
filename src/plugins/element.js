@@ -2,8 +2,6 @@ import Vue from 'vue'
 import {
     Aside,
     Button,
-    Breadcrumb,
-    BreadcrumbItem,
     Card,
     Carousel,
     CarouselItem,
@@ -43,8 +41,6 @@ import {
 } from 'element-ui'
 
 Vue.use(Button)
-Vue.use(Breadcrumb)
-Vue.use(BreadcrumbItem)
 Vue.use(Card)
 Vue.use(Form)
 Vue.use(FormItem)
