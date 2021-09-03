@@ -220,7 +220,7 @@ export default {
 }
 
 .el-select {
-    width: 400px;
+    width: 100%;
 }
 
 .realtimeChartConfig-row {
