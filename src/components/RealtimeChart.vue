@@ -1,128 +1,17 @@
 <template>
     <div>
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>实时数据</el-breadcrumb-item>
-        </el-breadcrumb>
-
-        <el-card>
-            <div slot="header" class="realtimeChart-card-header">
-                <h2 align="center">实时数据</h2>
-                <div>
-                    <el-button type="primary" icon="el-icon-setting" @click="showRealtimeChartsConfigDialog1()">图表配置</el-button>
-                </div>
+        <el-card v-loading="loading" element-loading-text="数据加载中">
+            <div class="realtimeChart-chart-container">
+                <div id='realtimeChart0' style="width: 33%;"></div>
+                <div id='realtimeChart1' style="width: 33%;"></div>
+                <div id='realtimeChart2' style="width: 33%;"></div>
             </div>
-
-            <div class="realtimeChart-search-bar">
-                <el-button class="realtimeChart-search-bar-button" icon="el-icon-search" @click="startTimeIntervel()">刷新曲线</el-button>
+            <div class="realtimeChart-chart-container">
+                <div id='realtimeChart3' style="width: 33%;"></div>
+                <div id='realtimeChart4' style="width: 33%;"></div>
+                <div id='realtimeChart5' style="width: 33%;"></div>
             </div>
-
-            <el-carousel height="820px" :autoplay="false" arrow="always" indicator-position="outside">
-                <el-carousel-item v-for="line of chartLines" :key="line">
-                    <div class="realtimeChart-chart-container">
-                        <div :id="'realtimeChart' + ((line - 1) * chartsPerPage).toString()" style="margin-top: 20px; width: 50%; height:400px;"></div>
-                        <div :id="'realtimeChart' + ((line - 1) * chartsPerPage + 1).toString()" style="margin-top: 20px; width: 50%; height:400px;"></div>
-                    </div>
-                    <div class="realtimeChart-chart-container">
-                        <div :id="'realtimeChart' + ((line - 1) * chartsPerPage + 2).toString()" style="width: 50%; height:400px;"></div>
-                        <div :id="'realtimeChart' + ((line - 1) * chartsPerPage + 3).toString()" style="width: 50%; height:400px;"></div>
-                    </div>
-                </el-carousel-item>
-            </el-carousel>
         </el-card>
-
-        <el-dialog title="图表数量" :visible.sync="realtimeChartsConfigDialog1Visible" width="50%" :close-on-click-modal="false">
-            <el-card class="realtimeChart-inner-card">
-                <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="6">
-                        <span>图表数量：</span>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-select v-model="realtimeChartsConfigTotalChart" placeholder="请选择图表数量">
-                            <el-option v-for="i of maxCharts" :label="i" :value="i" :key="i"></el-option>
-                        </el-select>
-                    </el-col>
-                </el-row>
-
-                <el-divider></el-divider>
-
-                <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="6">
-                        <span>图表数据项数量：</span>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-select v-model="realtimeChartsConfigBarsPerChart" placeholder="请选择图表数据项数量">
-                            <el-option v-for="i of maxBarsPerChart" :label="i" :value="i" :key="i"></el-option>
-                        </el-select>
-                    </el-col>
-                </el-row>
-            </el-card>
-
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="onRealtimeChartsConfigDialog1OK()">确定</el-button>
-                <el-button @click="realtimeChartsConfigDialog1Visible = false">取消</el-button>
-            </div>
-        </el-dialog>
-
-        <el-dialog title="图表内容" :visible.sync="realtimeChartsConfigDialog2Visible" width="50%" top="5vh" :close-on-click-modal="false">
-            <el-card class="realtimeChart-inner-card">
-                <div class="realtimeChart-row">
-                    <el-select v-model="realtimeChartsConfigChartId" placeholder="请选择图表">
-                        <el-option v-for="i of realtimeChartsConfig.totalChart" :label="'图表' + i.toString()" :value="i - 1" :key="i - 1"></el-option>
-                    </el-select>
-                </div>
-
-                <el-divider></el-divider>
-
-                <div class="realtimeChart-row">
-                    <el-select v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].dataType" placeholder="请选择数据类型">
-                        <el-option v-for="dataType of dataTypes" :label="dataType.label" :value="dataType.key" :key="dataType.key"></el-option>
-                    </el-select>
-                </div>
-
-                <el-divider></el-divider>
-
-                <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="3">
-                        <span>功率上限：</span>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-input v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].yAxisMax" placeholder="功率上限"></el-input>
-                    </el-col>
-                </el-row>
-
-                <el-divider></el-divider>
-
-                <el-row :gutter="10" class="realtimeChart-row">
-                    <el-col :span="3">
-                        <span>图表标题：</span>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-input v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].title" placeholder="图表标题"></el-input>
-                    </el-col>
-                </el-row>
-
-                <el-divider></el-divider>
-
-                <div class="realtimeChart-dialog-select-container">
-                    <span>请选择{{ realtimeChartsConfig.barsPerChart }}个数据项分别对应的站点：</span>
-
-                    <div v-for="i of realtimeChartsConfig.barsPerChart" :key="i" class="realtimeChart-row">
-                        <el-select v-model="realtimeChartsConfig.charts[realtimeChartsConfigChartId].bars[i - 1]" :placeholder="'第' + i.toString() + '个数据项'" :clearable="true">
-                            <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.siteFullName" :value="site.siteUUID">
-                                <span style="float: left">{{ site.siteFullName }}</span>
-                                <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
-                            </el-option>
-                        </el-select>
-                    </div>
-                </div>
-            </el-card>
-
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="onRealtimeChartsConfigDialog2OK()">确定</el-button>
-                <el-button @click="realtimeChartsConfigDialog2Visible = false">取消</el-button>
-            </div>
-        </el-dialog>
     </div>
 </template>
 
@@ -136,6 +25,10 @@ import * as echarts from 'echarts'
 export default {
     data() {
         return {
+            loading: true,
+
+            pageId: 0,
+
             userId: 0,
 
             realtimeDataQueryInfos: [],
@@ -143,8 +36,6 @@ export default {
             siteList: [],
 
             refreshInterval: null,
-
-            refreshPaused: false,
 
             chartOption: {
                 tooltip: {
@@ -165,45 +56,17 @@ export default {
                 }]
             },
 
-            chartLines: 0,
-
             realtimeCharts: [],
 
-            realtimeChartsConfigDialog1Visible: false,
-
-            realtimeChartsConfigDialog2Visible: false,
-
-            realtimeChartsConfig: {
-                totalChart: 0,
-                barsPerChart: 0,
-                charts: [
-                    {
-                        id: null,
-                        title: '',
-                        bars: ['', '', '', '', '', '', '', '', '', ''],
-                        dataType: '',
-                        yAxisMax: null
-                    }
-                ]
-            },
-
-            realtimeChartsConfigChartId: 0,
-
-            realtimeChartsConfigTotalChart: 0,
-
-            realtimeChartsConfigBarsPerChart: 0,
-
-            realtimeChartsConfigChartBlock: null,
+            realtimeChartsConfig: null,
 
             dataTypes: [],
 
-            maxCharts: 0,
+            chartsPerPage: 6,
 
-            maxBarsPerChart: 0,
+            siteMap: null,
 
-            chartsPerPage: 0,
-
-            siteMap: null
+            chartHeight: ''
         };
     },
     methods: {
@@ -212,7 +75,7 @@ export default {
             this.resetCharts();
 
             this.realtimeDataQueryInfos = [];
-            this.realtimeChartsConfig.charts.forEach((chart) => {
+            this.realtimeChartsConfig.pages[this.pageId].charts.forEach((chart) => {
                 this.realtimeDataQueryInfos.push({
                     siteIds: chart.bars,
                     signalName: chart.dataType
@@ -244,39 +107,24 @@ export default {
             });
         },
 
-        getSites() {
-            siteService.showAll().then((res) => {
-                this.siteList = res.data.data.sites.map((site) => {
-                    return {
-                        siteFullName: site.tunnel + ' - ' + site.location + ' - ' + site.siteName,
-                        siteId: site.siteId,
-                        siteUUID: site.siteUUID,
-                        tunnelName: site.tunnel
-                    }
-                });
-                console.log(this.siteList);
-            }).catch((err) => {
-                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
-            })
-        },
-
         renderChart(index, realtimeData) {
-            const title = this.realtimeChartsConfig.charts[index].title;
+            const title = this.realtimeChartsConfig.pages[this.pageId].charts[index].title;
             const subTitle = this.dataTypes.find((dataType) => {
-                return dataType.key === this.realtimeChartsConfig.charts[index].dataType;
+                return dataType.key === this.realtimeChartsConfig.pages[this.pageId].charts[index].dataType;
             }).label;
             const seriesData = realtimeData.map((obj) => {
                 return obj.alertState ? { value: obj.data, itemStyle: { color: 'red' } } : { value: obj.data };
             });
             const xAxisData = []
 
-            this.realtimeChartsConfig.charts[index].bars.forEach((bar, barIndex) => {
+            this.realtimeChartsConfig.pages[this.pageId].charts[index].bars.forEach((bar, barIndex) => {
                 const site = this.siteList.find((site) => {
                     return site.siteUUID === bar;
                 });
 
                 if (site) {
-                    const barName = site.tunnelName + '\n' + site.siteId + '号站点';
+                    // const barName = site.tunnelName + '\n' + site.siteId + '号站点';
+                    const barName = site.siteId + '号';
                     this.siteMap.set(barName, { siteUUID: site.siteUUID, siteId: site.siteId });
                     xAxisData.push(realtimeData[barIndex].alertState ? { value: barName, textStyle: { color: 'red' } } : { value: barName });
                 } else {
@@ -284,7 +132,7 @@ export default {
                 }
             });
 
-            const yAxisMax = this.realtimeChartsConfig.charts[index].yAxisMax ? this.realtimeChartsConfig.charts[index].yAxisMax : null;
+            const yAxisMax = this.realtimeChartsConfig.pages[this.pageId].charts[index].yAxisMax ? this.realtimeChartsConfig.pages[this.pageId].charts[index].yAxisMax : null;
 
             this.realtimeCharts[index].setOption({ title: { text: title, subtext: subTitle }, xAxis: { data: xAxisData, triggerEvent: true }, yAxis: { max: yAxisMax }, series: [{ data: seriesData }] });
 
@@ -316,7 +164,7 @@ export default {
         initCharts() {
             console.log('Init Charts...');
             this.realtimeCharts = [];
-            for (let i = 0; i < this.realtimeChartsConfig.totalChart; i++) {
+            for (let i = 0; i < this.chartsPerPage; i++) {
                 const chartDOMId = 'realtimeChart' + i.toString();
                 const chartDOM = echarts.getInstanceByDom(document.getElementById(chartDOMId));
                 if (chartDOM) {
@@ -324,9 +172,11 @@ export default {
                 }
             }
 
-            for (let i = 0; i < this.realtimeChartsConfig.totalChart; i++) {
+            for (let i = 0; i < this.chartsPerPage; i++) {
                 const chartDOMId = 'realtimeChart' + i.toString();
-                this.realtimeCharts.push(echarts.init(document.getElementById(chartDOMId)));
+                const chartDOM = document.getElementById(chartDOMId);
+                chartDOM.style.height = this.chartHeight;
+                this.realtimeCharts.push(echarts.init(chartDOM));
             }
 
             if (this.siteMap) {
@@ -336,104 +186,13 @@ export default {
             }
         },
 
-        getRealtimeChartsConfig() {
-            const chartsConfigQuertInfo = {
-                userId: this.userId,
-                name: 'realtimeChartsConfig'
-            }
-
-            console.log(chartsConfigQuertInfo);
-
-            userService.showConf(chartsConfigQuertInfo).then((res) => {
-                console.log(res);
-                if (res.data.data && res.data.data.conf.conf) {
-                    console.log('Use RealtimeCharts config from server');
-                    this.realtimeChartsConfig = JSON.parse(res.data.data.conf.conf);
-                } else {
-                    console.log('Use RealtimeCharts config from local');
-                    this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
-                }
-
-                console.log(this.realtimeChartsConfig);
-
-                this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / this.chartsPerPage);
-                this.realtimeChartsConfigTotalChart = this.realtimeChartsConfig.totalChart;
-                this.realtimeChartsConfigBarsPerChart = this.realtimeChartsConfig.barsPerChart;
-            }).catch((err) => {
-                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
-            })
-        },
-
-        updateRealtimeChartsConfig() {
-            const chartsConfig = {
-                userId: this.userId,
-                name: 'realtimeChartsConfig',
-                conf: JSON.stringify(this.realtimeChartsConfig)
-            }
-
-            console.log(chartsConfig);
-
-            userService.updateConf(chartsConfig).then((res) => {
-                console.log(res);
-                this.$message.success('图表配置更新成功');
-            }).catch((err) => {
-                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
-            })
-        },
-
-        showRealtimeChartsConfigDialog1() {
-            this.clearInterval();
-            this.realtimeChartsConfigChartId = 0;
-            this.realtimeChartsConfigDialog1Visible = true;
-        },
-
-        onRealtimeChartsConfigDialog1OK() {
-            console.log('Local: ' + this.realtimeChartsConfigTotalChart + ' ' + this.realtimeChartsConfigBarsPerChart);
-            console.log('Server: ' + this.realtimeChartsConfig.totalChart + ' ' + this.realtimeChartsConfig.barsPerChart);
-
-            if (this.realtimeChartsConfigTotalChart !== this.realtimeChartsConfig.totalChart) {
-                if (this.realtimeChartsConfigTotalChart < this.realtimeChartsConfig.totalChart) {
-                    this.realtimeChartsConfig.charts.splice(this.realtimeChartsConfigTotalChart, this.realtimeChartsConfig.totalChart - this.realtimeChartsConfigTotalChart);
-                } else {
-                    const chartBarArray = [];
-                    for (let i = 0; i < this.realtimeChartsConfigBarsPerChart; i++) {
-                        chartBarArray.push('');
-                    }
-
-                    for (let i = this.realtimeChartsConfig.totalChart; i < this.realtimeChartsConfigTotalChart; i++) {
-                        const chartBlock = JSON.parse(JSON.stringify(this.realtimeChartsConfigChartBlock));
-                        chartBlock.id = i;
-                        chartBlock.title = '图表' + (i + 1).toString();
-                        chartBlock.bars = JSON.parse(JSON.stringify(chartBarArray));
-                        chartBlock.dataType = this.dataTypes[0].key;
-
-                        this.realtimeChartsConfig.charts.push(chartBlock);
-                    }
-                }
-
-                this.realtimeChartsConfig.totalChart = this.realtimeChartsConfigTotalChart;
-                this.realtimeChartsConfig.barsPerChart = this.realtimeChartsConfigBarsPerChart;
-                this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / this.chartsPerPage);
-            } else if (this.realtimeChartsConfigBarsPerChart !== this.realtimeChartsConfig.barsPerChart) {
-                const chartBarArray = [];
-                for (let i = 0; i < this.realtimeChartsConfigBarsPerChart; i++) {
-                    chartBarArray.push('');
-                }
-
-                this.realtimeChartsConfig.charts.forEach((chart) => {
-                    chart.bars = JSON.parse(JSON.stringify(chartBarArray));
-                });
-
-                this.realtimeChartsConfig.barsPerChart = this.realtimeChartsConfigBarsPerChart;
-            }
-
-            this.realtimeChartsConfigDialog1Visible = false;
-            this.realtimeChartsConfigDialog2Visible = true;
-        },
-
-        onRealtimeChartsConfigDialog2OK() {
-            this.realtimeChartsConfigDialog2Visible = false;
-            this.updateRealtimeChartsConfig();
+        getChartHeight() {
+            const homeHeader = document.getElementById('home-header');
+            const homeFooter = document.getElementById('home-footer');
+            // 80 is the sum of the paddings of el-main and el-card, currently I haven't find a way to eliminate them, so need to decreased by 80
+            // then decrease 5 more to eliminate the vertical scrollbar
+            this.chartHeight = (document.body.clientHeight - homeHeader.clientHeight - homeFooter.clientHeight - 85) / 2 + 'px';
+            console.log('RealtimeMap1 chart height updated');
         },
 
         clearInterval() {
@@ -441,38 +200,71 @@ export default {
                 window.clearInterval(this.refreshInterval);
                 console.log('RealtimeChart time intervel destroyed');
             }
+        },
+
+        init() {
+            // 1.getSites
+            siteService.showAll().then((res) => {
+                this.siteList = res.data.data.sites.map((site) => {
+                    return {
+                        siteFullName: site.tunnel + ' - ' + site.location + ' - ' + site.siteName,
+                        siteId: site.siteId,
+                        siteUUID: site.siteUUID,
+                        tunnelName: site.tunnel
+                    }
+                });
+                console.log(this.siteList);
+
+                // 2.getRealtimeChartsConfig
+                const chartsConfigQuertInfo = {
+                    userId: this.userId,
+                    name: 'realtimeChartsConfig'
+                }
+
+                console.log(chartsConfigQuertInfo);
+
+                userService.showConf(chartsConfigQuertInfo).then((res) => {
+                    console.log(res);
+                    if (res.data.data && res.data.data.conf.conf) {
+                        console.log('Use RealtimeCharts config from server');
+                        this.realtimeChartsConfig = JSON.parse(res.data.data.conf.conf);
+                    } else {
+                        console.log('Use RealtimeCharts config from local');
+                        this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
+                    }
+
+                    console.log(this.realtimeChartsConfig);
+
+                    // 3.startTimeIntervel
+                    this.startTimeIntervel();
+
+                    this.loading = false;
+                }).catch((err) => {
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                })
+            }).catch((err) => {
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+            })
         }
+    },
+    mounted() {
+        window.onresize = () => {
+            return (() => {
+                this.getChartHeight();
+            })()
+        }
+        this.getChartHeight();
     },
     created() {
         const user = JSON.parse(storageService.get(storageService.USER_INFO));
         this.userId = user.userId;
-        this.getRealtimeChartsConfig();
 
         this.dataTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
-        this.realtimeChartsConfigChartBlock = this.$customConfig.REALTIMECHART_CONFIG_CHART_BLOCK;
-
-        this.maxCharts = this.$customConfig.REALTIMECHART_MAX_CHARTS;
-        if (this.maxCharts > 20 || this.maxCharts < 1) {
-            this.maxCharts = 20;
-        }
-
-        this.maxBarsPerChart = this.$customConfig.REALTIMECHART_MAX_BARS_PER_CHART;
-        if (this.maxBarsPerChart > 20 || this.maxBarsPerChart < 1) {
-            this.maxBarsPerChart = 20;
-        }
-
-        this.chartsPerPage = this.$customConfig.REALTIMECHART_CHARTS_PER_PAGE;
     },
     activated() {
-        this.getSites();
-        if (this.refreshPaused) {
-            this.startTimeIntervel();
-        }
+        this.init();
     },
     deactivated() {
-        if (this.refreshInterval) {
-            this.refreshPaused = true;
-        }
         this.clearInterval();
     },
     destroyed() {
@@ -482,52 +274,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.realtimeChart-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.realtimeChart-search-bar {
-    display: flex;
-    align-items: center;
-}
-
-.realtimeChart-search-bar-button {
-    margin-left: 10px;
-}
-
-.realtimeChart-search-bar-datepicker {
-    margin-left: 10px;
-}
-
-.el-select {
-    width: 400px;
-}
-
-.realtimeChart-pagination {
-    margin-top: 15px;
-}
-
 .realtimeChart-chart-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.realtimeChart-inner-card {
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
-}
-
-.realtimeChart-row {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.realtimeChart-dialog-select-container {
-    width: 100%;
-    max-height: 400px;
-    overflow-y: auto;
 }
 </style>
