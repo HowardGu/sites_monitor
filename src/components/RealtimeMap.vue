@@ -166,6 +166,8 @@ export default {
                         siteUUID: site.siteUUID,
                         lat: site.latitude,
                         lng: site.longitude,
+                        lat2: site.nextLatitude,
+                        lng2: site.nextLongitude,
                         location: site.location,
                         siteId: site.siteId,
                         siteName: site.siteName,
