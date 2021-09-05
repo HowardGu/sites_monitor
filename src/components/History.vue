@@ -201,7 +201,7 @@ export default {
         },
 
         getSiteHistory() {
-            if (this.dateTimeRange !== '' && this.selectedSiteUUID !== '') {
+            if (this.dateTimeRange && this.dateTimeRange !== '' && this.selectedSiteUUID !== '') {
                 this.loading = true;
                 this.loadingText = '数据加载中';
 
