@@ -42,8 +42,8 @@
                     </div>
                 </bm-info-window>
 
-                <!-- <bm-polyline :path="polylinePath" stroke-color="blue" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline> -->
-                <bm-polyline v-for="(path, index) in polylinePath" :key="index" :path="path" :stroke-color="index == 0 ? 'blue' : 'red'" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
+                <bm-polyline :path="goodPolylinePath" stroke-color="green" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
+                <bm-polyline :path="badPolylinePath" stroke-color="red" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
             </baidu-map>
         </el-card>
     </div>
@@ -99,7 +99,9 @@ export default {
                 data: {}
             },
 
-            polylinePath: []
+            goodPolylinePath: [],
+
+            badPolylinePath: []
         };
     },
     methods: {
@@ -150,6 +152,8 @@ export default {
         getSitesWithAlert() {
             siteService.showAllWithAlert().then((res) => {
                 console.log(res);
+                this.goodPolylinePath = [];
+                this.badPolylinePath = [];
                 const points = res.data.data.sites.map((site) => {
                     var alertStr;
                     if (site.alertState) {
@@ -161,18 +165,26 @@ export default {
                     if (this.infoWindow.data && this.infoWindow.data.siteId === site.siteId) {
                         this.infoWindow.data.alertState = alertStr;
                     }
+                    if (site.latitude2 !== 0 && site.longitude2 !== 0) {
+                        if (site.alertState2) {
+                            this.badPolylinePath.push({ lng: site.longitude, lat: site.latitude }, { lng: site.longitude2, lat: site.latitude2 });
+                        } else {
+                            this.goodPolylinePath.push({ lng: site.longitude, lat: site.latitude }, { lng: site.longitude2, lat: site.latitude2 });
+                        }
+                    }
                     return {
                         description: site.description,
                         siteUUID: site.siteUUID,
                         lat: site.latitude,
                         lng: site.longitude,
-                        lat2: site.nextLatitude,
-                        lng2: site.nextLongitude,
+                        lat2: site.latitude2,
+                        lng2: site.longitude2,
                         location: site.location,
                         siteId: site.siteId,
                         siteName: site.siteName,
                         tunnel: site.tunnel,
-                        alertState: alertStr
+                        alertState: alertStr,
+                        alertState2: site.alertState2
                     };
                 });
 
@@ -183,19 +195,6 @@ export default {
                 this.badPoints = points.filter((point) => {
                     return point.alertState;
                 });
-
-                // const g1 = [];
-                // this.goodPoints.forEach((point) => {
-                //     g1.push({ lng: point.lng, lat: point.lat });
-                // });
-
-                // const g2 = [];
-                // this.badPoints.forEach((point) => {
-                //     g2.push({ lng: point.lng, lat: point.lat });
-                // });
-
-                // this.polylinePath.push(g1);
-                // this.polylinePath.push(g2);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
