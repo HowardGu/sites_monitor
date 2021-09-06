@@ -74,7 +74,11 @@ export default {
 
             siteMap: null,
 
-            chartHeight: ''
+            chartHeight: '',
+
+            timeInterval: 0,
+
+            timeIntervalBase: 6
         };
     },
     methods: {
@@ -94,7 +98,7 @@ export default {
 
             this.clearInterval();
 
-            this.refreshInterval = window.setInterval(this.getRealtimeData, 5000);
+            this.refreshInterval = window.setInterval(this.getRealtimeData, this.timeInterval);
         },
 
         getRealtimeData() {
@@ -106,8 +110,6 @@ export default {
                     if (res.data.data && res.data.data.realtimeData) {
                         console.log(res.data.data.realtimeData);
                         this.renderChart(index, res.data.data.realtimeData);
-                    } else {
-                        this.resetCharts();
                     }
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
@@ -267,6 +269,7 @@ export default {
         this.userId = user.userId;
 
         this.dataTypes = this.$customConfig.COMMON_DATA_TYPES.analog;
+        this.timeInterval = this.$customConfig.REALTIMECHART_TIME_INTERVAL * this.timeIntervalBase;
     },
     activated() {
         this.init();

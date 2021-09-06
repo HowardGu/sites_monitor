@@ -259,6 +259,8 @@
         ]
     },
 
+    "REALTIMECHART_TIME_INTERVAL": 5000,
+
     "REALTIMEMAP_MAP_CENTER": {
         "lng": 118.142771,
         "lat": 24.500092
