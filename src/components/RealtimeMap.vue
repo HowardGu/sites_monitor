@@ -43,7 +43,7 @@
                 </bm-info-window>
 
                 <bm-polyline v-for="(path, index) in goodPolylinePath" :key="index" :path="path" stroke-color="green" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
-                <bm-polyline v-for="(path, index) in badPolylinePath" :key="index" :path="path" stroke-color="red" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
+                <bm-polyline v-for="(path, index) in badPolylinePath" :key="goodPolylinePath.length ? goodPolylinePath.length : 0  + 1 + index" :path="path" stroke-color="red" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
             </baidu-map>
         </el-card>
     </div>
@@ -137,16 +137,14 @@ export default {
             this.infoWindow.lng = point.lng;
             this.infoWindow.lat = point.lat;
             this.infoWindow.show = true;
-            this.mapCenter.lng = point.lng;
-            this.mapCenter.lat = point.lat;
         },
 
         infoWindowClose(e) {
-            this.infoWindow.show = false
+            this.infoWindow.show = false;
         },
 
         infoWindowOpen(e) {
-            this.infoWindow.show = true
+            this.infoWindow.show = true;
         },
 
         getSitesWithAlert() {
