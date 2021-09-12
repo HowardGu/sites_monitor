@@ -42,8 +42,8 @@
                     </div>
                 </bm-info-window>
 
-                <bm-polyline :path="goodPolylinePath" stroke-color="green" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
-                <bm-polyline :path="badPolylinePath" stroke-color="red" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
+                <bm-polyline v-for="(path, index) in goodPolylinePath" :key="index" :path="path" stroke-color="green" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
+                <bm-polyline v-for="(path, index) in badPolylinePath" :key="index" :path="path" stroke-color="red" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
             </baidu-map>
         </el-card>
     </div>
@@ -167,9 +167,9 @@ export default {
                     }
                     if (site.latitude2 !== 0 && site.longitude2 !== 0) {
                         if (site.alertState2) {
-                            this.badPolylinePath.push({ lng: site.longitude, lat: site.latitude }, { lng: site.longitude2, lat: site.latitude2 });
+                            this.badPolylinePath.push([{ lng: site.longitude, lat: site.latitude }, { lng: site.longitude2, lat: site.latitude2 }]);
                         } else {
-                            this.goodPolylinePath.push({ lng: site.longitude, lat: site.latitude }, { lng: site.longitude2, lat: site.latitude2 });
+                            this.goodPolylinePath.push([{ lng: site.longitude, lat: site.latitude }, { lng: site.longitude2, lat: site.latitude2 }]);
                         }
                     }
                     return {
