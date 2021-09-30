@@ -3,7 +3,10 @@
         <el-card>
             <div slot="header" class="userManagement-card-header">
                 <h2 align="center">用户管理</h2>
-                <el-button type="primary" @click="addUserDialogVisible = true">新增用户</el-button>
+                <div>
+                    <el-button type="primary" @click="addUserDialogVisible = true">新增用户</el-button>
+                    <el-button type="primary" @click="logout">登出当前用户</el-button>
+                </div>
             </div>
 
             <el-table :data="userList" :border="true" style="width: 100%">
@@ -91,6 +94,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import userService from '@/service/userService';
 export default {
     data() {
@@ -192,6 +196,11 @@ export default {
         };
     },
     methods: {
+        ...mapActions('userModule', { userlogout: 'logout' }),
+        logout() {
+            this.userlogout();
+        },
+
         resetAddUserDialog() {
             this.$refs.addUserFormRef.resetFields();
         },
