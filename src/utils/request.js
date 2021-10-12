@@ -4,7 +4,7 @@ import storageService from '../service/storageService';
 
 const service = axios.create({
     baseURL: 'http://' + location.hostname + ':1016/v1/',
-    timeout: 1000 * 5
+    timeout: 1000 * 60
 });
 
 service.interceptors.request.use((config) => {
