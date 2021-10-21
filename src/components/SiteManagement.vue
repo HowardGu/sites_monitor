@@ -51,7 +51,7 @@
                     </el-form-item>
                     <el-form-item label="下一站点" prop="nextSiteUUID">
                         <el-select v-model="addSiteForm.nextSiteUUID" placeholder="请选择下一站点" :clearable="true" style="width: 100%;">
-                            <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.siteUUID">
+                            <el-option v-for="site in allSiteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.siteUUID">
                                 <span style="float: left">{{ site.tunnel + ' - ' + site.location + ' - ' + site.siteName }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
                             </el-option>
@@ -91,7 +91,7 @@
                     </el-form-item>
                     <el-form-item label="下一站点" prop="nextSiteUUID">
                         <el-select v-model="editSiteForm.nextSiteUUID" placeholder="请选择下一站点" :clearable="true" style="width: 100%;">
-                            <el-option v-for="site in siteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.siteUUID">
+                            <el-option v-for="site in allSiteList" :key="site.siteUUID" :label="site.siteId + '号站点 - ' + site.tunnel + ' - ' + site.location + ' - ' + site.siteName" :value="site.siteUUID">
                                 <span style="float: left">{{ site.tunnel + ' - ' + site.location + ' - ' + site.siteName }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">{{ site.siteId }}</span>
                             </el-option>
@@ -131,6 +131,8 @@ export default {
     data() {
         return {
             siteList: [],
+
+            allSiteList: [],
 
             addSiteDialogVisible: false,
 
@@ -267,19 +269,24 @@ export default {
         },
 
         getSites() {
-            siteService.showAll(this.queryInfo).then((res) => {
-                console.log(res);
-                this.totalCount = res.data.data.totalCount;
-                this.siteList = res.data.data.sites;
-                this.siteList.forEach((site) => {
-                    const nextSite = this.siteList.find((targetSite) => {
-                        return targetSite.siteUUID === site.nextSiteUUID;
-                    });
-                    site.nextSiteId = nextSite ? nextSite.siteId : '无';
-                    site.nextSiteUUID = site.nextSiteUUID === '00000000-0000-0000-0000-000000000000' ? '' : site.nextSiteUUID;
-                }).bind(this);
+            siteService.showAll().then((res) => {
+                this.allSiteList = res.data.data.sites;
+                siteService.showAll(this.queryInfo).then((res) => {
+                    console.log(res);
+                    this.totalCount = res.data.data.totalCount;
+                    this.siteList = res.data.data.sites;
+                    this.siteList.forEach((site) => {
+                        const nextSite = this.allSiteList.find((targetSite) => {
+                            return targetSite.siteUUID === site.nextSiteUUID;
+                        });
+                        site.nextSiteId = nextSite ? nextSite.siteId : '无';
+                        site.nextSiteUUID = site.nextSiteUUID === '00000000-0000-0000-0000-000000000000' ? '' : site.nextSiteUUID;
+                    }).bind(this);
+                }).catch((err) => {
+                    return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                })
             }).catch((err) => {
-                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
+                return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err); ;
             })
         },
 
