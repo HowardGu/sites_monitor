@@ -8098,7 +8098,7 @@ window.BMAP_AUTHENTIC_KEY = "O4HdqiaR1Z0ACK1yrBlSsKcsXIhBKwWm"; (function() {
         this.map.Ix() && (g = 2);
         e = this.map.ef.Hw(e, b).nm;
         var ret = "./baidu/tiles/" + b + "/" + e + "/" +  a+ ".png";
-        console.log("Tiles path: " + ret);
+        // console.log("Tiles path: " + ret);
         return ret;
         // console.log("Tiles path: " + b + " " + e + " " + a);
         // return (pe[Math.abs(e + a) % pe.length] + "?qt=vtile&x=" + (e + "").replace(/-/gi, "M") + "&y=" + (a + "").replace(/-/gi, "M") + "&z=" + b + "&styles=" + c + "&scaler=" + g + (6 == A.ga.oa ? "&color_dep=32&colors=50": "") + "&udt=" + f + "&from=jsapi3_0").replace(/-(\d+)/gi, "M$1")
