@@ -13,7 +13,7 @@
         <el-container>
             <el-aside :width="isCollapse ? 'auto' : '180px'">
                 <div class="home-toggle-button" @click="toggleCollapse()">|||</div>
-                <el-menu background-color="#EAEDF1" text-color="#FFF" active-text-color="#409EFF" :collapse="isCollapse" :collapse-transition="false" :router="true" :default-active="activePath.substring(1)">
+                <el-menu background-color="#EAEDF1" text-color="#333744" active-text-color="#409EFF" :collapse="isCollapse" :collapse-transition="false" :router="true" :default-active="activePath.substring(1)">
                     <el-menu-item index="realtimeMap">
                         <i class="el-icon-map-location"></i>
                         <span slot="title">实时地图</span>
