@@ -1,19 +1,19 @@
 <template>
     <el-container class="home-container">
         <el-header id="home-header">
-            <h3 class="home-header-title">{{ title }}</h3>
+            <h2 class="home-header-title">{{ title }}</h2>
             <!-- <el-dropdown size="medium" :split-button="true" type="info" @command="logout">
                 你好，{{ userName }}
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item icon="el-icon-unlock">退出</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown> -->
-            <div>{{ currentTime }}</div>
+            <h2>{{ currentTime }}</h2>
         </el-header>
         <el-container>
             <el-aside :width="isCollapse ? 'auto' : '180px'">
                 <div class="home-toggle-button" @click="toggleCollapse()">|||</div>
-                <el-menu background-color="#333744" text-color="#FFF" active-text-color="#409EFF" :collapse="isCollapse" :collapse-transition="false" :router="true" :default-active="activePath.substring(1)">
+                <el-menu background-color="#EAEDF1" text-color="#FFF" active-text-color="#409EFF" :collapse="isCollapse" :collapse-transition="false" :router="true" :default-active="activePath.substring(1)">
                     <el-menu-item index="realtimeMap">
                         <i class="el-icon-map-location"></i>
                         <span slot="title">实时地图</span>
@@ -137,15 +137,15 @@ export default {
 
 <style lang="less" scoped>
 .el-header {
-    background-color: #333744;
+    background-color: #EAEDF1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #fff;
+    color: #333744;
 }
 
 .el-aside {
-    background-color: #333744;
+    background-color: #EAEDF1;
     .el-menu {
         border-right: none;
     }
@@ -160,18 +160,18 @@ export default {
 }
 
 .el-footer {
-    background-color: #333744;
+    background-color: #EAEDF1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #FFF;
+    color: #333744;
     font-size: 12px;
 }
 
 .home-toggle-button {
-    background-color: #333744;
+    background-color: #EAEDF1;
     line-height: 24px;
-    color: #fff;
+    color: #333744;
     text-align: center;
     letter-spacing: 0.2rem;
     cursor: pointer;
