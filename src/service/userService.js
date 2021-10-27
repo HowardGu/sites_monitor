@@ -29,11 +29,11 @@ const showAll = (axiosParams) => {
 };
 
 const updateConf = (userConfParams) => {
-    return request.put(`users/${userConfParams.userId}/conf`, userConfParams);
+    return request.put(`userconf/${userConfParams.userId}`, userConfParams);
 };
 
 const showConf = (userConfParams) => {
-    return request.post(`users/${userConfParams.userId}/conf`, userConfParams);
+    return request.post(`userconf/${userConfParams.userId}`, userConfParams);
 };
 
 export default {
