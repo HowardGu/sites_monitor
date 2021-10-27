@@ -27,9 +27,9 @@
 
             <baidu-map :style="{width:map.width,height:map.height}" :scroll-wheel-zoom="true"
                 :center="mapCenter" :zoom="mapZoom" @ready="mapHandler" :ak="mapAK">
-                <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
+                <bm-scale anchor="BMAP_ANCHOR_TOP_LEFT"></bm-scale>
 
-                <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" ></bm-navigation>
+                <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT" ></bm-navigation>
 
                 <bm-point-collection :points="badPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="red" size="BMAP_POINT_SIZE_BIG" @click="showMarkerInfo"></bm-point-collection>
                 <bm-point-collection :points="goodPoints" shape="BMAP_POINT_SHAPE_CIRCLE" color="green" size="BMAP_POINT_SIZE_SMALL" @click="showMarkerInfo"></bm-point-collection>
@@ -259,6 +259,8 @@ export default {
     position: absolute;
     z-index: 999;
     width: 300px;
+    right: 30px;
+    bottom: 30px;
 }
 
 .el-collapse {
