@@ -4,7 +4,7 @@
             <el-collapse class="sites-collapse">
                 <el-collapse-item>
                     <template slot="title"><h3 align="center" class="sites-collapse-item-bad-title">报警站点({{ badPoints.length }})</h3></template>
-                    <div class="sites-collapse-item-container">
+                    <div id="sites-collapse-item-container-good-div" class="sites-collapse-item-container">
                         <div v-for="badPoint of badPoints" :key="badPoint.siteUUID" class="sites-collapse-item-content" @click="showMarkerInfo2(badPoint)" >
                             <el-divider></el-divider>
                             <h3>站点号：{{ badPoint.siteId }}</h3>
@@ -15,7 +15,7 @@
                 </el-collapse-item>
                 <el-collapse-item>
                     <template slot="title"><h3 align="center" class="sites-collapse-item-good-title">正常站点({{ goodPoints.length }})</h3></template>
-                    <div class="sites-collapse-item-container">
+                    <div id="sites-collapse-item-container-bad-div" class="sites-collapse-item-container">
                         <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID" class="sites-collapse-item-content" @click="showMarkerInfo2(goodPoint)">
                             <el-divider></el-divider>
                             <h3>站点号：{{ goodPoint.siteId }}</h3>
@@ -210,7 +210,10 @@ export default {
             const homeFooter = document.getElementById('home-footer');
             // 80 is the sum of the paddings of el-main and el-card, currently I haven't find a way to eliminate them, so need to decreased by 80
             // then decrease 5 more to eliminate the vertical scrollbar
-            this.map.height = document.body.clientHeight - homeHeader.clientHeight - homeFooter.clientHeight - 85 + 'px';
+            const availableHeight = document.body.clientHeight - homeHeader.clientHeight - homeFooter.clientHeight - 85;
+            this.map.height = availableHeight + 'px';
+            document.getElementById('sites-collapse-item-container-good-div').style.maxHeight = availableHeight * 0.5 + 'px';
+            document.getElementById('sites-collapse-item-container-bad-div').style.maxHeight = availableHeight * 0.5 + 'px';
             console.log('RealtimeMap height updated');
         }
     },
@@ -291,7 +294,6 @@ export default {
 }
 
 .sites-collapse-item-container {
-    max-height: 800px;
     overflow-y: auto;
 }
 
