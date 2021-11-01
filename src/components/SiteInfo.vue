@@ -525,7 +525,7 @@ export default {
         getSiteInfo() {
             if (this.selectedSiteUUID !== '') {
                 logService.showRealtimeLog(this.selectedSiteUUID).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.data && res.data.data.state) {
                         this.siteData = res.data.data.state;
                         this.highlightAlert();
@@ -556,7 +556,7 @@ export default {
                     this.selectedSiteUUID = this.siteList[0].siteUUID;
                     this.startTimeIntervel();
                 }
-                console.log(this.siteList);
+                // console.log(this.siteList);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err); ;
             })
@@ -565,7 +565,7 @@ export default {
         getSiteSetting() {
             if (this.selectedSiteUUID !== '') {
                 siteService.alertConf(this.selectedSiteUUID).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.data && res.data.data.alertConf) {
                         this.siteSettingData = res.data.data.alertConf;
                         this.hideZero();
@@ -579,7 +579,7 @@ export default {
         updateAlertState(alertName) {
             if (this.selectedSiteUUID !== '') {
                 siteService.updateAlertState({ siteUUID: this.selectedSiteUUID, name: alertName }).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     this.$message.success('设置成功');
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
@@ -590,7 +590,7 @@ export default {
         updateAlertLimit(alertName, lowerLimit, upperLimit) {
             if (this.selectedSiteUUID !== '') {
                 siteService.updateAlertLimit({ siteUUID: this.selectedSiteUUID, name: alertName, min: Number(lowerLimit), max: Number(upperLimit) }).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     this.$message.success('设置成功');
                 }).catch((err) => {
                     err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
@@ -631,7 +631,7 @@ export default {
             } else {
                 if (this.selectedSiteUUID !== '') {
                     siteService.sendCtrlMsg({ siteUUID: this.selectedSiteUUID, name: msgName, value: msgValue }).then((res) => {
-                        console.log(res);
+                        // console.log(res);
                         this.$message.success('发送成功');
                     }).catch((err) => {
                         err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
@@ -729,7 +729,7 @@ export default {
     },
     activated() {
         if (this.$route.query.siteId) {
-            console.log(this.$route.query.siteId + this.$route.query.siteUUID);
+            // console.log(this.$route.query.siteId + this.$route.query.siteUUID);
             this.siteId = this.$route.query.siteId;
             this.selectedSiteUUID = this.$route.query.siteUUID;
             this.startTimeIntervel();

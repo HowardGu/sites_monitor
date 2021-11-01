@@ -42,7 +42,7 @@ export default {
 
         getTunnels(resolve) {
             siteService.showTunnels().then((res) => {
-                console.log(res);
+                // console.log(res);
                 const tunnels = res.data.data.tunnels;
                 if (tunnels) {
                     const tunnelsData = tunnels.map((tunnel) => {
@@ -58,10 +58,10 @@ export default {
 
         getLocations(node, resolve) {
             const tunnel = node.data.label;
-            console.log(tunnel);
+            // console.log(tunnel);
 
             siteService.showLocations(tunnel).then((res) => {
-                console.log(res);
+                // console.log(res);
                 const locations = res.data.data.locations;
                 if (locations) {
                     const locationsData = locations.map((location) => {
@@ -77,12 +77,12 @@ export default {
 
         getSites(node, resolve) {
             const location = node.data.label;
-            console.log(location);
+            // console.log(location);
             const tunnel = node.data.father;
-            console.log(tunnel);
+            // console.log(tunnel);
 
             siteService.showSites(tunnel, location).then((res) => {
-                console.log(res);
+                // console.log(res);
                 const sites = res.data.data.sites;
                 if (sites) {
                     const sitesData = sites.map((site) => {

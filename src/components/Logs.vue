@@ -197,7 +197,7 @@ export default {
                         siteUUID: site.siteUUID
                     }
                 });
-                console.log(this.siteList);
+                // console.log(this.siteList);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
@@ -265,10 +265,10 @@ export default {
                 conf: JSON.stringify(this.logsConfigIngoreData)
             }
 
-            console.log(logsConfig);
+            // console.log(logsConfig);
 
             userService.updateConf(logsConfig).then((res) => {
-                console.log(res);
+                // console.log(res);
                 this.$message.success('日志筛选更新成功');
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
@@ -281,16 +281,16 @@ export default {
                 name: 'logsConfig'
             }
 
-            console.log(logsConfigQuertInfo);
+            // console.log(logsConfigQuertInfo);
 
             userService.showConf(logsConfigQuertInfo).then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.data.data && res.data.data.conf.conf) {
                     console.log('Use logs config from server');
                     this.logsConfigIngoreData = JSON.parse(res.data.data.conf.conf);
                 }
 
-                console.log(this.logsConfigIngoreData);
+                // console.log(this.logsConfigIngoreData);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
@@ -323,7 +323,7 @@ export default {
             this.logsConfigItems.push(item);
         });
 
-        console.log(this.logsConfigItems);
+        // console.log(this.logsConfigItems);
 
         this.getLogsConfig();
     },

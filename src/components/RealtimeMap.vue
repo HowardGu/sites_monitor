@@ -149,7 +149,7 @@ export default {
 
         getSitesWithAlert() {
             siteService.showAllWithAlert().then((res) => {
-                console.log(res);
+                // console.log(res);
                 this.goodPolylinePath = [];
                 this.badPolylinePath = [];
                 const points = res.data.data.sites.map((site) => {

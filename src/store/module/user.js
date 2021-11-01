@@ -24,13 +24,13 @@ const userModule = {
             return new Promise((resolve, reject) => {
                 userService.login({ userName, password }).then((res) => {
                     context.commit('SET_TOKEN', res.data.data.token);
-                    console.log(res.data.data.token);
+                    // console.log(res.data.data.token);
                     return userService.info();
                 }).then((res) => {
                     context.commit('SET_USERINFO', res.data.data.user);
-                    console.log(res.data.data.user.userId);
-                    console.log(res.data.data.user.userName);
-                    console.log(res.data.data.user.userGroup);
+                    // console.log(res.data.data.user.userId);
+                    // console.log(res.data.data.user.userName);
+                    // console.log(res.data.data.user.userGroup);
                     resolve(res);
                 }).catch((err) => {
                     reject(err);

@@ -141,7 +141,7 @@ export default {
                         tunnelName: site.tunnel
                     }
                 });
-                console.log(this.siteList);
+                // console.log(this.siteList);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
@@ -153,10 +153,10 @@ export default {
                 name: 'realtimeChartsConfig'
             }
 
-            console.log(chartsConfigQuertInfo);
+            // console.log(chartsConfigQuertInfo);
 
             userService.showConf(chartsConfigQuertInfo).then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.data.data && res.data.data.conf.conf) {
                     this.realtimeChartsConfig = JSON.parse(res.data.data.conf.conf);
                     if (this.realtimeChartsConfig.version && this.realtimeChartsConfig.version === this.realtimeChartsConfigVersion) {
@@ -170,7 +170,7 @@ export default {
                     this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
                 }
 
-                console.log(this.realtimeChartsConfig);
+                // console.log(this.realtimeChartsConfig);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
@@ -183,10 +183,10 @@ export default {
                 conf: JSON.stringify(this.realtimeChartsConfig)
             }
 
-            console.log(chartsConfig);
+            // console.log(chartsConfig);
 
             userService.updateConf(chartsConfig).then((res) => {
-                console.log(res);
+                // console.log(res);
                 this.$message.success('图表配置更新成功');
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);

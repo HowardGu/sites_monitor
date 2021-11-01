@@ -210,7 +210,7 @@ export default {
                 this.queryInfo.endTime = (new Date(this.dateTimeRange[1] - tzoffset)).toISOString();
 
                 logService.showHistory(this.selectedSiteUUID, this.queryInfo).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.data.logs) {
                         this.logList = res.data.data.logs;
                         this.renderCharts();
@@ -236,7 +236,7 @@ export default {
                         siteUUID: site.siteUUID
                     }
                 });
-                console.log(this.siteList);
+                // console.log(this.siteList);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })

@@ -201,7 +201,7 @@ export default {
                 this.addSiteForm.latitude = Number(this.addSiteForm.latitude);
 
                 siteService.create(this.addSiteForm).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     this.$message.success('新增站点成功');
                     this.getSites();
                 }).catch((err) => {
@@ -226,7 +226,7 @@ export default {
                 this.editSiteForm.latitude = Number(this.editSiteForm.latitude);
 
                 siteService.update(this.editSiteForm).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     this.$message.success('编辑站点成功');
                     this.getSites();
                 }).catch((err) => {
@@ -272,7 +272,7 @@ export default {
             siteService.showAll().then((res) => {
                 this.allSiteList = res.data.data.sites;
                 siteService.showAll(this.queryInfo).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     this.totalCount = res.data.data.totalCount;
                     this.siteList = res.data.data.sites;
                     this.siteList.forEach((site) => {

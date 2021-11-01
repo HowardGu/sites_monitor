@@ -212,7 +212,7 @@ export default {
                 }
 
                 userService.create(this.addUserForm).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     this.$message.success('新增用户成功');
                     this.getUsers();
                 }).catch((err) => {
@@ -260,7 +260,7 @@ export default {
             if (confirmResult !== 'confirm') {
                 this.$message.info('已取消删除')
             } else {
-                console.log(userId);
+                // console.log(userId);
                 userService.remove(userId).then((res) => {
                     this.$message.success('删除成功');
                     this.getUsers();
@@ -277,7 +277,7 @@ export default {
 
         getUsers() {
             userService.showAll(this.queryInfo).then((res) => {
-                console.log(res);
+                // console.log(res);
                 this.userList = res.data.data.users;
                 this.totalCount = res.data.data.totalCount;
             }).catch((err) => {

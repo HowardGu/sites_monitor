@@ -227,13 +227,13 @@ export default {
         },
 
         getRealtimeData() {
-            console.log('RealtimeChart query infos');
-            console.log(this.realtimeDataQueryInfos);
+            // console.log('RealtimeChart query infos');
+            // console.log(this.realtimeDataQueryInfos);
 
             this.realtimeDataQueryInfos.forEach((queryInfo, index) => {
                 logService.showRealtimeData(queryInfo).then((res) => {
                     if (res.data.data && res.data.data.realtimeData) {
-                        console.log(res.data.data.realtimeData);
+                        // console.log(res.data.data.realtimeData);
                         this.renderChart(index, res.data.data.realtimeData);
                     } else {
                         this.resetCharts();
@@ -254,7 +254,7 @@ export default {
                         tunnelName: site.tunnel
                     }
                 });
-                console.log(this.siteList);
+                // console.log(this.siteList);
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
@@ -290,10 +290,10 @@ export default {
 
             this.realtimeCharts[index].on('click', function(params) {
                 if (params.componentType === 'xAxis') {
-                    console.log(params.value);
+                    // console.log(params.value);
                     const siteInfo = this.siteMap.get(params.value);
                     if (siteInfo) {
-                        console.log(siteInfo);
+                        // console.log(siteInfo);
                         this.$router.push({
                             path: '/siteInfo',
                             query: {
@@ -342,10 +342,10 @@ export default {
                 name: 'realtimeChartsConfig'
             }
 
-            console.log(chartsConfigQuertInfo);
+            // console.log(chartsConfigQuertInfo);
 
             userService.showConf(chartsConfigQuertInfo).then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.data.data && res.data.data.conf.conf) {
                     console.log('Use RealtimeCharts config from server');
                     this.realtimeChartsConfig = JSON.parse(res.data.data.conf.conf);
@@ -354,7 +354,7 @@ export default {
                     this.realtimeChartsConfig = this.$customConfig.REALTIMECHART_DEFAULT_CONFIG;
                 }
 
-                console.log(this.realtimeChartsConfig);
+                // console.log(this.realtimeChartsConfig);
 
                 this.chartLines = Math.ceil(this.realtimeChartsConfig.totalChart / this.chartsPerPage);
                 this.realtimeChartsConfigTotalChart = this.realtimeChartsConfig.totalChart;
@@ -371,10 +371,10 @@ export default {
                 conf: JSON.stringify(this.realtimeChartsConfig)
             }
 
-            console.log(chartsConfig);
+            // console.log(chartsConfig);
 
             userService.updateConf(chartsConfig).then((res) => {
-                console.log(res);
+                // console.log(res);
                 this.$message.success('图表配置更新成功');
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
