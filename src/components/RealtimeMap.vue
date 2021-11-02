@@ -201,7 +201,7 @@ export default {
         clearInterval() {
             if (this.refreshInterval) {
                 window.clearInterval(this.refreshInterval);
-                console.log('SiteInfo time intervel destroyed');
+                console.log('RealtimeMap intervel destroyed');
             }
         },
 
