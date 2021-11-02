@@ -212,8 +212,16 @@ export default {
             // then decrease 5 more to eliminate the vertical scrollbar
             const availableHeight = document.body.clientHeight - homeHeader.clientHeight - homeFooter.clientHeight - 85;
             this.map.height = availableHeight + 'px';
-            document.getElementById('sites-collapse-item-container-good-div').style.maxHeight = availableHeight * 0.5 + 'px';
-            document.getElementById('sites-collapse-item-container-bad-div').style.maxHeight = availableHeight * 0.5 + 'px';
+
+            const goodDiv = document.getElementById('sites-collapse-item-container-good-div');
+            if (goodDiv && goodDiv.style) {
+                goodDiv.style.maxHeight = availableHeight * 0.5 + 'px';
+            }
+
+            const badDiv = document.getElementById('sites-collapse-item-container-bad-div');
+            if (badDiv && badDiv.style) {
+                badDiv.style.maxHeight = availableHeight * 0.5 + 'px';
+            }
             console.log('RealtimeMap height updated');
         }
     },
@@ -223,26 +231,30 @@ export default {
         this.mapAK = this.$customConfig.REALTIMEMAP_MAP_AK;
     },
     mounted() {
-        window.onresize = () => {
-            return (() => {
-                this.getMapHeight();
-            })()
-        }
         this.getMapHeight();
     },
     activated() {
         if (this.refreshPaused) {
             this.startTimeIntervel();
         }
+
+        window.onresize = () => {
+            return (() => {
+                this.getMapHeight();
+            })()
+        };
     },
     deactivated() {
         if (this.refreshInterval) {
             this.refreshPaused = true;
         }
         this.clearInterval();
+
+        window.onresize = null;
     },
     beforeDestroy() {
         this.clearInterval();
+        window.onresize = null;
     }
 }
 </script>

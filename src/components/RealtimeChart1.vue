@@ -257,11 +257,6 @@ export default {
         }
     },
     mounted() {
-        window.onresize = () => {
-            return (() => {
-                this.getChartHeight();
-            })()
-        }
         this.getChartHeight();
     },
     created() {
@@ -273,12 +268,20 @@ export default {
     },
     activated() {
         this.init();
+
+        window.onresize = () => {
+            return (() => {
+                this.getChartHeight();
+            })()
+        };
     },
     deactivated() {
         this.clearInterval();
+        window.onresize = null;
     },
     destroyed() {
         this.clearInterval();
+        window.onresize = null;
     }
 }
 </script>
