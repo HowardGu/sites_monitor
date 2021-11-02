@@ -144,23 +144,6 @@ export default {
             const yAxisMax = this.realtimeChartsConfig.pages[this.pageId].charts[index].yAxisMax ? this.realtimeChartsConfig.pages[this.pageId].charts[index].yAxisMax : null;
 
             this.realtimeCharts[index].setOption({ title: { text: title, subtext: subTitle }, xAxis: { data: xAxisData, triggerEvent: true }, yAxis: { max: yAxisMax }, series: [{ data: seriesData }] });
-
-            this.realtimeCharts[index].on('click', function(params) {
-                if (params.componentType === 'xAxis') {
-                    // console.log(params.value);
-                    const siteInfo = this.siteMap.get(params.value);
-                    if (siteInfo) {
-                        // console.log(siteInfo);
-                        this.$router.push({
-                            path: '/siteInfo',
-                            query: {
-                                siteId: siteInfo.siteId,
-                                siteUUID: siteInfo.siteUUID
-                            }
-                        });
-                    }
-                }
-            }.bind(this));
         },
 
         resetCharts() {
@@ -181,17 +164,41 @@ export default {
                 }
             }
 
-            for (let i = 0; i < this.chartsPerPage; i++) {
-                const chartDOMId = 'realtimeChart' + i.toString();
-                const chartDOM = document.getElementById(chartDOMId);
-                chartDOM.style.height = this.chartHeight;
-                this.realtimeCharts.push(echarts.init(chartDOM));
-            }
-
             if (this.siteMap) {
                 this.siteMap.clear();
             } else {
                 this.siteMap = new Map();
+            }
+
+            for (let i = 0; i < this.chartsPerPage; i++) {
+                const chartDOMId = 'realtimeChart' + i.toString();
+                const chartDOM = document.getElementById(chartDOMId);
+                chartDOM.style.height = this.chartHeight;
+                const chartDOMInstance = echarts.init(chartDOM);
+
+                chartDOMInstance.off('click');
+                chartDOMInstance.on('click', function(params) {
+                    if (params.componentType === 'xAxis') {
+                        // console.log(params.value);
+                        const siteInfo = this.siteMap.get(params.value);
+                        if (siteInfo) {
+                            // console.log(siteInfo);
+                            this.$router.push({
+                                path: '/siteInfo',
+                                query: {
+                                    siteId: siteInfo.siteId,
+                                    siteUUID: siteInfo.siteUUID
+                                }
+                            });
+                        }
+                    }
+                }.bind(this));
+
+                this.$once('hook:deactivated', function() {
+                    echarts.dispose(chartDOMInstance);
+                });
+
+                this.realtimeCharts.push(chartDOMInstance);
             }
         },
 
@@ -254,6 +261,12 @@ export default {
             }).catch((err) => {
                 return err.response ? this.$message.error(err.response.data.msg) : this.$message.error(err);
             })
+        },
+
+        clearData() {
+            this.realtimeCharts = [];
+
+            console.log('RealtimeChart1 data destroyed');
         }
     },
     mounted() {
@@ -278,10 +291,12 @@ export default {
     deactivated() {
         this.clearInterval();
         window.onresize = null;
+        this.clearData();
     },
-    destroyed() {
+    beforeDestroy() {
         this.clearInterval();
         window.onresize = null;
+        this.clearData();
     }
 }
 </script>

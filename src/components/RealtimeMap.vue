@@ -223,6 +223,15 @@ export default {
                 badDiv.style.maxHeight = availableHeight * 0.5 + 'px';
             }
             console.log('RealtimeMap height updated');
+        },
+
+        clearData() {
+            this.goodPoints = [];
+            this.badPoints = [];
+            this.goodPolylinePath = [];
+            this.badPolylinePath = [];
+
+            console.log('RealtimeMap data destroyed');
         }
     },
     created() {
@@ -249,12 +258,13 @@ export default {
             this.refreshPaused = true;
         }
         this.clearInterval();
-
         window.onresize = null;
+        this.clearData();
     },
     beforeDestroy() {
         this.clearInterval();
         window.onresize = null;
+        this.clearData();
     }
 }
 </script>
