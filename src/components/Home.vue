@@ -125,6 +125,13 @@ export default {
         this.title = this.$customConfig.HOME_TITLE;
 
         window.setInterval(this.setCurrentTime, 1000);
+
+        const reloadInterval = this.$customConfig.HOME_RELOAD_INTERVAL;
+        window.setTimeout(
+            function() {
+                location.reload();
+            },
+            reloadInterval);
     },
     watch: {
         '$route.path': function(newVal, oldVal) {

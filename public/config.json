@@ -66,6 +66,8 @@
 
     "HOME_TITLE": "厦门市监控中心",
 
+    "HOME_RELOAD_INTERVAL": 3600000,
+
     "LOGIN_TITLE": "欢迎使用厦门市隧道监控系统",
 
     "LOGS_PAGE_SIZE": 10,
