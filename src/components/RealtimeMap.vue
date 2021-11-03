@@ -1,25 +1,29 @@
 <template>
     <div>
         <el-card v-loading="loading" element-loading-text="地图加载中" class="realtimeMap-card">
-            <el-collapse class="sites-collapse">
-                <el-collapse-item>
+            <el-collapse class="sites-collapse" v-model="activeNames">
+                <el-collapse-item name="0">
                     <template slot="title"><h3 align="center" class="sites-collapse-item-bad-title">报警站点({{ badPoints.length }})</h3></template>
                     <div id="sites-collapse-item-container-good-div" class="sites-collapse-item-container">
-                        <div v-for="badPoint of badPoints" :key="badPoint.siteUUID" class="sites-collapse-item-content" @click="showMarkerInfo2(badPoint)" >
-                            <el-divider></el-divider>
-                            <h3>站点号：{{ badPoint.siteId }}</h3>
-                            <span>{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</span>
-                            <span class="sites-item-alert">{{ badPoint.alertState }}</span>
+                        <div v-if="activeNames.includes('0')">
+                            <div v-for="badPoint of badPoints" :key="badPoint.siteUUID" class="sites-collapse-item-content" @click="showMarkerInfo2(badPoint)" >
+                                <el-divider></el-divider>
+                                <h3>站点号：{{ badPoint.siteId }}</h3>
+                                <span>{{ badPoint.tunnel + ' - ' + badPoint.location + ' - ' + badPoint.siteName}}</span>
+                                <span class="sites-item-alert">{{ badPoint.alertState }}</span>
+                            </div>
                         </div>
                     </div>
                 </el-collapse-item>
-                <el-collapse-item>
+                <el-collapse-item name="1">
                     <template slot="title"><h3 align="center" class="sites-collapse-item-good-title">正常站点({{ goodPoints.length }})</h3></template>
                     <div id="sites-collapse-item-container-bad-div" class="sites-collapse-item-container">
-                        <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID" class="sites-collapse-item-content" @click="showMarkerInfo2(goodPoint)">
-                            <el-divider></el-divider>
-                            <h3>站点号：{{ goodPoint.siteId }}</h3>
-                            <span>{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</span>
+                        <div v-if="activeNames.includes('1')">
+                            <div v-for="goodPoint of goodPoints" :key="goodPoint.siteUUID" class="sites-collapse-item-content" @click="showMarkerInfo2(goodPoint)">
+                                <el-divider></el-divider>
+                                <h3>站点号：{{ goodPoint.siteId }}</h3>
+                                <span>{{ goodPoint.tunnel + ' - ' + goodPoint.location + ' - ' + goodPoint.siteName}}</span>
+                            </div>
                         </div>
                     </div>
                 </el-collapse-item>
@@ -101,7 +105,9 @@ export default {
 
             goodPolylinePath: [],
 
-            badPolylinePath: []
+            badPolylinePath: [],
+
+            activeNames: []
         };
     },
     methods: {

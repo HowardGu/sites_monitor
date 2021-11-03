@@ -84,8 +84,6 @@ export default {
 
             userGroup: '',
 
-            activePath: '/realtimeMap',
-
             year: new Date().getFullYear(),
 
             copyright: '上海东方明珠信息技术有限公司',
